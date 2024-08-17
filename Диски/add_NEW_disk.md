@@ -7,5 +7,5 @@ _ _ _
 - 1,2,3,4 - выбираем сколько разделов будет на диске
 - w -сохраняем конфигурпцию
   <p align="center">
-<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/df.PNG">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/Картинки/fdisk_partition.PNG">
 </p>
