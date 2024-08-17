@@ -14,3 +14,8 @@
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/fdisk.PNG">
 </p>
+
+**lsblk** - выведет список всех блочных устройтсв (если диск только установлен в систему в выоде этой команды он будет отображен)
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/lsblk.PNG">
+</p>
