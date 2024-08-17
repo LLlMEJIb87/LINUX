@@ -10,3 +10,9 @@ _ _ _
   <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/Картинки/fdisk_partition.PNG">
 </p>
+
+2. Создаем файловую систему mkfs.ext4 /dev/sdb1
+3. Монтируем созданный раздел к общей файловой системе
+- mkdir /mnt/diskb - cоздаем директорию к которой подмонтируем новый раздел диска
+- mount /dev/sdb1 /mnt/diskb - подмантировали раздел нового диска к созданной ранее директории
+4. chmod o+w /mnt/diskb - даём право на запись всем остальным группам
