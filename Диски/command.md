@@ -12,5 +12,5 @@
 
 **fdisk** -l /dev/sda - покажет информацию о физическом диске.
 <p align="center">
-<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/df.PNG">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/fdisk.PNG">
 </p>
