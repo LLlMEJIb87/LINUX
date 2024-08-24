@@ -69,7 +69,8 @@ shmel@lvm:~$ sudo lvs
   LV        VG        Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
   ubuntu-lv ubuntu-vg -wi-ao---- 10.00g    
 ```
-**vldisplay** - показать более детальную информацию
+**vldisplay** - показать более детальную информацию   
+
 **lvcreate**  - создать логический диск
 ```
 shmel@lvm:~$ sudo lvcreate -L 1024M -n lv_test vg_test
