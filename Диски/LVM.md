@@ -21,10 +21,25 @@ Cуществует 3 группу абстракции:
 </p>
 
 ## Работа с LVM
+
 pvs - посмотреть наличие физических томов
 ```
 PV         VG        Fmt  Attr PSize   PFree
 /dev/sda3  ubuntu-vg lvm2 a--  <13.25g <3.25g
+```
+pvdisplay - более подроная информация о физических томах
+```
+shmel@lvm:~$ sudo pvdisplay
+  --- Physical volume ---
+  PV Name               /dev/sda3
+  VG Name               ubuntu-vg
+  PV Size               <13.25 GiB / not usable 0
+  Allocatable           yes
+  PE Size               4.00 MiB
+  Total PE              3391
+  Free PE               831
+  Allocated PE          2560
+  PV UUID               ueP84H-3KJt-eJj7-PC0W-0ouO-IOoE-v31EWX
 ```
  pvcreate  - добавить том в подсистему LVM
 ```
