@@ -15,7 +15,7 @@ Cуществует 3 группу абстракции:
 1. PV (Physical Volume) — физические тома (это могут быть разделы или целые «неразбитые» диски)
 2. VG (Volume Group) — группа томов (объединяем физические тома (PV) в группу, создаём единый диск, который будем дальше разбивать так, как нам хочется)
 3. LV (Logical Volume) — логические разделы, собственно раздел нашего нового «единого диска» ака Группы Томов, который мы потом форматируем и используем как обычный раздел, обычного жёсткого диска.  
-PE (Physical Extend) - минимальная единица диского пространства которой может управлять LVM
+PE (Physical Extend) - минимальная единица диского пространства которой может управлять LVM. По дефолту размер блока 4MB, но его можно менять в зависимости от задачи.
 
  <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/Картинки/LVM_abstrakcia.PNG">
@@ -55,5 +55,27 @@ shmel@lvm:~$ sudo vgs
   VG        #PV #LV #SN Attr   VSize   VFree
   ubuntu-vg   1   1   0 wz--n- <13.25g <3.25g
 ```
-**vgdisplay** - показать более детальную информацию
+**vgdisplay** - показать более детальную информацию  
 
+**vgcreate** - создать новую группу LVM
+```
+shmel@lvm:~$ sudo vgcreate vg_test /dev/sdb1
+  Volume group "vg_test" successfully created
+```
+### VL
+**vls** - посмотреть созданные LVM логические тома
+```
+shmel@lvm:~$ sudo lvs
+  LV        VG        Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  ubuntu-lv ubuntu-vg -wi-ao---- 10.00g    
+```
+**vldisplay** - показать более детальную информацию
+**lvcreate**  - создать логический диск
+```
+shmel@lvm:~$ sudo lvcreate -L 1024M -n lv_test vg_test
+  Logical volume "lv_test" created.
+```
+**mkfs.ext4** - поставить файловую систему на новосозданный логический диск
+```
+shmel@lvm:~$ sudo mkfs.ext4 /dev/vg_test/lv_test
+```
