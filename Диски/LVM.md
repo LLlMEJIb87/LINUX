@@ -24,5 +24,12 @@ Cуществует 3 группу абстракции:
 ```
  pvs - посмотреть наличие физических томов
 PV         VG        Fmt  Attr PSize   PFree
-  /dev/sda3  ubuntu-vg lvm2 a--  <13.25g <3.25g
+/dev/sda3  ubuntu-vg lvm2 a--  <13.25g <3.25g
 ```
+ pvcreate  - добавить том в подсистему LVM
+```
+shmel@lvm:~$ sudo pvcreate /dev/sdb1
+  Physical volume "/dev/sdb1" successfully created.
+```
+
+
