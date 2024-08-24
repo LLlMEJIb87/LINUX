@@ -19,3 +19,8 @@ Cуществует 3 группу абстракции:
  <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/Картинки/LVM_abstrakcia.PNG">
 </p>
+
+## Работа с LVM
+> pvs - посмотреть наличие физических томов
+PV         VG        Fmt  Attr PSize   PFree
+  /dev/sda3  ubuntu-vg lvm2 a--  <13.25g <3.25g
