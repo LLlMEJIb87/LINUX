@@ -17,5 +17,5 @@ Cуществует 3 группу абстракции:
 3. LV (Logical Volume) — логические разделы, собственно раздел нашего нового «единого диска» ака Группы Томов, который мы потом форматируем и используем как обычный раздел, обычного жёсткого диска.
 
  <p align="center">
-<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/Картинки/fdisk_partition.PNG">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Диски/Картинки/LVM_abstrakcia.PNG">
 </p>
