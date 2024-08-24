@@ -80,3 +80,8 @@ shmel@lvm:~$ sudo lvcreate -L 1024M -n lv_test vg_test
 ```
 shmel@lvm:~$ sudo mkfs.ext4 /dev/vg_test/lv_test
 ```
+**mount** - примонтировать созданный логический диск к файловой системе
+```
+shmel@lvm:~$ sudo mount /dev/vg_test/lv_test  /mnt/lv1/
+```
+
