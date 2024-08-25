@@ -86,9 +86,17 @@ shmel@lvm:~$ sudo mount /dev/vg_test/lv_test  /mnt/lv1/
 ```
 
 ### Расширение пространства
-**lvextendet** - раширить логический том
+**lvextend** - раширить логический том
 ```
 shmel@lvm:~$ sudo lvextend -l +100 /dev/vg_test/lv_test
   Size of logical volume vg_test/lv_test changed from 1.00 GiB (256 extents) to 1.39 GiB (356 extents).
   Logical volume vg_test/lv_test successfully resized.
+```
+** resize2fs ** - пересчитать файловую систему после изменений
+```
+shmel@lvm:~$ sudo resize2fs /dev/vg_test/lv_test
+resize2fs 1.47.0 (5-Feb-2023)
+Filesystem at /dev/vg_test/lv_test is mounted on /mnt/lv1; on-line resizing required
+old_desc_blocks = 1, new_desc_blocks = 1
+The filesystem on /dev/vg_test/lv_test is now 364544 (4k) blocks long.
 ```
