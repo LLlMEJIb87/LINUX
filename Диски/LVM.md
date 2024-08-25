@@ -88,15 +88,39 @@ shmel@lvm:~$ sudo mount /dev/vg_test/lv_test  /mnt/lv1/
 ### Расширение пространства
 **lvextend** - раширить логический том
 ```
-shmel@lvm:~$ sudo lvextend -l +100 /dev/vg_test/lv_test
+shmel@lvm:~$ sudo lvextend -l +100 /dev/vg_test/lv_test (если добавить опцию -r , то LVM сразу пересчитает файловую систему)
   Size of logical volume vg_test/lv_test changed from 1.00 GiB (256 extents) to 1.39 GiB (356 extents).
   Logical volume vg_test/lv_test successfully resized.
 ```
-** resize2fs ** - пересчитать файловую систему после изменений
+**resize2fs** - пересчитать файловую систему после изменений
 ```
 shmel@lvm:~$ sudo resize2fs /dev/vg_test/lv_test
 resize2fs 1.47.0 (5-Feb-2023)
 Filesystem at /dev/vg_test/lv_test is mounted on /mnt/lv1; on-line resizing required
 old_desc_blocks = 1, new_desc_blocks = 1
 The filesystem on /dev/vg_test/lv_test is now 364544 (4k) blocks long.
+```
+**vgextend** - расширить группу путем добавления физических томов
+```
+shmel@lvm:~$ sudo pvcreate /dev/sdb2/
+  No device found for /dev/sdb2/.
+shmel@lvm:~$ sudo pvcreate /dev/sdb2
+  Physical volume "/dev/sdb2" successfully created.
+shmel@lvm:~$ sudo vgextend vg_test /dev/sdb2
+  Volume group "vg_test" successfully extended
+```
+### Перенос информации
+**pvmove** - переносит данные (екстенты) с одного диска на другой
+```
+shmel@lvm:~$ sudo pvmove /dev/sdb1 ( тут мы указываем, только откуда мы хотим перенести и далее LVM сам размажет данные по свободному пространству
+```
+```
+shmel@lvm:~$ sudo pvmove /dev/sdb1 /dev/sdb2 -в данном случае мы явно указываем куда хотим перенести данные
+```
+**vgs** -o+devices - покажет как используются наши диски
+```
+shmel@lvm:~$ sudo vgs -o+devices
+  VG        #PV #LV #SN Attr   VSize   VFree  Devices
+  ubuntu-vg   1   1   0 wz--n- <13.25g <3.25g /dev/sda3(0)
+  vg_test     2   1   0 wz--n-   2.99g  1.60g /dev/sdb1(0)
 ```
