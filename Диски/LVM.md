@@ -85,3 +85,10 @@ shmel@lvm:~$ sudo mkfs.ext4 /dev/vg_test/lv_test
 shmel@lvm:~$ sudo mount /dev/vg_test/lv_test  /mnt/lv1/
 ```
 
+### Расширение пространства
+**lvextendet** - раширить логический том
+```
+shmel@lvm:~$ sudo lvextend -l +100 /dev/vg_test/lv_test
+  Size of logical volume vg_test/lv_test changed from 1.00 GiB (256 extents) to 1.39 GiB (356 extents).
+  Logical volume vg_test/lv_test successfully resized.
+```
