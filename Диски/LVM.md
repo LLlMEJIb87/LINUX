@@ -109,6 +109,36 @@ shmel@lvm:~$ sudo pvcreate /dev/sdb2
 shmel@lvm:~$ sudo vgextend vg_test /dev/sdb2
   Volume group "vg_test" successfully extended
 ```
+### Уменьшение пространства
+Для того чтобы уменьшить пространство логического тома, его в любом случае нужно размонировать   
+**umount** - размонтировать 
+```
+shmel@lvm:~$ sudo umount /mnt/lv1
+```
+```
+shmel@lvm:~$ sudo e2fsck -f /dev/vg_test/lv_test
+e2fsck 1.47.0 (5-Feb-2023)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/vg_test/lv_test: 75/98304 files (0.0% non-contiguous), 22893/364544 blocks
+```
+```
+shmel@lvm:~$ sudo resize2fs /dev/vg_test/lv_test 900M указываем сколько будет занимать места наша файловая система
+resize2fs 1.47.0 (5-Feb-2023)
+Resizing the filesystem on /dev/vg_test/lv_test to 230400 (4k) blocks.
+The filesystem on /dev/vg_test/lv_test is now 230400 (4k) blocks long.
+```
+```
+shmel@lvm:~$ sudo lvreduce -L -900M /dev/vg_test/lv_test - указываем сколько места будет занимать наш логический том
+  WARNING: Reducing active logical volume to 524.00 MiB.
+  THIS MAY DESTROY YOUR DATA (filesystem etc.)
+Do you really want to reduce vg_test/lv_test? [y/n]: y
+  Size of logical volume vg_test/lv_test changed from 1.39 GiB (356 extents) to 524.00 MiB (131 extents).
+  Logical volume vg_test/lv_test successfully resized.
+```
 ### Перенос информации
 **pvmove** - переносит данные (екстенты) с одного диска на другой
 ```
@@ -123,4 +153,9 @@ shmel@lvm:~$ sudo vgs -o+devices
   VG        #PV #LV #SN Attr   VSize   VFree  Devices
   ubuntu-vg   1   1   0 wz--n- <13.25g <3.25g /dev/sda3(0)
   vg_test     2   1   0 wz--n-   2.99g  1.60g /dev/sdb1(0)
+```
+**vgreduce** - удалит  (освободит) один из выбранных логических дисков
+```
+shmel@lvm:~$ sudo vgreduce vg_test /dev/sdb2
+  Removed "/dev/sdb2" from volume group "vg_test"
 ```
