@@ -163,6 +163,9 @@ Pass 4: Checking reference counts
 Pass 5: Checking group summary information
 /dev/vg_test/lv_test: 75/65536 files (0.0% non-contiguous), 20708/230400 blocks
 ```
+```
+shmel@lvm:~$ sudo mount /dev/vg_test/lv_test /mnt/lv1 примонтировать диск обратно к точке монтирования
+```
 ### Перенос информации
 **pvmove** - переносит данные (екстенты) с одного диска на другой
 ```
