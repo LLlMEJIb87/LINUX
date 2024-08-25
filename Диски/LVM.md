@@ -141,6 +141,28 @@ Do you really want to reduce vg_test/lv_test? [y/n]: y
   Size of logical volume vg_test/lv_test changed from 1.39 GiB (356 extents) to 524.00 MiB (131 extents).
   Logical volume vg_test/lv_test successfully resized.
 ```
+Мы можем столкнуться с проблемой, что количество блоков нашей файловой системы может не совпасть к количеством блоков нашего физического тома
+```
+shmel@lvm:~$ sudo e2fsck -fy /dev/vg_test/lv_test
+e2fsck 1.47.0 (5-Feb-2023)
+The filesystem size (according to the superblock) is 230400 blocks
+The physical size of the device is 134144 blocks
+Either the superblock or the partition table is likely to be corrupt!
+```
+В таком случае лучшее, что мы можем сделать это вернуть как было
+```
+shmel@lvm:~$ sudo lvextend -L +900M /dev/vg_test/lv_test
+  Size of logical volume vg_test/lv_test changed from 524.00 MiB (131 extents) to 1.39 GiB (356 extents).
+  Logical volume vg_test/lv_test successfully resized.
+shmel@lvm:~$ sudo e2fsck -fy /dev/vg_test/lv_test
+e2fsck 1.47.0 (5-Feb-2023)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/vg_test/lv_test: 75/65536 files (0.0% non-contiguous), 20708/230400 blocks
+```
 ### Перенос информации
 **pvmove** - переносит данные (екстенты) с одного диска на другой
 ```
