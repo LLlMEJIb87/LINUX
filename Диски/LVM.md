@@ -115,6 +115,7 @@ shmel@lvm:~$ sudo vgextend vg_test /dev/sdb2
 ```
 shmel@lvm:~$ sudo umount /mnt/lv1
 ```
+**e2fsck** - выполнит првоерку файловой системы на ошибки
 ```
 shmel@lvm:~$ sudo e2fsck -f /dev/vg_test/lv_test
 e2fsck 1.47.0 (5-Feb-2023)
@@ -131,6 +132,7 @@ resize2fs 1.47.0 (5-Feb-2023)
 Resizing the filesystem on /dev/vg_test/lv_test to 230400 (4k) blocks.
 The filesystem on /dev/vg_test/lv_test is now 230400 (4k) blocks long.
 ```
+**lvreduce** - изменение размера логического тома в LVM
 ```
 shmel@lvm:~$ sudo lvreduce -L -900M /dev/vg_test/lv_test - указываем сколько места будет занимать наш логический том
   WARNING: Reducing active logical volume to 524.00 MiB.
