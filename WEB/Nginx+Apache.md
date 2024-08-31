@@ -11,10 +11,23 @@ apt install nginx
 ```
 apt install apache2
 ```
-После установки apache он не сможет стартануть, так как по дефолту случает 80 порт, а он уже занят nginx. Для решения этой проблемы требуется сменить порт:   
+После установки apache он не сможет стартануть, так как по дефолту слушает 80 порт, а он уже занят nginx. Для решения этой проблемы требуется сменить порт:   
 1. Идем в /etc/apache2 и редактируем  ports.conf - ставим нужный порт (к примеру 8080) всё остальное закоментируем.
-2. Идем в /etc/apache2/sites-enabled и редактируем 000-default.conf - <VirtualHost *:8080>
+2. Идем в /etc/apache2/sites-enabled и редактируем 000-default.conf - <VirtualHost *:8080>   
+
+При установке сервера в папке /var/www/html - появляется файл, это приветсвенная страница на которую мы будем попадать при обращение к серверу по ip через браузер
 
 
-
-
+### Конфигурация
+1. Идем в /etc/nginx/sites-enabled - выбираем файл с конфигом сайта  и вносим следующее:
+```
+ location / {
+                proxy_pass http://localhost:8888;
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Real-IP $remote_addr;
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                #try_files $uri $uri/ =404;
+        }
+````
