@@ -19,15 +19,18 @@ apt install apache2
 
 
 ### Конфигурация
-1. Идем в /etc/nginx/sites-enabled - выбираем файл с конфигом сайта  и вносим следующее:
+1. Идем в /etc/nginx/sites-enabled - выбираем файл с конфигом сайта  и вносим следующие дерективы:
 ```
- location / {
-                proxy_pass http://localhost:8888;
-                proxy_set_header Host $host;
+ location(обрабатывает запросы) / {
+                proxy_pass http://localhost:8080; - мы говорим что отправлять запросы на локалхост 8080
+                proxy_set_header Host $host; - пердаем заголовок хост, чтобы можно было по доменам ориентироваться
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Real-IP $remote_addr; - передаем информацию о реальном ip
                 # First attempt to serve request as file, then
                 # as directory, then fall back to displaying a 404.
                 #try_files $uri $uri/ =404;
         }
 ````
+nginx -t - проверяем конфиг    
+systemctl reload nginx - перечитываем конфигурацию
+
