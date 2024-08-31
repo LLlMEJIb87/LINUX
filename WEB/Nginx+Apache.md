@@ -33,7 +33,7 @@ apt install apache2
 ````
 nginx -t - проверяем конфиг    
 systemctl reload nginx - перечитываем конфигурацию
-apachectl -t - проверяем конфиг
+apachectl -t - проверяем конфиг    
 systemctl reload apache2 - перечитываем конфигурацию
 
 
