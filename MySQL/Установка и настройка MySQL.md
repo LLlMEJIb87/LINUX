@@ -10,3 +10,14 @@ _ _ _
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/MySQL/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/Arhitektura.PNG">
 </p>
+
+
+### Установка
+1. Устанавливаем программу из репозитория
+```
+apt update
+apt install mysql-server-8.0
+```
+```
+ss -ntple проверяем, что сервер начал слушать порт tcp 3306
+```
