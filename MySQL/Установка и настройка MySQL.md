@@ -29,7 +29,7 @@ ps -afx видим,что запущен процесс /usr/sbin/mysqld
 sudo mysql - зайти в программу
 ```
 ```
-mysql> show databases; - посмотреть базу данных
+mysql> show databases; - посмотреть список баз данных
 +--------------------+
 | Database           |
 +--------------------+
@@ -39,4 +39,24 @@ mysql> show databases; - посмотреть базу данных
 | sys                |
 +--------------------+
 4 rows in set (0.01 sec)
+```
+```
+use mysql - заходим в базу данных , в данном примере база данных mysql
+```
+```
+mysql> show tables; - покажет содержимое базы данных mysql
+```
+```
+mysql> select * from user \G  - смотрим, что находится в этой таблице user
+```
+#### Cоздание пользователя
+```
+mysql> create user test@'%' identified by 'password'; - создали пользователя с именем test (%-на любом хосте) и задали пароль
+mysql> grant all on test.* to test@'%'; - задали все права этому пользователю
+```
+```
+mysql> select * from user where User='test'\G - фильтр и просмотр созданного пользователя
+```
+```
+mysql> show grants for test@'%'; - посмотреть привилегии пользователя
 ```
