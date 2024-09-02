@@ -21,3 +21,22 @@ apt install mysql-server-8.0
 ```
 ss -ntple проверяем, что сервер начал слушать порт tcp 3306
 ```
+```
+ps -afx видим,что запущен процесс /usr/sbin/mysqld
+```
+### Работа с MySQL
+```
+sudo mysql - зайти в программу
+```
+```
+mysql> show databases; - посмотреть базу данных
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.01 sec)
+```
