@@ -46,6 +46,13 @@ systemctl reload apache2 - перечитываем конфигурацию
 проксирования с nginx путем добавления 3х отдельных сайтов слушающих разные порты, на самом деле это могут быть 3 отдельных сервера.    
 1. Идем в /etc/apache2/sites-available
 2. Создаем дополнительные конфиги  cp 000-default.conf 002.conf  cp 000-default.conf 003.conf
-3. Кидаем симлинки  на папку с "рабочими" конфигами 
+3. Кидаем симлинки  на папку sites-available - cистема с этой папки подгружает конфигурацию 
 - ln -s /etc/apache2/sites-available/002.conf /etc/apache2/sites-enabled/002.conf
 - ln -s /etc/apache2/sites-available/003.conf /etc/apache2/sites-enabled/003.conf
+4. В конфиги 002.conf и 003.conf вносим изменения
+- указываем порт <VirtualHost *:8081> 
+- DocumentRoot /var/www/html1 - указываем на какой файл ссылаться при открытие странички в браузере
+5. Далее идем /etc/apache2/ и редактируем ports.conf, говорим слушать дополнительные порты   
+Listen 8080   
+Listen 8081   
+Listen 8082   
