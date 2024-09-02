@@ -24,6 +24,12 @@ ss -ntple проверяем, что сервер начал слушать по
 ```
 ps -afx видим,что запущен процесс /usr/sbin/mysqld
 ```
+### Файловая структура
+- Настройки системные: /etc/mysql/mysql.conf.d/, /etc/mysql/conf.d/
+- Базы данных и бинлоги: /var/lib/mysql/
+- Настройки клиента: ~/.my.cnf
+- https://dev.mysql.com/doc/refman/8.0/en/option-files.html
+
 ### Работа с MySQL
 ```
 sudo mysql - зайти в программу
@@ -59,4 +65,7 @@ mysql> select * from user where User='test'\G - фильтр и просмотр
 ```
 ```
 mysql> show grants for test@'%'; - посмотреть привилегии пользователя
+```
+```
+mysql -utest -p - вошли под пользователем тест
 ```
