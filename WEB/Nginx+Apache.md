@@ -56,3 +56,17 @@ systemctl reload apache2 - перечитываем конфигурацию
 Listen 8080   
 Listen 8081   
 Listen 8082   
+6. Далее конфигурируем nginx чтобы он отсылал запросы на разные сервера apache
+- идем /etc/nginx/sites-enabled и редактируем конфиг default, создаем доп блок восходящих бекэнд серверов
+```
+upstream backend {
+        server 127.0.0.1:8080 weight=2;
+        server 127.0.0.1:8081;
+        server 127.0.0.1:8082;
+}
+```
+- в блоке location говорим проксировать на ранее созданный блок backend
+```
+ location / {
+                proxy_pass http://backend;
+```
