@@ -41,3 +41,11 @@ systemctl reload apache2 - перечитываем конфигурацию
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/WEB/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/Balansirovka.PNG">
 </p>
+
+В нашем примере мы сделаем 3 "отдельных" apache2 сервера для 
+проксирования с nginx путем добавления 3х отдельных сайтов слушающих разные порты, на самом деле это могут быть 3 отдельных сервера.    
+1. Идем в /etc/apache2/sites-available
+2. Создаем дополнительные конфиги  cp 000-default.conf 002.conf  cp 000-default.conf 003.conf
+3. Кидаем симлинки  на папку с "рабочими" конфигами 
+- ln -s /etc/apache2/sites-available/002.conf /etc/apache2/sites-enabled/002.conf
+- ln -s /etc/apache2/sites-available/003.conf /etc/apache2/sites-enabled/003.conf
