@@ -111,6 +111,52 @@ GRANT REPLICATION SLAVE ON *.* TO repl@'%'; даём права на все ба
 3. mysql> SHOW MASTER STATUS; Посмотреть статус
 
 
-На Slave (он же replica)
-1.
+На Slave (он же replica)    
+1. Нужно настроить сервер MySQL 
+- идем в /etc/mysql/mysql.conf.d и редактируем mysqld.cnf
+- раскоментируем и установим server-id  = 2
+- раскоментируем binlog_expire_logs_seconds   = 2592000
+- добавим следующие команды:    
+  relay-log = relay-log-server
+  read-only = ON
+  gtid-mode=ON
+  enforce-gtid-consistency
+  log-replica-updates
+2. Настраиваем mysql
+```
+mysql>  CHANGE REPLICATION SOURCE TO SOURCE_HOST='192.168.1.201', SOURCE_USER='repl', SOURCE_PASSWORD='!K3115007s', SOURCE_AUTO_POSITION = 1, GET_SOURCE_PUBLIC_KEY = 1;
+```
+3. Запускаем реплику
+```
+mysql> START REPLICA;
+```
+4. Посмотреть статус
+```
+mysql> show replica status \G
+```
+## Бэкап базы данных
+Типы бекапов
+1.Логический (mysqldump, текстовый файл, SQL)
+- Медленный
+- Удобный
+- Переносимый
+2. Физический (бинарные файлы, binlog)
+- Быстрый
+- Внешние утилиты
+- Percona XtraBackup
+- https://www.percona.com/doc/percona-xtrabackup/2.4/index.html
 
+
+### Создание бэкапа
+1. Идем в директорию, где лежат базы данных /var/lib/mysql/ и выбираем нужную базу данных для бэкапа
+2. Указываем таблицы для бекапа
+```
+root@mysql-master:/var/lib/mysql/world# mysqldump world city > /home/db/test_back.sql
+```
+3. Если база данных будет заливаться не на новый сервер (реплики), то требуется удалить/---закоментировать из бекапа строку   
+ SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '5b8ad486-691e-11ef-89d5-08002702a0d0:1-15';
+
+### Восстановление из бэкапа
+```
+shmel@mysql-master:~$ mysql < world.sql "скармливаем" бекапную базу данных mysql
+```
