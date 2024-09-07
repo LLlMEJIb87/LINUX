@@ -156,6 +156,17 @@ root@mysql-master:/var/lib/mysql/world# mysqldump world city > /home/db/test_bac
 3. Если база данных будет заливаться не на новый сервер (реплики), то требуется удалить/---закоментировать из бекапа строку   
  SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '5b8ad486-691e-11ef-89d5-08002702a0d0:1-15';
 
+Пример скрипта для автоматического создания и сохранения бекапа потаблично:
+```
+#!/bin/bash
+mysql -u root -p -e "STOP REPLICA"
+mysqldump --set-gtid-purged=OFF world city > /home/db/world/world_city_bkp.sql
+mysqldump --set-gtid-purged=OFF world country > /home/db/world/world_country_bkp.sql
+mysqldump --set-gtid-purged=OFF world country_language > /home/db/world/world_country_language_bkp.sql
+mysql -e "START REPLICA"
+exit
+```
+
 ### Восстановление из бэкапа
 ```
 shmel@mysql-master:~$ mysql < world.sql "скармливаем" бекапную базу данных mysql
