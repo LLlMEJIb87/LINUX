@@ -32,16 +32,17 @@ _ _ _
 1. https://docs.docker.com/engine/install/ubuntu/  - документауия по установки docker на OS
 2. apt install docker.io
 - systemctl status docker - посмотреть состояние приложения
-- docker info посмотреть информацию о версии и т.п
 - docker run - hello-world - проверка роботоспособности приложения, запускаем тестовй контейнер hello-world
-- docker ps - посмотреть запущенные контейнеры ( с ключом -a можно посомтреть все контейнеры, в том чилсе не ативные)
-- docker images - список образов, которые у нас есть
+
 
 ## Работа с Docker
 **Команды:**  
-- docker ps - посмотреть запущенные контейнеры ( с ключом -a можно посомтреть все контейнеры, в том чилсе не ативные) ( docker rm id/имя - удалить контейнер_
+- docker ps - посмотреть запущенные контейнеры ( с ключом -a можно посомтреть все контейнеры, в том чилсе не ативные) ( docker rm id/имя - удалить контейнер)
 - docker images - список образов, которые у нас есть (  docker rmi hello-world:latest - удалит образ)
-- docker pull nginx:1.26.2-alpine-slim - cкачать образ    
+- docker pull nginx:1.26.2-alpine-slim - cкачать образ  
+- docker system df покажет сколько места занимают контейнеры на диске
+- docker info посмотреть информацию о версии и т.п 
+
 
 ### Запуск контейнера
 
@@ -80,3 +81,27 @@ sudo docker run -d --name nginx1 -p 80:80 -v /home/nginx-etc/nginx/:/etc/nginx -
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%9A%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D1%8B/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/Rezhim_seti.PNG">
 </p>
+
+```
+ docker network ls покажет какие сети есть в докер
+```
+```
+docker network create MYNET создать отдельную сеть для контейнеров
+docker run --name nginx2 --network=MYNET -p 80:80 nginx - создать контейне и определить к какой сети он будет присоединен
+```
+## Сборка образа Docker file
+1. Создаем директорию mkdir nginx-docker
+2. Cоздаем Dockerfile 
+```
+cat > Dockerfile
+FROM nginx:latest (latest - последняя версия из репозитория докер)
+COPY ./index.html /usr/share/nginx/html/index.html
+```
+3. Получаем индексовый файл
+```
+ cp /var/www/html/index.html ./
+```
+4. Делаем сборку
+```
+docker build -t nginx-custom . (точка - в существующую директорию)
+```
