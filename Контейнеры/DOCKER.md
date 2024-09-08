@@ -33,7 +33,7 @@ _ _ _
 2. apt install docker.io
 - systemctl status docker - посмотреть состояние приложения
 - docker info посмотреть информацию о версии и т.п
-- docker run hello-world - проверка роботоспособности приложения, запускаем тестовй контейнер hello-world
+- docker run - hello-world - проверка роботоспособности приложения, запускаем тестовй контейнер hello-world
 - docker ps - посмотреть запущенные контейнеры ( с ключом -a можно посомтреть все контейнеры, в том чилсе не ативные)
 - docker images - список образов, которые у нас есть
 
@@ -41,3 +41,10 @@ _ _ _
 **Команды:**  
 - docker ps - посмотреть запущенные контейнеры ( с ключом -a можно посомтреть все контейнеры, в том чилсе не ативные) ( docker rm id/имя - удалить контейнер_
 - docker images - список образов, которые у нас есть (  docker rmi hello-world:latest - удалит образ)
+- docker pull nginx:1.26.2-alpine-slim - cкачать образ    
+
+### Запуск контейнера
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%9A%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D1%8B/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/zapusk_konteinera.PNG">
+</p>
