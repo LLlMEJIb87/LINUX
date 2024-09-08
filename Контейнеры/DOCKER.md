@@ -55,6 +55,8 @@ _ _ _
 ```
 - docker stop nginx1 - остановить контейнер
 - docker start nginx1 - запустить контейнер
+- docker restart nginx1 - остановить и запустить
+-  docker inspect nginx1 - информмация об контейнере
 2. Для работы в контейнере в него нужно "провалиться"
 ```
  docker exec -it nginx1 sh
@@ -69,3 +71,12 @@ sudo docker cp nginx1:/etc/nginx /home/nginx-etc/ - команда запуск�
 sudo docker stop nginx1
 sudo docker rm nginx1
 ```
+5. запускаем контейнер, но монтируем конфиг из ранее созданной папки в OS (куда ранее копировали из докера)
+```
+sudo docker run -d --name nginx1 -p 80:80 -v /home/nginx-etc/nginx/:/etc/nginx -v /var/www/html:/usr/share/nginx/html nginx:1.26.2-alpine-slim
+```
+## Docker Network
+**Режим** **сети** контейнеров в докер
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%9A%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D1%8B/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/Rezhim_seti.PNG">
+</p>
