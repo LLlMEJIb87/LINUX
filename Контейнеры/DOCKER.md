@@ -53,3 +53,19 @@ _ _ _
 ```
  docker run -d --name nginx1 -p 80:80 -v /var/www/html:/usr/share/nginx/html nginx:1.26.2-alpine-slim
 ```
+- docker stop nginx1 - остановить контейнер
+- docker start nginx1 - запустить контейнер
+2. Для работы в контейнере в него нужно "провалиться"
+```
+ docker exec -it nginx1 sh
+```
+3. В оболочке контейнера нет многих привычных нам команд, поэтому "выкачиваем" из контейнера нужные файлы в OS и там их редактируем,далее вставляем обратно
+- ls -al - покажет файлы
+```
+sudo docker cp nginx1:/etc/nginx /home/nginx-etc/ - команда запускается из OS, не из докера
+```
+4. Останавливаем и удаляем контейнер
+```
+sudo docker stop nginx1
+sudo docker rm nginx1
+```
