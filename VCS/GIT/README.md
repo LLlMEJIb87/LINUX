@@ -16,7 +16,7 @@ apt install git - устанавливаем git
 ```
 ### Cоздание репозитория
 ```
-mkdir GIT_TEST - создаем директорию в которой будет наш проект
+mkdir GIT_TEST - создаем рабочую директорию в которой будет наш проект
 cd GIT_TEST
 git init - создали репозиторий
 git status - проверка
@@ -36,4 +36,20 @@ git config --global user.name "Dmitry Kulikov" - задаем имя (делае
 git config --global user.email bultobarah@gmail.com - задаем емайл (делается на новой системе)
 git config --global core.editor nano говорим какой редактор будем использовать
 ```
-###
+### Работа с индексом и коммитом
+```
+touch readme.md - cоздаем файл в рабочей директории
+git add readme.md - добавляем файл в индекс
+git rm -cached readme.md - удаляет ТОЛЬКО из индекса (если ошиблись к примеру)
+git add readme.md - указываем какие файлы будем коммитить
+git commit -m "First commit!" - сохранили изменения
+```
+```
+git log - покажет список коммитов
+git show - покажет информацию о последнем коммите
+git show id - покажет информацию о конкретном коммите
+```
+
+
+
+
