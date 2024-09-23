@@ -6,8 +6,11 @@ _ _ _
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/VCS/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/VCS_opisanie.PNG">
 </p>   
 
-VCS разделяют на:
+**VCS** разделяют на:
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/VCS/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/vidi.PNG">
 </p>    
+
+**Распределенные** хранят версии на разных устройтсвах разработчиках    
+**Централизованные** информация хранится на конкретном сервере и бращения и изменения делаются на нем.
 
