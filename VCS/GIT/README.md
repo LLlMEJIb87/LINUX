@@ -62,5 +62,28 @@ ssh-keygen -t ed25519
 ```
 git clone git@github.com:LLlMEJIb87/test_otus.git - копируем репозиторий с github себе на машину
 ```
+6. После переноса репозитория работаем так же локально, если изменения нужно отправить на github:
+```
+git push -u origin main
+```
+7. Если нужно "выкачать" изменения из github на локальную машину то:
+```
+git pull
+```
 
-
+Ветка main используется для финальной версии кода, для эксперемнтов и разработок создаются ответвления - ветки:
+```
+git branch feauter - создаем ветку
+```
+```
+git checkout feauter - перейти в ветку
+```
+```
+git push -u origin feauter - заливаем ветку на github
+```
+Если мы хотим влить ветку в main:
+```
+git checkout main - возвращаемся в главный репозиторий
+git merge feauter - вливаем ветку
+git push - отправляем на github
+```
