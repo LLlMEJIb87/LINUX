@@ -89,7 +89,7 @@ sudo docker run -d --name nginx1 -p 80:80 -v /home/nginx-etc/nginx/:/etc/nginx -
  docker network inspect MYNET покажет информацию об созданной сети, ip адреса, какие контейнеры к ней привязаны
 ```
 ```
-docker network create MYNET создать отдельную сеть для контейнеров
+docker network create MYNET создать отдельную сеть для контейнеров, при добавление контейнеров в эту сеть будут выдаваться адреса из этой сети, все контейнеры которые будут входить в эту сеть будут иметь ip связанность
 docker run --name nginx2 --network=MYNET -p 80:80 nginx - создать контейне и определить к какой сети он будет присоединен
 ```
 ## Сборка образа Docker file
