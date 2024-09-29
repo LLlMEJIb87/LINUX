@@ -86,6 +86,9 @@ sudo docker run -d --name nginx1 -p 80:80 -v /home/nginx-etc/nginx/:/etc/nginx -
  docker network ls покажет какие сети есть в докер
 ```
 ```
+ docker network inspect MYNET покажет информацию об созданной сети, ip адреса, какие контейнеры к ней привязаны
+```
+```
 docker network create MYNET создать отдельную сеть для контейнеров
 docker run --name nginx2 --network=MYNET -p 80:80 nginx - создать контейне и определить к какой сети он будет присоединен
 ```
