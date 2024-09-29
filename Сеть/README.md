@@ -52,4 +52,11 @@ nslookup www.softvideo.ru - утилита поиска на сервере им
 ```
 ```
 dig www.softvideo.ru - - утилита поиска на сервере имен, более расширенная информация
+``` 
+
+## iptables or nftables
+Для того, чтобы узнать какая система фильрации трафика работает на системе:
+```
+root@test:/home/shmel# iptables -V
+iptables v1.8.7 (nf_tables)
 ```
