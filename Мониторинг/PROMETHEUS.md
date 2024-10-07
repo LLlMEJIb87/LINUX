@@ -43,4 +43,4 @@ sudo dpkg -i grafana-enterprise_11.2.2_amd64.deb  - устанавливаем
 ```
 Grafana не стартует автоматически, после установки делаем следующее:   
 sudo /bin/systemctl daemon-reload   
-shmel@test:~$ sudo /bin/systemctl enable grafana-server   
+sudo /bin/systemctl enable grafana-server   - добавляем в автозагрузку
