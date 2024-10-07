@@ -19,3 +19,28 @@ Node Exporter обычно применяется для мониторинга 
 ```
 sudo apt install prometheus prometheus-node-exporter
 ```
+### Настройка
+Конфиг находится /etc/prometheus/prometheus.yml  
+
+По умолчанию Промифиус слушает порт 9090, Node-exporter 9100
+```
+ - job_name: node
+    # If prometheus-node-exporter is installed, grab stats about the local
+    # machine by default.
+    static_configs:
+      - targets: ['localhost:9100'] - в эту строку мы добавляем хосты, которые планиурем мониторить
+````
+
+## GRAFANA
+Для визуализации метрик можно использовать Grafana. Существует множество различных источников данных, которые поддерживает Grafana, один из них — Prometheus.   
+
+### Установка
+https://grafana.com/grafana/download
+```
+sudo apt-get install -y adduser libfontconfig1 musl  - устанавливаем зависимости
+wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.2.2_amd64.deb - скачиваем пакет
+sudo dpkg -i grafana-enterprise_11.2.2_amd64.deb  - устанавливаем
+```
+Grafana не стартует автоматически, после установки делаем следующее:   
+sudo /bin/systemctl daemon-reload   
+shmel@test:~$ sudo /bin/systemctl enable grafana-server   
