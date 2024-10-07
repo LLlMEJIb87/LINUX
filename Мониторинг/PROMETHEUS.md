@@ -43,4 +43,6 @@ sudo dpkg -i grafana-enterprise_11.2.2_amd64.deb  - устанавливаем
 ```
 Grafana не стартует автоматически, после установки делаем следующее:   
 sudo /bin/systemctl daemon-reload   
-sudo /bin/systemctl enable grafana-server   - добавляем в автозагрузку
+sudo /bin/systemctl enable grafana-server   - добавляем в автозагрузку   
+
+**Grafana** - слушает 3000 порт
