@@ -65,3 +65,7 @@ __Компоненты__
 - Heartbeat — проверка сервисов
 - Auditbeat — события auditd (безопасность)
 - Metricbeat — метрики для мониторинга системы
+
+ <p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%9B%D0%BE%D0%B3%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/Picture/ELK_dvij.PNG">
+</p>        
