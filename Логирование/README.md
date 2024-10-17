@@ -195,3 +195,31 @@ dpkg -i filebeat-8.9.1-amd64.deb
 2. Настраиваем
 ```
 nano /etc/filebeat/filebeat.yml
+после этой строки добавляем запись ниже  #- c:\programdata\elasticsearch\logs\* 
+filebeat.inputs:
+- type: filestream
+  paths:
+    - /var/log/nginx/*.log
+
+Коментим эти строки:
+#output.elasticsearch:
+# hosts: ["localhost:9200"]
+Раскоментируем следующие строки:
+output.logstash:
+hosts: ["localhost:5400"] - меняем порт на 5400
+```
+3. запускаем сервис
+```
+systemctl daemon-reload  - обновляем описание сервисов
+systemctl enable --now filebeat.service - ставим в автозагрузку и автоматически стартуем
+```
+4. filebeat слушает порт 5400 - который мы прописали в конфиге
+
+## Проверка и просмотр
+1. Можем тестов нагенерить логов, обращася к curl localhost
+2. Идем в **kibana** через web на ip машины порт 5061
+3. Выбираем Explore on my own
+4. discover -> create data view
+5. собираем index (это как таблица в базе данных с который мы будем получать данные)
+
+
