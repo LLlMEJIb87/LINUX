@@ -224,7 +224,7 @@ systemctl enable --now filebeat.service - ставим в автозагрузк
 
 __Делаем визуализацию__
 1. Вкаладка dashboard -> create dashboard
-2. Create vizualization
+2. Create vizualization     
 ...    
 3. Save - сохранить проект   
 
