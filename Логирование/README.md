@@ -220,6 +220,7 @@ systemctl enable --now filebeat.service - ставим в автозагрузк
 2. Идем в **kibana** через web на ip машины порт 5061
 3. Выбираем Explore on my own
 4. discover -> create data view
-5. собираем index (это как таблица в базе данных с который мы будем получать данные)
+5. собираем index (это как таблица в базе данных с который мы будем получать данные) -> Name Nginx -> Index Pattern weblogs* -> Timestap @timestamp -> save data view
+
 
 
