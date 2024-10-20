@@ -222,5 +222,11 @@ systemctl enable --now filebeat.service - ставим в автозагрузк
 4. discover -> create data view
 5. собираем index (это как таблица в базе данных с который мы будем получать данные) -> Name Nginx -> Index Pattern weblogs* -> Timestap @timestamp -> save data view
 
+__Делаем визуализацию__
+1. Вкаладка dashboard -> create dashboard
+2. Create vizualization
+...    
+3. Save - сохранить проект   
+
 
 
