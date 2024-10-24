@@ -23,7 +23,7 @@ __dpkg__ - менеджер пакетов, который работает ст
 **wget** https://download.virtualbox.org/virtualbox/7.1.4/virtualbox-7.1_7.1.4-165100~Ubuntu~noble_amd64.deb - скачать пакет напрямую с ресурса   
 Если мы хотим устаналвливать обновления для определнного пакета с оф ресурса , то идем в /etc/apt и настраиваем обновление для этого пакета с заданного нами репозитория
 ```
-1.wget https://download.virtualbox.org/virtualbox/7.1.4/virtualbox-7.1_7.1.4-165100~Ubuntu~noble_amd64.deb wget — скачать пакет напрямую с ресурса
+1. wget https://download.virtualbox.org/virtualbox/7.1.4/virtualbox-7.1_7.1.4-165100~Ubuntu~noble_amd64.deb wget — скачать пакет напрямую с ресурса
 2. dpkg -i virtualbox-7.1_7.1.4-165100~Ubuntu~noble_amd64.deb - устанавливаем пакет
 2. wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg --dearmor - устанавливаем ключ для возможности обновления с ресурса
 3. Далее переходим в /etc/apt/sources.list.d$ и настраиваем обновление этого пакета из заданного нами репозитория
