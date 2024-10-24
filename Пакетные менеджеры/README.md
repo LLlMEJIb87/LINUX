@@ -21,13 +21,15 @@ __dpkg__ - менеджер пакетов, который работает ст
 ```
 
 **wget** https://download.virtualbox.org/virtualbox/7.1.4/virtualbox-7.1_7.1.4-165100~Ubuntu~noble_amd64.deb - скачать пакет напрямую с ресурса   
-Далее переходим в /etc/apt и настраиваем обновление для этого пакета с заданного нами репозитория
+Если мы хотим устаналвливать обновления для определнного пакета с оф ресурса , то идем в /etc/apt и настраиваем обновление для этого пакета с заданного нами репозитория
 ```
-/etc/apt/sources.list.d$ sudo touch vbox.list - создаем файл для указания откуда мы будем обновлять virtual box
-wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg --dearmor  - устанавливаем ключ для возможности обновления с ресурса
-deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian noble contrib  - говорим откуда скачивать обновление
-apt update - перечитываем списки репозиториев
-apt upgrade virtualbox - обновляем ПО
+1. https://download.virtualbox.org/virtualbox/7.1.4/virtualbox-7.1_7.1.4-165100~Ubuntu~noble_amd64.deb wget — скачать пакет напрямую с ресурса
+2. wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg --dearmor - устанавливаем ключ для возможности обновления с ресурса
+3. Далее переходим в /etc/apt/sources.list.d$ и настраиваем обновление этого пакета из заданного нами репозитория
+4. /etc/apt/sources.list.d$ sudo touch vbox.list - создаем файл для указания откуда мы будем обновлять virtual box
+5. deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian noble contrib - записываем в файл, говорим откуда скачивать обновление
+6. apt update - перечитываем списки репозиториев
+7. apt upgrade virtualbox - обновляем ПО
 ```
 
 ## RPM
