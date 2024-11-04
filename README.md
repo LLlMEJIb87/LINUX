@@ -235,7 +235,8 @@ wheel:x:10:username
 **chmod** u-w filename or /dir - убрать правона запись для user    
 **chmod** g-w filename or /dir - убрать право на запись для group    
 **chmod** o+w filename or /dir - добавить право на запись для other    
-**chmod** г+rwx,g+rwx,0-rwx filename or /dir - добавили все права пользователю, группе и убрали все права для всех остальных
+**chmod** г+rwx,g+rwx,0-rwx filename or /dir - добавили все права пользователю, группе и убрали все права для всех остальных    
+**chmod** -R a+rwx  /dir - добавить все права для директории и её содержимого
 
 ## Стандартные команды
 
