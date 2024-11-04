@@ -223,14 +223,19 @@ wheel:x:10:username
 **usermod** -aG groupname username - добавить пользвателя username в обозначенную группу   
 
 В OS LINUX есть 3 типа прав на использование файлов:
-1. r - readable (чтение)
-2. w - writeable (запись)
-3. x - executeable (исполнение)
+1. r - readable (чтение) - цифровое обозначение **4**
+2. w - writeable (запись) - цифровое обозначение **2**
+3. x - executeable (исполнение) - цифровое обозначение **1**
 
 И 3 типа прав доступа к файлам:
 1. u - user
 2. g - group
 3. o - other
+
+**chmod** u-w filename or /dir - убрать правона запись для user    
+**chmod** g-w filename or /dir - убрать право на запись для group    
+**chmod** o+w filename or /dir - добавить право на запись для other    
+**chmod** г+rwx,g+rwx,0-rwx filename or /dir - добавили все права пользователю, группе и убрали все права для всех остальных
 
 ## Стандартные команды
 
