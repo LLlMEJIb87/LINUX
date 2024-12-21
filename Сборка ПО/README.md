@@ -24,3 +24,43 @@ git clone https://github.com/wg/wrk.git
 {Из чего делаем? (реквизиты)} ---> [Как делаем? (команды)] ---> {Что делаем? (цели)}
 ```
 В данном случае запустив утилиту make мы компилируем файл из исходного кода ( написанную на высокоуровневом языке) в исполняемый - понятный компьютеру. 
+4. checkinstall
+
+## Cборка Nnix + boringssl + brotli
+1. Устанавливаем набор программ, который потребуется для компиляции
+```
+sudo apt install git wget cmake curl ninja-build libunwind-dev golang gnupg2 ca-certificates lsb-release ubuntu-keyring checkinstall
+```
+2. Качаем исходник библиотеки boringssl
+```
+git clone https://boringssl.googlesource.com/boringssl
+```
+3. Для сборки указываем использование компилятора Gninja
+```
+сmake -GNinja -B build -DCMAKE_BUILD_TYPE=Release
+```
+4. Запускаем компилирование
+```
+ninja -C build
+```
+5. Cкачиваем cборку Nginx
+```
+https://nginx.org/download/nginx-1.27.3.tar.gz
+```
+6. Распоковываем
+```
+tar -xzvf nginx-1.27.3.tar.gz
+```
+7. Качаем исходник brotli
+```
+git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli
+```
+8. Идем в
+```
+cd ngx_brotli/deps/brotli
+```
+и создаем директорию для сборки
+```
+mkdir out && cd out
+```
+9.
