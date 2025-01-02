@@ -64,18 +64,25 @@ vagrant up
 ```
 #Запуск виртуальной машины
 vagrant up
+
 #Выключает машину
 vagrant halt
+
 #Перезапуск машины
 vagrant reload
+
 #Заморозить
 vagrant suspend
+
 #Удаление файлов виртуалки
 vagrant destroy
+
 #Посмотреть информацию обо всех ВМ
 vagrant global-status
+
 #Посмотреть гостевые порты
 vagrant port
+
 #Управление снапшотами
 vagrant snapshot
 ```
