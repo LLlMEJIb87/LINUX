@@ -86,3 +86,6 @@ vagrant port
 #Управление снапшотами
 vagrant snapshot
 ```
+
+__ИНФОРМАЦИЯ СОБРАНА С:__     
+https://github.com/borisde/my-knowledgebase/blob/master/ustanovka-vagrant-na-windows-10/README.md
