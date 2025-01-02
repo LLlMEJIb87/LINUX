@@ -37,11 +37,11 @@ Vagrant.configure(2) do |config|
   
 
   # Создает приватную сеть  с доступом только из хоста и присваивает виртуальной машине IP.
-  config.vm.network "private_network", ip: "192.168.1.230"
+  config.vm.network "private_network", ip: "192.168.88.2"
   
 
   # Директории которые будут синхронизироватьсямежду локальным компьютером и виртуалкой.
-  config.vm.synced_folder "C:\Users\RocketJump\Documents\Vagrant_job", "/var/www/vagrant_job"
+  config.vm.synced_folder "C:/Users/RocketJump/Documents/Vagrant_job", "/var/www/vagrant_job"
   
 
   # Настройки виртуальной машины
@@ -55,4 +55,8 @@ Vagrant.configure(2) do |config|
   end  
 
 end
+```
+4. Запускаем Vagrant
+```
+vagrant up
 ```
