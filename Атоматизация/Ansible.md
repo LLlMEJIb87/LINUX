@@ -32,4 +32,25 @@ libbz2-dev libreadline-dev libsqlite3-dev curl git \
 libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 ```
 
-https://github.com/pyenv/pyenv?tab=readme-ov-file#linuxunix
+https://github.com/pyenv/pyenv?tab=readme-ov-file#linuxunix    
+5. Устанавливаем менеджер пакетов для Python
+```
+sudo apt install python3-pip
+```
+
+### работа с pyenv
+- Посмотреть установленные версии python
+```
+pyenv versions
+```
+- Установить последнюю 3 версию
+```
+pyenv install 2
+```
+- Установить нужную локальную версию python
+```
+pyenv local 3.11.9
+```
+
+
+
