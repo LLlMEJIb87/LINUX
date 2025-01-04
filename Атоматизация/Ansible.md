@@ -46,7 +46,7 @@ pyenv versions
 ```
 - Установить последнюю 3 версию
 ```
-pyenv install 2
+pyenv install 3
 ```
 - Установить нужную локальную версию python
 ```
