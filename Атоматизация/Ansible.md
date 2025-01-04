@@ -8,7 +8,7 @@ _ _ _
 ```
 curl https://pyenv.run | bash
 ```
-2. Настраиваем среду оболочки для Pyenv
+2. Настраиваем среду оболочки для Pyenv    
 2.1 Сначала добавьте команды, ~/.bashrcвыполнив в терминале следующее:
 ```
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
