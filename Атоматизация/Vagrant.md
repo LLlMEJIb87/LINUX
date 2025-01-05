@@ -51,7 +51,7 @@ end
 ```
 vagrant up
 ```
-5. Список команд Vagrant:
+### Список команд Vagrant:
 ```
 #Запуск виртуальной машины
 vagrant up
@@ -80,4 +80,4 @@ vagrant snapshot
 #Зайти на созданную машину по ssh
 vagrant ssh
 ```
-Логин и пароль по умолчанию vagrant vagrant
+__Логин и пароль по умолчанию vagrant vagrant__
