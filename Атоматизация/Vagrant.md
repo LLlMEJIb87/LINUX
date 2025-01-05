@@ -23,28 +23,21 @@ vagrant init
 Команда vagrant init создает Vagrantfile который обозначает root директорию нашего проекта и описывает конфигурацию виртуальной машины.    
 3. Открываем Vagrantfile в текстовом редакторе, удаляем дефолтные настройки и добавляем следующий конфиг:
 ```
-#Вместо Vagrant.configure подставляем переменную config
-Vagrant.configure("2") do |config|
-#Указываем дестрибутив для установки
-  config.vm.box = "ubuntu/jammy64"
-#Указываем имя виртуальной машины в vagrant
-  config.vm.define "vb_vagrant_ansible"
-#Указываем имя хоста
-  config.vm.hostname = "vagrant-ansible"
-#Добавляем сетевой интерфейс с статическим ip, устанавливаем режим моста
-  config.vm.network "public_network", ip: "192.168.1.210", bridge: "Intel(R) Dual Band Wireless-AC 7260"
-#Вместо config.vm.provider "virtualbox" подставляем переменную vb
-  config.vm.provider "virtualbox" do |vb|
-#Указываем какой графический контроллер будем использовать в virtualbox
-    vb.customize ['modifyvm', :id, '--graphicscontroller', 'vmsvga']
-#Указываем сколько ядер выделить для виртуальной машины
-    vb.cpus = 2
-#Указываем сколько памяти выделить для виртуальной машины	
-    vb.memory = 2048
-#Указываем имя виртуальной машины в vitrualbox
-    vb.name = "vm_vagrant_ansible"
+Vagrant.configure("2") do |config| #Вместо Vagrant.configure подставляем переменную config
+  config.vm.box = "ubuntu/jammy64" #Указываем дестрибутив для установки
+  config.vm.provider "virtualbox" do |vb| #Вместо config.vm.provider "virtualbox" подставляем переменную vb
+    vb.customize ['modifyvm', :id, '--graphicscontroller', 'vmsvga'] #Указываем какой графический контроллер будем использовать в virtualbox
+    vb.cpus = 1	#Указываем сколько ядер выделить для виртуальной машины
+    vb.memory = 2048 #Указываем сколько памяти выделить для виртуальной машины
+    vb.gui = false #Отключаем вэб интерфейс ОС
+	vb.name = "vm_vagrant_ansible" #Указываем имя виртуальной машины в менеджере vitrualbox
   end
   
+#Test vm vagrant-ansible
+  config.vm.define "vb_vagrant_ansible" do |va| #Указываем имя виртуальной машины в vagrant
+  va.vm.hostname = "vagrant-ansible" #Указываем имя хоста
+  va.vm.network "public_network", ip: "192.168.1.210", bridge: "Intel(R) Dual Band Wireless-AC 7260" #Добавляем сетевой интерфейс с статическим ip, устанавливаем режим моста
+  end 
 end
 ```
 4. Запускаем Vagrant
