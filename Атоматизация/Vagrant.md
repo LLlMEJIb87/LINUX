@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
 #Указываем сколько памяти выделить для виртуальной машины	
     vb.memory = 2048
 #Указываем имя виртуальной машины в vitrualbox
-	vb.name = "vm_vagrant_ansible"
+    vb.name = "vm_vagrant_ansible"
   end
   
 end
