@@ -79,5 +79,10 @@ vagrant snapshot
 
 #Зайти на созданную машину по ssh
 vagrant ssh
+
+#Cделать снапшот
+vagrant snapshot test
+vagrant snaphot list
+vagran snapshot restore test
 ```
 __Логин и пароль по умолчанию vagrant vagrant__
