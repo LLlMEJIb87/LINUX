@@ -24,36 +24,28 @@ vagrant init
 Команда vagrant init создает Vagrantfile который обозначает root директорию нашего проекта и описывает конфигурацию виртуальной машины.    
 3. Открываем Vagrantfile в текстовом редакторе, удаляем дефолтные настройки и добавляем следующий конфиг:
 ```
-Vagrant.configure(2) do |config|
-
-  # Vagrant box - образ ОС из которой будет создана виртуальная машина.
-  # Список образов на https://app.vagrantup.com/boxes/search
-  # Здесь используется Ubuntu Server 20.04 
-  config.vm.box = "ubuntu/focal64"
-  
-
-  # Отключает автоматическое обновление образов.
-  config.vm.box_check_update = false
-  
-
-  # Создает приватную сеть  с доступом только из хоста и присваивает виртуальной машине IP.
-  config.vm.network "private_network", ip: "192.168.88.2"
-  
-
-  # Директории которые будут синхронизироватьсямежду локальным компьютером и виртуалкой.
-  config.vm.synced_folder "C:/Users/RocketJump/Documents/Vagrant_job", "/var/www/vagrant_job"
-  
-
-  # Настройки виртуальной машины
+#Вместо Vagrant.configure подставляем переменную config
+Vagrant.configure("2") do |config|
+#Указываем дестрибутив для установки
+  config.vm.box = "ubuntu/jammy64"
+#Указываем имя виртуальной машины в vagrant
+  config.vm.define "vb_vagrant_ansible"
+#Указываем имя хоста
+  config.vm.hostname = "vagrant-ansible"
+#Добавляем сетевой интерфейс с статическим ip, устанавливаем режим моста
+  config.vm.network "public_network", ip: "192.168.1.210", bridge: "Intel(R) Dual Band Wireless-AC 7260"
+#Вместо config.vm.provider "virtualbox" подставляем переменную vb
   config.vm.provider "virtualbox" do |vb|
-	 # Показывать или нет интерфейс VirtualBox при загрузке.
-	 vb.gui = false
-	 # Выделяемая память для виртуалки.
-	 vb.memory = "2048"
-	 # Название в интерфейсе VirtualBox.
-	 vb.name = "vagrant_job"
-  end  
-
+#Указываем какой графический контроллер будем использовать в virtualbox
+    vb.customize ['modifyvm', :id, '--graphicscontroller', 'vmsvga']
+#Указываем сколько ядер выделить для виртуальной машины
+    vb.cpus = 2
+#Указываем сколько памяти выделить для виртуальной машины	
+    vb.memory = 2048
+#Указываем имя виртуальной машины в vitrualbox
+	vb.name = "vm_vagrant_ansible"
+  end
+  
 end
 ```
 4. Запускаем Vagrant
@@ -85,7 +77,8 @@ vagrant port
 
 #Управление снапшотами
 vagrant snapshot
-```
 
-__ИНФОРМАЦИЯ СОБРАНА С:__     
-https://github.com/borisde/my-knowledgebase/blob/master/ustanovka-vagrant-na-windows-10/README.md
+#Зайти на созданную машину по ssh
+vagrant ssh
+```
+### Настройка созданной машины
