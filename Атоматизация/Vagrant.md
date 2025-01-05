@@ -80,4 +80,4 @@ vagrant snapshot
 #Зайти на созданную машину по ssh
 vagrant ssh
 ```
-### Настройка созданной машины
+Логин и пароль по умолчанию vagrant vagrant
