@@ -63,6 +63,7 @@ https://github.com/pyenv/pyenv?tab=readme-ov-file#linuxunix
 ### работа с pyenv
 - Посмотреть установленные версии python
 ```
+sudo su - shmel #Получаем права суперпользователя
 pyenv versions
 ```
 - Установить последнюю 3 версию
@@ -75,7 +76,6 @@ pyenv local 3.11.9
 ```
 - Посмотреть пакеты на Pythone
 ```
-sudo su - shmel #Получаем права суперпользователя
 pyenv exec pip3 list
 ```
 ## Установка Ansible
