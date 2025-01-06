@@ -75,6 +75,7 @@ pyenv local 3.11.9
 ```
 - Посмотреть пакеты на Pythone
 ```
+sudo su - shmel #Получаем права суперпользователя
 pyenv exec pip3 list
 ```
 ## Установка Ansible
