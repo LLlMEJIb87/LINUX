@@ -1,6 +1,8 @@
 # VAGRANT
 _ _ _
-Vagrant (с англ. — «бродяга») — свободное и открытое программное обеспечение для создания и конфигурирования виртуальных машин.
+Vagrant (с англ. — «бродяга») — свободное и открытое программное обеспечение для создания и конфигурирования виртуальных машин.    
+
+https://developer.hashicorp.com/vagrant/docs/vagrantfile
 ## Установка и настройка на WINDOWS
 1. Скачиваем и устанавливаем VirtualBox для Windows - https://www.virtualbox.org/wiki/Downloads
 2. Скачиваем и устанавливаем Vagrant - https://www.vagrantup.com/downloads.html
