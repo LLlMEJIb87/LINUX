@@ -48,32 +48,23 @@ vagrant up
 ```
 ### Список команд Vagrant:
 ```
-#Запуск виртуальной машины
-vagrant up
+vagrant up #Запуск VM в соответсвие с vagrant file
 
-#Выключает машину
-vagrant halt
+vagrant ssh #Подключиться к VM по SSH
 
-#Перезапуск машины
-vagrant reload
+vagrant halt #Выключает машину
 
-#Заморозить
-vagrant suspend
+vagrant destroy #Удаление VM
 
-#Удаление файлов виртуалки
-vagrant destroy
+vagrant reload #Перезагружает VM
 
-#Посмотреть информацию обо всех ВМ
-vagrant global-status
+vagrant suspend #Сохраняет состояние VM и останавливает её
 
-#Посмотреть гостевые порты
-vagrant port
+vagrant resume #Возобнавляет работу VM
 
-#Управление снапшотами
-vagrant snapshot
+vagrant global-status #Посмотреть информацию обо всех ВМ
 
-#Зайти на созданную машину по ssh
-vagrant ssh
+vagrant snapshot #Управление снапшотами
 
 #Cделать снапшот
 vagrant snapshot test
