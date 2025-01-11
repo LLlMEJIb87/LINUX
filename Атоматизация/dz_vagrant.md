@@ -24,3 +24,32 @@ Vagrant.configure("2") do |config|
   end
 end
 ```
+__2. Обновить ядро OS__
+Для обнавления ядра OS был создан сценарий Ansible
+```
+---
+- hosts: all
+  become: true
+  tasks:
+
+  - name: create shmel user
+    ansible.builtin.user:
+      name: shmel
+      password: $6$nQPdUpPsRnBKuxxM$MTiQBKKWJ/EUevz4JX0nSEEO1B6AKtzuhQSRxDkEfJ52wDH1jxEKD.MI4a3HNFsEZfU4MlVWnpES7k9IhbFBC.
+      shell: /bin/bash
+      group: sudo
+ 
+  - name: add ssh key for user shmel
+    ansible.posix.authorized_key:
+      user: shmel
+      state: present
+      key: "{{ lookup('file', 'shmel.pub') }}"
+      exclusive: true
+
+  - name: Update & upgrade repo
+    ansible.builtin.apt:
+      update_cache: true
+      upgrade: full
+```
+
+**Итого:** При использование команды vagrant up получаю ВМ с обновленным репозиторем и ядром, с добавленным пользователем с возможностью входа по ключу. Остается только перезагрузить машину
