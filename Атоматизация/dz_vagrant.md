@@ -1,6 +1,6 @@
 # Домашняя работа по теме Vagrant.
 _ _ _
-__1) Запустить ВМ с помощью Vagrant.__
+__1) Запустить ВМ с помощью Vagrant.__    
 Создаю Vagrantfile:
 ```
 Vagrant.configure("2") do |config|
