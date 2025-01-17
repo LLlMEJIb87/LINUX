@@ -93,8 +93,43 @@ pyenv exec ansible --version
 ```
 /etc/ansible
 ```
-Он будет пустой, но в нем есть  нем указана команда, для генерации config файла:
+Он будет пустой, но в нем указана команда, для генерации config файла:
 ```
 ansible-config init --disabled > ansible.cfg
 ```
-2. Inventory - специальный файл где хранится информация об узлах, на которых мы будем выполнять наши сценарии (файл может быть не одинЮ для разных задач можно делать разные файлы)
+#### Inventory
+Специальный файл где хранится информация об узлах, на которых мы будем выполнять наши сценарии (файл может быть не один, для разных задач можно делать разные файлы)
+
+#### Модули
+Модули - Небольшие библиотеки для выполнения и отслеживания задач. Основа для выполнения действий в Ansible
+```
+ansible -m ping inventory all (-m указываем что хотим использовать модуль, ping - модуль пинг, котоорый запустит ping до хостов из файла inventory
+```
+#### Playbooks
+Playbook - список сценариев для достижения целевого состояния системы с использованием модулей Ansible.    
+
+Пример сценария добавления пользователя, ключа для пользователя и обновления системы
+```
+- hosts: all
+  become: true
+  tasks:
+
+  - name: create shmel user
+    ansible.builtin.user:
+      name: shmel
+      password: $6$nQPdUpPsRnBKuxxM$MTiQBKKWJ/EUevz4JX0nSEEO1B6AKtzuhQSRxDkEfJ52wDH1jxEKD.MI4a3HNFsEZfU4MlVWnpES7k9IhbFBC.
+      shell: /bin/bash
+      group: sudo
+ 
+  - name: add ssh key for user shmel
+    ansible.posix.authorized_key:
+      user: shmel
+      state: present
+      key: "{{ lookup('file', 'shmel.pub') }}"
+      exclusive: true
+
+  - name: Update & upgrade repo
+    ansible.builtin.apt:
+      update_cache: true
+      upgrade: full
+```
