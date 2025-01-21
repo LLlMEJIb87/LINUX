@@ -130,7 +130,17 @@ wazuh:                   #Общая группа
     ansible_user: shmel  
     ansible_ssh_private_key_file: /home/shmel/.ssh/id_rsa
 ```
-
+Посмотреть файл inventory в виде графа:
+```
+pyenv exec ansible-inventory -i inventory --graph
+@all:
+  |--@ungrouped:
+  |--@wazuh:
+  |  |--@wazuh_server:
+  |  |  |--192.168.1.100
+  |  |--@wazuh_exporter:
+  |  |  |--192.168.1.101
+```
 ### Модули
 Модули - Небольшие библиотеки для выполнения и отслеживания задач. Основа для выполнения действий в Ansible. Ниже предствален модуль для првоерки роботоспособности файла конфига и inventory, если в ответ приходит pong, то все в порядке
 ```
