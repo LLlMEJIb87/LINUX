@@ -22,3 +22,57 @@ pyenv exec ansible-vault enrypt become_password
   roles:
     - nginx
 ```
+5. Написал задачи roles/nginx/tasks/main.yml 
+```
+- name: add nginx official gpg key #Cкачиваем публичный GPG-ключ для проверки подленности пакета
+  ansible.builtin.get_url: #Используем модуль для скачивания файла          
+    url: https://nginx.org/keys/nginx_signing.key #Откуда скачиваем
+    dest: /usr/share/keyrings/nginx_key.asc #Куда положить
+
+- name: add nginx repository #Добавляем репозиторий Nginx
+  ansible.builtin.apt_repository: #Модуль для управления репозиториями
+    repo: "deb [signed-by=/usr/share/keyrings/nginx_key.asc] http://nginx.org/packages/ubuntu {{ ansible_distribution_release }} nginx" #Пакеты из репозитория nginx будут подписаны ключем скаченным ранее)
+    state: present #репозиторий должен быть добавлен(или уже присутсвовать)
+
+- name: set nginx package priority #Указываем приорет для пакетов Nginx (устанавливать пакеты с репозитория Nginx, а не Ubuntu)
+  ansible.builtin.copy: #Модуль для копирования, перемещения или создание файлов
+    dest: /etc/apt/preferences.d/99nginx #Путь куда мы сохраним созданные ниже нами настройки
+    content: | #делаем записи в файл (| -означает построчно)
+      Package: *
+      Pin: origin nginx.org
+      Pin: release o=nginx
+      Pin-Priority: 900
+
+- name: update apt cache #Обновляем кэш с приложениями репозитория Ubuntu
+  ansible.builtin.apt: Модуль для работы с пакетами
+    update_cache: true
+    cache_valid_time: 3600 Максимальное время, в течение которого кэш считается действителен
+  tags:
+    - update apt #Тэг для возможности исполнения конкретно этой задачи
+
+- name: install nginx #Устанавливаем Nginx
+  ansible.builtin.apt:
+    pkg:               #Указываем какой пакет должен быть установлен
+      - nginx
+    state: latest      #Пакет должен быть установлен + проверка самой новой версии
+  notify:              #Вызываем обработчик
+    - restart nginx
+  tags:
+    - nginx-package
+
+- name: Create nginx config file from template #Указываем, что конфиг nginx должен быть создан из шаблона
+  ansible.builtin.template:
+    src: nginx.conf.j2 #Откуда берем
+    dest: /etc/nginx/nginx.conf #Куда положим на целевом хосте
+  notify:
+    - reload nginx
+  tags:
+    - nginx-configuration
+
+- name: enable nginx service  #Делаем nginx в автозагрузку
+  ansible.builtin.systemd:    #Модуль для управления сервисами, которые используют systemd для старта
+    name: nginx
+    state: started            #Cтартует сервис если он не запущен
+    enabled: true             #автоматический запуск при старте системы
+
+```
