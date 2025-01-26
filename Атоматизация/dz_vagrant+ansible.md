@@ -89,7 +89,6 @@ end
     - name: update apt cache
       ansible.builtin.apt:
         update_cache: true
-        cache_valid_time: 3600
       tags:
         - update apt
 
