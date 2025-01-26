@@ -3,7 +3,33 @@
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%90%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/dz_ansible.PNG">
 </p>    
+
+Хост был создан при поомощи ПО Vagrant:
+```
+Vagrant.configure("2") do |config| #Вместо Vagrant.configure подставляем переменную config
+  config.vm.box = "ubuntu/jammy64" #Указываем дестрибутив для установки
+  config.ssh.insert_key = false
+  config.vm.provider "virtualbox" do |vb| #Вместо config.vm.provider "virtualbox" подставляем переменную vb
+    vb.customize ['modifyvm', :id, '--graphicscontroller', 'vmsvga'] #Указываем какой графический контроллер будем использовать в virtualbox
+    vb.cpus = 1	#Указываем сколько ядер выделить для виртуальной машины
+    vb.memory = 2048 #Указываем сколько памяти выделить для виртуальной машины
+    vb.gui = false #Отключаем вэб интерфейс
+    vb.name = "vm_nginx_1.210" #Указываем имя виртуальной машины в менеджере vitrualbox
+  end
   
+#Nginx vm vagrant
+  config.vm.define "vm_nginx" do |va| #Указываем имя виртуальной машины в vagrant
+  va.vm.hostname = "vm-nginx" #Указываем имя хоста
+# va.vm.network "private_network", ip: "172.16.0.5"
+  va.vm.network "public_network", ip: "192.168.1.210", bridge: "Intel(R) Dual Band Wireless-AC 7260" #Добавляем сетевой интерфейс с статическим ip, устанавливаем режим моста
+  va.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "add_user_and_upgrade_repo.yaml"
+#   ansible.inventory_path = "inventory"
+     end
+  end
+end
+```
+
 2. Создаль роль nginx
 ```
 pyenv exec ansible-galaxy init roles/nginx
