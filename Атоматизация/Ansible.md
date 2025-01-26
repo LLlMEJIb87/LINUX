@@ -290,7 +290,7 @@ ansible-galaxy init roles/ nginx_install
 - name: set nginx package priority #Указываем приорет для пакетов Nginx (устанавливать пакеты с репозитория Nginx, а не Ubuntu)
   ansible.builtin.copy: #Модуль для копирования, перемещения или создание файлов
     dest: /etc/apt/preferences.d/99nginx #Путь куда мы сохраним созданные ниже нами настройки
-    content: | #делаем записи в файл (| -о значает построчно)
+    content: | #делаем записи в файл (| -означает построчно)
           Package: *
           Pin: origin nginx.org
           Pin: release o=nginx
@@ -304,7 +304,7 @@ ansible-galaxy init roles/ nginx_install
   notify:
     - Start Nginx #В случае изменений стартануть Nginx
 ```
-Как видим выше мы использовали тригеры notify, далее создадим их в это роле в директории handlers:
+Как видим выше мы использовали тригеры notify, далее создадим их в этой роле в директории handlers:
 ```
 - name: update apt cache
   ansible.builtin.apt: 
