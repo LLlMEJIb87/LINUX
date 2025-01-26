@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config| #Вместо Vagrant.configure подста�
 end
 ```
 
-2. Создаль роль nginx
+2. Создал роль nginx
 ```
 pyenv exec ansible-galaxy init roles/nginx
 ```
