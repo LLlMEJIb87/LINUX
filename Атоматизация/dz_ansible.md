@@ -73,5 +73,5 @@ pyenv exec ansible-vault enrypt become_password
     name: nginx
     state: started            #Cтартует сервис если он не запущен
     enabled: true             #автоматический запуск при старте системы
-```
 
+```
