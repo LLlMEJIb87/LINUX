@@ -316,7 +316,75 @@ ansible-galaxy init roles/ nginx_install
     service: nginx
     state: started 
 ```
-Notify делают отсылку на handlers
+Notify делают отсылку на handlers     
+
+__Роль nginx_deploy__     
+Для автоматического создания директорий роли nginx_deploy используем следующую команду:
+```
+ansible-galaxy init roles/ nginx_deploy
+```
+В директории tasks лежит main файл, наполняем его
+```
+- name: Remove default config #Удаляем старую конфигурацию
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d/default.conf
+    state: absent
+
+- name: Create new Nginx default config #Cоздаем новую конфигурацию из шаблона j2
+  ansible.builtin.template:
+    src: default.j2
+    dest: /etc/nginx/conf.d/{{ inventory_hostname }}.conf
+    backup: true
+  notify:
+    - Restart nginx
+
+- name: Create folder for ssl certificates #Cоздается новая директория для ssl сертификатов
+  ansible.builtin.file:
+    path: /etc/nginx/ssl
+    state: directory
+
+- name: Copy ssl certificates #Копируем файлы и закидываем файлы по указанному пути
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/nginx/ssl/{{ item }}"
+  loop:                       #По сути цикл for
+    - fullchain.pem
+    - privkey.pem
+
+- name: Change nginx.conf #Меняем конфиг по умолчанию
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    backup: true
+
+- name: Create new Nginx web package #Cоздается новая приветсвенная страничка
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    backup: true
+```
+Как видим выше мы использовали тригеры notify, далее создадим их в этой роле в директории handlers:
+```
+- name: Restart Nginx
+  ansible.builtin.systemd_service:
+    services: nginx
+    state: restarted
+```
+Notify делают отсылку на handlers      
+
+В директорию Defaults, записываем переменные по улмолчанию:
+```
+nginx:
+  http:
+    port: 80
+  https:
+    port: 443
+  certs:
+    pub: fullchain.pem
+    priv: privkey.pem
+```
+
+И так далее заполняем нужные директории
 
 ### Переменные
 YAML поддерживает словари и списки. Их можно поддерживать для переменных. Пример использования переменной в playbook:
