@@ -384,7 +384,18 @@ nginx:
     priv: privkey.pem
 ```
 
-И так далее заполняем нужные директории
+И так далее заполняем нужные директории    
+
+В итоге получаем playbook такого вида:
+```
+- name: Setup Nginx server
+  hosts: dzupgrade 
+  become: yes 
+  roles:
+    - role: common
+    - role: nginx_install
+    - role: nginx_deploy
+```
 
 ### Переменные
 YAML поддерживает словари и списки. Их можно поддерживать для переменных. Пример использования переменной в playbook:
