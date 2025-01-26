@@ -76,3 +76,41 @@ pyenv exec ansible-vault enrypt become_password
     enabled: true             #автоматический запуск при старте системы
 
 ```
+6. Написал handlers roles/nginx/handlers/main.yml
+```
+- name: restart nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+
+- name: reload nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: reloaded
+```
+7. Закинул файл с конфигом в roles/nginx/templates/nginx.conf.j2
+```
+# {{ ansible_managed }}
+events {
+    worker_connections 1024;
+}
+
+http {
+    server {
+        listen       {{ nginx_listen_port }} default_server;
+        server_name  default_server;
+        root         /usr/share/nginx/html;
+
+        location / {
+        }
+    }
+}
+```
+8. Запустил playbook
+```
+pyenv exec ansible-playbook ./playbook/nginx.yml
+```
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%90%D1%82%D0%BE%D0%BC%D0%B0%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/dz_ansible2.PNG">
+</p>
