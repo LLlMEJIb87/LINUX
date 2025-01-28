@@ -79,3 +79,49 @@ df -hT
 ```
 /dev/md0       ext4    9.8G   24K  9.3G   1% /test_raid
 ```
+8. Чтобы RAID автоматически монтировался при загрузке системы по лейблу, делаем следующее
+8.1 Задаем лейбл нашему RAID1
+```
+e2label /dev/md0 TEST_RAID
+```
+проверяем, что лейбл успешно назначен
+```
+blkid /dev/md0 
+/dev/md0: LABEL="TEST_RAID1" UUID="dc837d8f-7aef-4ee5-bf5f-8fe4267fabbb" BLOCK_SIZE="4096" TYPE="ext4"
+```
+8.2 Добавляем запись в /etc/fstab
+```
+LABEL=TEST_RAID1 /test_raid/ ext4 defaults 0 2
+```
+Проверяем  нет ли ошибок
+```
+mount -a
+```
+8.3 Посмотреть детальную информацию об RAID массиве
+
+### Восстановление массива после сбоя
+1. В целях обучения "сломаем" raid массив 
+```
+mdadm --manage /dev/md0 --fail /dev/sdc
+```
+вывод mdadm -D /dev/md0, покажет статус degraded
+```
+State : clean, degraded
+ Number   Major   Minor   RaidDevice State
+       0       8       16        0      active sync   /dev/sdb
+       -       0        0        1      removed
+
+       1       8       32        -      faulty   /dev/sdc
+```
+2. удаляем устройство из RAID массива
+```
+mdadm --manage /dev/md0 --remove /dev/sdc
+```
+3. Добавляем исправный диск
+```
+mdadm --manage /dev/md127 --add /dev/sdd
+```
+4. Если хотим использовать диск который стоял в райде для другого массива или не использовать более в массиве то удаляем метаданные raid
+```
+sudo mdadm --zero-superblock /dev/sdc
+```
