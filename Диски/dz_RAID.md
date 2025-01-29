@@ -13,15 +13,15 @@ sdd      8:48   0   10G  0 disk
 sde      8:64   0   10G  0 disk 
 ```
 3. Приступаем к созданию RAID10
-3. 1 На всякий случай удалим метаданные от возможного предыдущего RAID массива
+- На всякий случай удалим метаданные от возможного предыдущего RAID массива
 ```
 mdadm --zero-superblock /dev/sd{b,c,d,e}
 ```
-3.2 Создаем RAID10
+- Создаем RAID10
 ```
 mdadm --create --verbose /dev/md0 -l 10 -n 4 /dev/sd{b,c,d,e}
 ```
-3.3 Проверяем
+- Проверяем
 ```
 cat /proc/mdstat
 Personalities : [raid1] [linear] [multipath] [raid0] [raid6] [raid5] [raid4] [raid10] 
@@ -62,7 +62,7 @@ Consistency Policy : resync
        2       8       48        2      active sync set-A   /dev/sdd
        3       8       64        3      active sync set-B   /dev/sde
 ```
-3.4 Для исключения возможных сбоев (невозможности собрать массив при старте системы)  создаем mdadm.conf - автосборка RAID
+- Для исключения возможных сбоев (невозможности собрать массив при старте системы)  создаем mdadm.conf - автосборка RAID
 ```
 echo "DEVICE partitions" > /etc/mdadm/mdadm.conf #записываем в файл указание искать массив на дисках и разделах
 mdadm --detail --scan --verbose | awk '/ARRAY/ {print}' >> /etc/mdadm/mdadm.conf #записываем в файл информацию об массиве
