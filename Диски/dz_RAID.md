@@ -75,18 +75,18 @@ mkfs.ext4 /dev/md0
 ```
 mount /dev/md0 /mnt/mysql
 ```
-5.1 Проверяем
+- Проверяем
 ```
 df -hT
 Filesystem     Type    Size  Used Avail Use% Mounted on
 /dev/md0       ext4     20G   24K   19G   1% /mnt/mysql
 ```
 6. Делаем чтобы RAID автоматически монтировался при загрузке системы
-6.1 назначаем label
+- назначаем label
 ```
 e2label /dev/md0 RAID_MYSQL
 ```
-6.2 Добавляем запись в /etc/fstab
+- Добавляем запись в /etc/fstab
 ```
 echo "LABEL=RAID_MYSQL /mnt/mysql/ ext4 defaults 0 2" > /etc/fstab
 ```
