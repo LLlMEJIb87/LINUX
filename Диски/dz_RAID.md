@@ -133,3 +133,49 @@ Consistency Policy : resync
 
        0       8       16        -      faulty   /dev/sdb #сломанный диск
 ```
+3. Удаляем сломанный диск из массива
+```
+mdadm /dev/md127 --remove /dev/sdb
+```
+4. Добавляем новый диск
+```
+root@vm-nginx:/home/shmel# mdadm /dev/md127 --add /dev/sdf
+mdadm: added /dev/sdf
+```
+5. Cмотрим как оно там выглядит в процессе
+```
+root@vm-nginx:/home/shmel# mdadm -D /dev/md127
+/dev/md127:
+           Version : 1.2
+     Creation Time : Wed Jan 29 10:28:28 2025
+        Raid Level : raid10
+        Array Size : 20953088 (19.98 GiB 21.46 GB)
+     Used Dev Size : 10476544 (9.99 GiB 10.73 GB)
+      Raid Devices : 4
+     Total Devices : 4
+       Persistence : Superblock is persistent
+
+       Update Time : Wed Jan 29 11:50:07 2025
+             State : clean, degraded, recovering 
+    Active Devices : 3
+   Working Devices : 4
+    Failed Devices : 0
+     Spare Devices : 1
+
+            Layout : near=2
+        Chunk Size : 512K
+
+Consistency Policy : resync
+
+    Rebuild Status : 13% complete
+
+              Name : vm-nginx:0  (local to host vm-nginx)
+              UUID : cada600c:ee13a98e:01a1a5e4:589157dd
+            Events : 31
+
+    Number   Major   Minor   RaidDevice State
+       4       8       80        0      spare rebuilding   /dev/sdf #происходит процесс коопирования данных на новый диск
+       1       8       32        1      active sync set-B   /dev/sdc
+       2       8       48        2      active sync set-A   /dev/sdd
+       3       8       64        3      active sync set-B   /dev/sde
+```
