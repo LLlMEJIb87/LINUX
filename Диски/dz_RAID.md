@@ -88,7 +88,7 @@ e2label /dev/md0 RAID_MYSQL
 ```
 - Добавляем запись в /etc/fstab
 ```
-echo "LABEL=RAID_MYSQL /mnt/mysql/ ext4 defaults 0 2" > /etc/fstab
+echo "LABEL=RAID_MYSQL /mnt/mysql/ ext4 defaults 0 2" >> /etc/fstab
 ```
 
 ## Работа с RAID массивом
@@ -178,4 +178,58 @@ Consistency Policy : resync
        1       8       32        1      active sync set-B   /dev/sdc
        2       8       48        2      active sync set-A   /dev/sdd
        3       8       64        3      active sync set-B   /dev/sde
+```
+### Делим RAID на разделы
+1. Отменим предыдущее монтирование и почистим fstab
+2. Создадим таблицу разделов GPT
+```
+parted -s /dev/md127 mklabel gpt
+```
+Проверим
+```
+parted /dev/md127 print
+Model: Linux Software RAID Array (md)
+Disk /dev/md127: 21.5GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt #Видим таблицу
+Disk Flags: 
+```
+3. Разбиваем массив на 5 разделов
+```
+parted /dev/md127 mkpart primary ext4 0% 20%
+parted /dev/md127 mkpart primary ext4 20% 40%            
+parted /dev/md127 mkpart primary ext4 40% 60%           
+parted /dev/md127 mkpart primary ext4 60% 80%           
+parted /dev/md127 mkpart primary ext4 80% 100%          
+```
+4. Создаем файловую систему
+```
+for i in $(seq 1 5); do sudo mkfs.ext4 /dev/md127p$i; done
+```
+Проверяем
+```
+lsblk -f
+NAME        FSTYPE            FSVER LABEL           UUID                                 FSAVAIL FSUSE% MOUNTPOINTS
+sdc         linux_raid_member 1.2   vm-nginx:0      cada600c-ee13-a98e-01a1-a5e4589157dd                
+└─md127                                                                                                 
+  ├─md127p1 ext4              1.0                   829af6c5-05f2-451c-93f2-8d5aa2ed02b5                
+  ├─md127p2 ext4              1.0                   8ef0bf50-913b-4638-a499-1d8a5192bbcd                
+  ├─md127p3 ext4              1.0                   6d463965-6b20-48cd-8867-997661b6f7f3                
+  ├─md127p4 ext4              1.0                   0f1a6924-2d2e-40d6-9dd3-205d10a797b9                
+  └─md127p5 ext4              1.0                   c915660f-5370-4082-9681-fa458dba64bb                
+```
+
+5. Монтируем
+```
+for i in $(seq 1 5); do mount /dev/md127p$i /raid/part$i; done
+```
+Проверяем
+```
+df -hT
+Filesystem     Type   Size  Used Avail Use% Mounted on
+/dev/md127p1   ext4   3.9G   24K  3.7G   1% /raid/part1
+/dev/md127p2   ext4   3.9G   24K  3.7G   1% /raid/part2
+/dev/md127p3   ext4   3.9G   24K  3.7G   1% /raid/part3
+/dev/md127p4   ext4   3.9G   24K  3.7G   1% /raid/part4
+/dev/md127p5   ext4   3.9G   24K  3.7G   1% /raid/part5
 ```
