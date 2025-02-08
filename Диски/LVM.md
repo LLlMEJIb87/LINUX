@@ -104,8 +104,6 @@ The filesystem on /dev/vg_test/lv_test is now 364544 (4k) blocks long.
 ```
 **vgextend** - расширить группу путем добавления физических томов
 ```
-shmel@lvm:~$ sudo pvcreate /dev/sdb2/
-  No device found for /dev/sdb2/.
 shmel@lvm:~$ sudo pvcreate /dev/sdb2
   Physical volume "/dev/sdb2" successfully created.
 shmel@lvm:~$ sudo vgextend vg_test /dev/sdb2
