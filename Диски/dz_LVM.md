@@ -24,19 +24,19 @@ rsync -avxHAX --progress / /mnt/root
 ```
 for dir in dev proc sys run boot; do mount --bind /$dir /mnt/root/$dir; done
 ```
-5. Переходим в новое окружение
+- Переходим в новое окружение
 ```
 chroot /mnt/root/
 ```
-6. Создаём конфигурационный файл GRUB на основе текущей системы.
+- Создаём конфигурационный файл GRUB на основе текущей системы.
 ```
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
-7. Обновляет initramfs
+- Обновляет initramfs
 ```
 update-initramfs -u
 ```
-8. Перезагружаем систему
+- Перезагружаем систему
 ```
 exit
 shutdown -r now
