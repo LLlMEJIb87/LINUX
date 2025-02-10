@@ -81,3 +81,24 @@ update-initramfs -u
 ```
 
 ## Задача №2 Выделить том под /var в зеркало
+1. Создаем зеркало
+- cоздаем физические тома на свободных дисках
+```
+pvcreate /dev/sdc /dev/sdd
+```
+- объединяем физические тома в группу
+```
+vgcreate vg_var /dev/sdc /dev/sdd
+```
+- создаем логический том
+```
+lvcreate -L 2G -m1 -n lv_var vg_var
+```
+- проверяем
+```
+root@raidlvm:/# lvs
+  LV        VG        Attr       LSize   Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  root_lv   root_vg   -wi-ao---- <25.00g                                                    
+  ubuntu-lv ubuntu-vg -wi-ao----   8.00g                                                    
+  lv_var    vg_var    rwi-a-r---   2.00g
+```
