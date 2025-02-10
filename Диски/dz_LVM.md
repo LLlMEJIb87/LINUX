@@ -41,3 +41,43 @@ update-initramfs -u
 exit
 shutdown -r now
 ```
+5. Создаём новый том на 8G
+- Удаляем целевой том
+```
+lvremove /dev/ubuntu-vg/ubuntu-lv
+```
+- Создаем новый
+```
+lvcreate -n ubuntu-vg/ubuntu-lv -L 8G /dev/ubuntu-vg
+```
+- создаем файловую систему 
+```
+mkfs.ext4 /dev/ubuntu-vg/ubuntu-lv
+```
+- монтируем
+```
+mount /dev/ubuntu-vg/ubuntu-lv /mnt/root/
+```
+6. Клонируем корневую файловую систему на временный том
+```
+rsync -avxHAX --progress / /mnt/root/
+```
+7. Для того, чтобы нам можно было загрузиться с нового тома, делаем следующее
+- монтируем необходимые катологи
+```
+for dir in dev proc sys run boot; do mount --bind /$dir /mnt/root/$dir; done
+```
+- Переходим в новое окружение
+```
+chroot /mnt/root/
+```
+- Создаём конфигурационный файл GRUB на основе текущей системы.
+```
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+- Обновляет initramfs
+```
+update-initramfs -u
+```
+
+## Задача №2 Выделить том под /var в зеркало
