@@ -264,3 +264,87 @@ tmpfs                             tmpfs  5.0M     0  5.0M   0% /run/lock
 /dev/sda2                         ext4   2.0G   95M  1.7G   6% /boot
 tmpfs                             tmpfs  197M   12K  197M   1% /run/user/1000
 ```
+
+## Задача №4 Работа со снапшотами
+1. Создаем тестовые файлы  в каталоге home
+```
+touch /home/file{1..20}
+```
+2. Снимаем snapshot
+```
+lvcreate -L 100MB -s -n home_snapshot /dev/ubuntu-vg/home_lv
+```
+Проверяем
+```
+root@lvm:/home# lvs
+  LV            VG        Attr       LSize   Pool Origin  Data%  Meta%  Move Log Cpy%Sync Convert
+  home_lv       ubuntu-vg owi-aos---  10.00g                                                     
+  home_snapshot ubuntu-vg swi-a-s--- 100.00m      home_lv 0.01 #Cнапшот есть                                  
+  ubuntu-lv     ubuntu-vg -wi-ao----   8.00g                                                     
+  var_lv        var_vg    rwi-aor---   5.00g                                     100.00     
+```
+3. Удаляем часть файлов
+```
+rm -f /home/file{11..20}
+```
+Проверяем
+```
+/home# ll
+total 28
+drwxr-xr-x  4 root  root   4096 Feb 12 01:43 ./
+drwxr-xr-x 23 root  root   4096 Feb 11 11:32 ../
+-rw-r--r--  1 root  root      0 Feb 12 01:37 file1
+-rw-r--r--  1 root  root      0 Feb 12 01:37 file10
+-rw-r--r--  1 root  root      0 Feb 12 01:37 file2
+-rw-r--r--  1 root  root      0 Feb 12 01:37 file3
+-rw-r--r--  1 root  root      0 Feb 12 01:37 file4
+-rw-r--r--  1 root  root      0 Feb 12 01:37 file5
+-rw-r--r--  1 root  root      0 Feb 12 01:37 file6
+-rw-r--r--  1 root  root      0 Feb 12 01:37 file7
+-rw-r--r--  1 root  root      0 Feb 12 01:37 file8
+-rw-r--r--  1 root  root      0 Feb 12 01:37 file9
+drwx------  2 root  root  16384 Feb 12 01:24 lost+found/
+drwxr-x---  4 shmel shmel  4096 Feb 12 01:12 shmel/
+```
+4. Восстанавливаем каталог из снапшота
+- размонтируем
+```
+umount /home
+```
+- делаем слияние
+```
+lvconvert --merge /dev/ubuntu-vg/home_snapshot
+  Merging of volume ubuntu-vg/home_snapshot started.
+  ubuntu-vg/home_lv: Merged: 100.00%
+``
+- монтируем
+```
+mount /dev/mapper/ubuntu--vg-home_lv /home/
+```
+- проверяем
+```
+ls -l /home/
+total 20
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file1
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file10
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file11
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file12
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file13
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file14
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file15
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file16
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file17
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file18
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file19
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file2
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file20
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file3
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file4
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file5
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file6
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file7
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file8
+-rw-r--r-- 1 root  root      0 Feb 12 01:37 file9
+drwx------ 2 root  root  16384 Feb 12 01:24 lost+found
+drwxr-x--- 4 shmel shmel  4096 Feb 12 01:12 shmel
+```
