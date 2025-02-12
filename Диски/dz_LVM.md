@@ -316,7 +316,7 @@ umount /home
 lvconvert --merge /dev/ubuntu-vg/home_snapshot
   Merging of volume ubuntu-vg/home_snapshot started.
   ubuntu-vg/home_lv: Merged: 100.00%
-``
+```
 - монтируем
 ```
 mount /dev/mapper/ubuntu--vg-home_lv /home/
