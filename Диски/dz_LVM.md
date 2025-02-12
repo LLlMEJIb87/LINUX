@@ -141,7 +141,7 @@ sdb                         8:16   0   25G  0 disk
 ```
 lvremove /dev/root_vg/root_lv 
 vgremove root_vg 
-root@lvm:~# pvremove /dev/sdb
+pvremove /dev/sdb
 ```
 
 ## Задача №2 Выделить том под /var в зеркало
