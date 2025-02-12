@@ -225,3 +225,42 @@ tmpfs                             tmpfs  5.0M     0  5.0M   0% /run/lock
 /dev/sda2                         ext4   2.0G   95M  1.7G   6% /boot
 tmpfs                             tmpfs  197M   12K  197M   1% /run/user/1000
 ```
+## Задача №3 Выделить том под /home
+1. Создаем логический том
+```
+lvcreate -n home_lv -L 10G ubuntu-vg 
+```
+2. Создаем фаловую систему и монтируем
+```
+mkfs.ext4 /dev/ubuntu-vg/home_lv
+mount /dev/ubuntu-vg/home_lv /mnt/
+```
+3. Копируем содержимое каталога /home и удаляем все из более неиспользуемого каталога
+```
+cp -aR /home/* /mnt/
+rm -rf /home/*
+```
+4. Монтируем
+```
+umount /mnt
+mount /dev/ubuntu-vg/home_lv /home/
+```
+5. Автоматизируем процесс монтирования католога
+```
+e2label /dev/mapper/ubuntu--vg-home_lv home
+echo "`blkid | grep 'LABEL=\"home\"' | awk -F '\"' '{print \"UUID=\"$4}'` \
+/home ext4 defaults 0 0" >> /etc/fstab
+```
+6. Перезагружаемся и проверяем
+```
+df -hT
+Filesystem                        Type   Size  Used Avail Use% Mounted on
+tmpfs                             tmpfs  197M  1.1M  196M   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv ext4   7.8G  4.4G  3.1G  59% /
+tmpfs                             tmpfs  984M     0  984M   0% /dev/shm
+tmpfs                             tmpfs  5.0M     0  5.0M   0% /run/lock
+/dev/mapper/ubuntu--vg-home_lv    ext4   9.8G   52K  9.3G   1% /home
+/dev/mapper/var_vg-var_lv         ext4   4.9G  409M  4.2G   9% /var
+/dev/sda2                         ext4   2.0G   95M  1.7G   6% /boot
+tmpfs                             tmpfs  197M   12K  197M   1% /run/user/1000
+```
