@@ -50,3 +50,25 @@ test_2  compression           lz4                    local
 test_3  compression           gzip-9                 local
 test_4  compression           zle                    local
 ```
+4. Сжимаем (Сжатие файлов будет работать только с файлами, которые были добавлены после включение настройки сжатия)
+- Скачаем один и тот же текстовый файл во все пулы:
+```
+for i in {1..4}; do wget -P /test_$i https://gutenberg.org/cache/epub/2600/pg2600.converter.log; done
+```
+- Смотрим разницу
+```
+zfs list
+NAME     USED  AVAIL  REFER  MOUNTPOINT
+test_1  21.7M  9.18G  21.6M  /test_1
+test_2  17.7M  9.19G  17.6M  /test_2
+test_3  10.9M  9.19G  10.7M  /test_3
+test_4  39.4M  9.16G  39.3M  /test_4
+```
+```
+zfs get all | grep compressratio | grep -v ref
+test_1  compressratio         1.81x                  
+test_2  compressratio         2.23x                  
+test_3  compressratio         3.65x                  
+test_4  compressratio         1.00x                  
+```
+Наиболее эффективном в данном случае оказался алгоритм  gzip-9
