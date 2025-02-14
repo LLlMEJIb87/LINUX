@@ -20,7 +20,7 @@ sdh                         8:112  0   10G  0 disk
 sdi                         8:128  0   10G  0 disk 
 ```
 2. Создаём 4 пула из свободных дисков в режиме RAID 1:
-``
+```
 zpool create -f test_1 mirror /dev/sdb /dev/sdc
 zpool create -f test_2 mirror /dev/sdd /dev/sde
 zpool create test_3 mirror /dev/sdf /dev/sdg
