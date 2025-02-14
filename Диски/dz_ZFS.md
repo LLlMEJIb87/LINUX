@@ -248,3 +248,22 @@ zfs get compression otus
 NAME  PROPERTY     VALUE           SOURCE
 otus  compression  zle             local
 ```
+
+## Задача №3 Работа со снапшотами
+1. Скачиваем файл, указанный в задании
+```
+wget -O otus_task2.file --no-check-certificate https://drive.usercontent.google.com/download?id=1wgxjih8YZ-cqLqaZVa0lA3h3Y029c3oI&export=download
+
+```
+2. Восстаноим файловую систему из снапшота
+```
+zfs receive otus/test@today < otus_task2.file
+
+```
+3. Ищем в каталоге /otus/test файл с именем “secret_message” и посмотим, что в нем
+```
+find /otus/test -name "secret_message"
+/otus/test/task1/file_mess/secret_message
+cat /otus/test/task1/file_mess/secret_message
+https://otus.ru/lessons/linux-hl/ #Cсылка на курс Otus
+```
