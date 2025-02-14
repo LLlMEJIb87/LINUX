@@ -239,8 +239,12 @@ otus  readonly  off     default
 - Посмотреть размер блока, который zfs использует при записи
 ```
 zfs get recordsize otus
+NAME  PROPERTY    VALUE    SOURCE
+otus  recordsize  128K     local
 ```
 - Посмотреть тип сжатия
 ```
 zfs get compression otus
+NAME  PROPERTY     VALUE           SOURCE
+otus  compression  zle             local
 ```
