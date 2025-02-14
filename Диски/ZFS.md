@@ -10,4 +10,7 @@ ZFS(Zettabyte File System) — файловая система, созданна
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%94%D0%B8%D1%81%D0%BA%D0%B8/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/zfs_komponenti.PNG">
 </p>
 
-Более подробная информация доступна по ссылке https://ru.wikipedia.org/wiki/ZFS
+Более подробная информация доступна по ссылке https://ru.wikipedia.org/wiki/ZFS    
+
+
+Установка на OS ubuntu доступна по ссылке https://openzfs.github.io/openzfs-docs/Getting%20Started/Ubuntu/index.html
