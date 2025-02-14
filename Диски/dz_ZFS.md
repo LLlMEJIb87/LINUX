@@ -102,7 +102,7 @@ status: Some supported features are not enabled on the pool.
 - id: 6554193320433390805 — уникальный идентификатор пула.
 - state: ONLINE — пул в рабочем состоянии.    
 
-Так же в выоде есть информация, что импортируем пул был создан старой версией zfs и предлагает обновить его.    
+Так же в выводе есть информация, что импортируем пул был создан старой версией zfs и предлагает обновить его.    
 3. Делаем импорт пула OTUS
 ```
 zpool import -d zpoolexport/ otus
@@ -147,4 +147,100 @@ Enabled the following features on 'otus':
   block_cloning
   vdev_zaps_v2
 
+```
+5. Далее определяем настройки пула
+```
+zpool get all otus
+NAME  PROPERTY                       VALUE                          SOURCE
+otus  size                           480M                           -
+otus  capacity                       0%                             -
+otus  altroot                        -                              default
+otus  health                         ONLINE                         -
+otus  guid                           6554193320433390805            -
+otus  version                        -                              default
+otus  bootfs                         -                              default
+otus  delegation                     on                             default
+otus  autoreplace                    off                            default
+otus  cachefile                      -                              default
+otus  failmode                       wait                           default
+otus  listsnapshots                  off                            default
+otus  autoexpand                     off                            default
+otus  dedupratio                     1.00x                          -
+otus  free                           478M                           -
+otus  allocated                      2.09M                          -
+otus  readonly                       off                            -
+otus  ashift                         0                              default
+otus  comment                        -                              default
+otus  expandsize                     -                              -
+otus  freeing                        0                              -
+otus  fragmentation                  0%                             -
+otus  leaked                         0                              -
+otus  multihost                      off                            default
+otus  checkpoint                     -                              -
+otus  load_guid                      12130510563720500937           -
+otus  autotrim                       off                            default
+otus  compatibility                  off                            default
+otus  bcloneused                     0                              -
+otus  bclonesaved                    0                              -
+otus  bcloneratio                    1.00x                          -
+otus  feature@async_destroy          enabled                        local
+otus  feature@empty_bpobj            active                         local
+otus  feature@lz4_compress           active                         local
+otus  feature@multi_vdev_crash_dump  enabled                        local
+otus  feature@spacemap_histogram     active                         local
+otus  feature@enabled_txg            active                         local
+otus  feature@hole_birth             active                         local
+otus  feature@extensible_dataset     active                         local
+otus  feature@embedded_data          active                         local
+otus  feature@bookmarks              enabled                        local
+otus  feature@filesystem_limits      enabled                        local
+otus  feature@large_blocks           enabled                        local
+otus  feature@large_dnode            enabled                        local
+otus  feature@sha512                 enabled                        local
+otus  feature@skein                  enabled                        local
+otus  feature@edonr                  enabled                        local
+otus  feature@userobj_accounting     active                         local
+otus  feature@encryption             enabled                        local
+otus  feature@project_quota          active                         local
+otus  feature@device_removal         enabled                        local
+otus  feature@obsolete_counts        enabled                        local
+otus  feature@zpool_checkpoint       enabled                        local
+otus  feature@spacemap_v2            active                         local
+otus  feature@allocation_classes     enabled                        local
+otus  feature@resilver_defer         enabled                        local
+otus  feature@bookmark_v2            enabled                        local
+otus  feature@redaction_bookmarks    enabled                        local
+otus  feature@redacted_datasets      enabled                        local
+otus  feature@bookmark_written       enabled                        local
+otus  feature@log_spacemap           active                         local
+otus  feature@livelist               enabled                        local
+otus  feature@device_rebuild         enabled                        local
+otus  feature@zstd_compress          enabled                        local
+otus  feature@draid                  enabled                        local
+otus  feature@zilsaxattr             enabled                        local
+otus  feature@head_errlog            active                         local
+otus  feature@blake3                 enabled                        local
+otus  feature@block_cloning          enabled                        local
+otus  feature@vdev_zaps_v2           enabled                        local
+```
+Так же можно посомтреть отдельно интересующие нас параметры:
+- Посмотреть свободное пространство в пуле
+```
+zfs get available otus
+NAME  PROPERTY   VALUE  SOURCE
+otus  available  350M   -
+```
+- Посмотреть включен ли параметр readonly
+```
+zfs get readonly otus
+NAME  PROPERTY  VALUE   SOURCE
+otus  readonly  off     default
+```
+- Посмотреть размер блока, который zfs использует при записи
+```
+zfs get recordsize otus
+```
+- Посмотреть тип сжатия
+```
+zfs get compression otus
 ```
