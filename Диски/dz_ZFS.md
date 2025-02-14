@@ -71,4 +71,80 @@ test_2  compressratio         2.23x
 test_3  compressratio         3.65x                  
 test_4  compressratio         1.00x                  
 ```
-Наиболее эффективном в данном случае оказался алгоритм  gzip-9
+Наиболее эффективном в данном случае оказался алгоритм  gzip-9      
+
+## Задача №2 Определение настроек пула
+1. Скачиваем архив в домашний каталог и разархивируем
+```
+wget -O archive.tar.gz --no-check-certificate 'https://drive.usercontent.google.com/download?id=1MvrcEp-WgAQe57aDEzxSRalPAwbNN1Bb&export=download' 
+tar -xzvf archive.tar.gz
+```
+2. В архиве лежит некий виртуальный пул созданный с помощью zfs на другом устройстве, проверим, возможно ли импортировать данный каталог в пул:
+```
+root@lvm:~# zpool import -d zpoolexport/
+   pool: otus
+     id: 6554193320433390805
+  state: ONLINE
+status: Some supported features are not enabled on the pool.
+        (Note that they may be intentionally disabled if the
+        'compatibility' property is set.)
+ action: The pool can be imported using its name or numeric identifier, though
+        some features will not be available without an explicit 'zpool upgrade'.
+ config:
+
+        otus                         ONLINE
+          mirror-0                   ONLINE
+            /root/zpoolexport/filea  ONLINE
+            /root/zpoolexport/fileb  ONLINE
+```
+Вывод показывает:   
+pool: otus — найден пул с именем otus.
+id: 6554193320433390805 — уникальный идентификатор пула.
+state: ONLINE — пул в рабочем состоянии.    
+
+Так же в выоде есть информация, что импортируем пул был создан старой версией zfs и предлагает обновить его.    
+3. Делаем импорт пула OTUS
+```
+zpool import -d zpoolexport/ otus
+```
+Проверяем
+```
+root@lvm:~# zpool status
+  pool: otus
+ state: ONLINE
+status: Some supported and requested features are not enabled on the pool.
+        The pool can still be used, but some features are unavailable.
+action: Enable all features using 'zpool upgrade'. Once this is done,
+        the pool may no longer be accessible by software that does not support
+        the features. See zpool-features(7) for details.
+config:
+
+        NAME                         STATE     READ WRITE CKSUM
+        otus                         ONLINE       0     0     0
+          mirror-0                   ONLINE       0     0     0
+            /root/zpoolexport/filea  ONLINE       0     0     0
+            /root/zpoolexport/fileb  ONLINE       0     0     0
+
+errors: No known data errors
+```
+4. Обновляем
+```
+zpool upgrade otus
+This system supports ZFS pool feature flags.
+
+Enabled the following features on 'otus':
+  redaction_bookmarks
+  redacted_datasets
+  bookmark_written
+  log_spacemap
+  livelist
+  device_rebuild
+  zstd_compress
+  draid
+  zilsaxattr
+  head_errlog
+  blake3
+  block_cloning
+  vdev_zaps_v2
+
+```
