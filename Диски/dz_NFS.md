@@ -33,4 +33,36 @@ exportfs -ra
 exportfs -v
 /srv/share      192.168.1.0/24(sync,wdelay,hide,no_subtree_check,sec=sys,rw,secure,root_squash,no_all_squash)
 ```
-Готово
+Готово, далее пробуем подключиться на клиенте:
+1. Устанавливаем клиента NFS
+```
+apt update && sudo apt install -y nfs-common
+```
+2. Монтируем сетевой диск 
+```
+mount -t nfs 192.168.1.210:/srv/share /mnt
+```
+3. Пропишем в fstab для автомонтирования при загрузки системы
+```
+echo "192.168.1.210:/srv/share /mnt nfs noauto,x-systemd.automount 0 0" >> /etc/fstab
+```
+4. Перечитаем конфигурацию
+```
+systemctl daemon-reload
+```
+5. Перезапускаем сервис монтирования удалённых файловых систем.(для того чтобы убедиться, что удаленная директория примонтируется после перезапуска системы не перезапуская систему)
+```
+systemctl restart remote-fs.target
+```
+Проверяем 
+```
+mount | grep mnt
+192.168.1.210:/srv/share on /mnt type nfs4 (rw,relatime,vers=4.2,rsize=262144,wsize=262144,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,clientaddr=192.168.1.250,local_lock=none,addr=192.168.1.210)
+```
+6. На сервере создали тестовый файл, првоеряем появился ли он на клиенте
+```
+ls -lah /mnt/upload/
+drwxrwxrwx 2 nobody nogroup 4.0K Feb 20 10:01 .
+drwxr-xr-x 3 nobody nogroup 4.0K Feb 20 09:16 ..
+-rw-r--r-- 1 root   root       0 Feb 20 10:01 test
+```
