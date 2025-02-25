@@ -29,7 +29,7 @@ git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli
 4. Собираем модуль ngx_brotli
 ```
 cd /ngx_brotli/deps/brotli
-mkdir out && cd ou
+mkdir out && cd out
 ```
 - настраиваем будущую сборку
 ```
