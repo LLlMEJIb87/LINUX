@@ -23,6 +23,7 @@ apt build-dep nginx
 ```
 3. Загружаем исходный  код модуля ngn_brodli
 ```
+cd ~
 git clone --recurse-submodules -j8 https://github.com/google/ngx_brotli
 ```
 4. Собираем модуль ngx_brotli
