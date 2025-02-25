@@ -48,7 +48,7 @@ cd /deb/nginx-1.24.0
 #Правим конфигурационный файл
 nano debian/rules
 #Добавляеем в конфигурацию bin_configure_flags следующее
---add-module=$(HOME)/ngx_brotli
+--add-module=/home/shmel/ngx_brotli
 ```
 6. Собираем пакет
 ```
