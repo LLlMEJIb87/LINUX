@@ -59,7 +59,7 @@ vgrename ubuntu-vg ubuntu-otus
 ```
 nano /boot/grub/grub.cfg
 ```
-меняем все строки содержащие старое название группы ubuntu--vg на новое ubuntu--otus
+меняем все строки содержащие старое название группы ubuntu--vg на новое ubuntu--otus     
 4. Перезагружаемся и проверяем
 ```
 root@lvm:~# vgs
