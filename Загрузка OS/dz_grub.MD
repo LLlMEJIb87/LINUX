@@ -44,3 +44,25 @@ mount -o remount,rw /
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%97%D0%B0%D0%B3%D1%80%D1%83%D0%B7%D0%BA%D0%B0%20OS/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/dz_grub4.PNG">
 </p>
 
+Задание №3 Переименовать VG
+1. Смотрим текущее название volume group
+```
+root@lvm:~# vgs
+  VG        #PV #LV #SN Attr   VSize   VFree 
+  ubuntu-vg   1   2   0 wz--n- <23.00g <5.00g
+```
+2. Меняем название
+```
+vgrename ubuntu-vg ubuntu-otus
+```
+3. Редактируем конфигурационный файл grub
+```
+nano /boot/grub/grub.cfg
+```
+меняем все строки содержащие старое название группы ubuntu--vg на новое ubuntu--otus
+4. Перезагружаемся и проверяем
+```
+root@lvm:~# vgs
+  VG          #PV #LV #SN Attr   VSize   VFree 
+  ubuntu-otus   1   2   0 wz--n- <23.00g <5.00g
+```
