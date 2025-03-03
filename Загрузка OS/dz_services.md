@@ -247,6 +247,7 @@ http {
 ...
  }
 ```
+```
 nano nginx-second.conf
 http {
     server {
