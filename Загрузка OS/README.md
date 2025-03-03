@@ -99,6 +99,6 @@ networking.service или NetworkManager.service — настройка сети
 sshd.service — запуск SSH-сервера (если установлен).    
 cron.service — запуск планировщика задач.    
 systemd-journald.service — сбор логов.    
-5.Настройка окружения:
+5. Настройка окружения:
 - Устанавливается имя хоста (из /etc/hostname).
 - Применяются настройки времени и локали (из /etc/timezone, /etc/locale.gen).
