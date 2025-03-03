@@ -98,3 +98,90 @@ root@lvm:~# tail -n 1000 /var/log/syslog  | grep word
 2025-03-03T11:06:33.211119+00:00 lvm root: Mon Mar  3 11:06:33 AM UTC 2025: I found the word 'ALERT' in /var/log/watchlog.log!
 2025-03-03T11:07:48.002182+00:00 lvm root: Mon Mar  3 11:07:47 AM UTC 2025: I found the word 'ALERT' in /var/log/watchlog.log!
 ```
+
+## Задание №2 Установить spawn-fcgi и создать unit-файл (spawn-fcgi.sevice) с помощью переделки init-скрипта
+1. Устанавливаем spawn-fcgi и необходимые для него пакеты:
+```
+apt install spawn-fcgi php php-cgi php-cli  apache2 libapache2-mod-fcgid -y 
+```
+2. Создаем файл с настройками для будущего сервиса
+```
+touch /etc/spawn-fcgi/fcgi.conf
+```
+```
+# You must set some working options before the "spawn-fcgi" service will work.
+# If SOCKET points to a file, then this file is cleaned up by the init script.
+#
+# See spawn-fcgi(1) for all possible options.
+#
+# Example :
+SOCKET=/var/run/php-fcgi.sock
+OPTIONS="-u www-data -g www-data -s $SOCKET -S -M 0600 -C 32 -F 1 -- /usr/bin/php-cgi"
+```
+3. Создаём юнит файл для для spawn-fcgi
+```
+touch /etc/systemd/system/spawn-fcgi.service
+```
+```
+[Unit]
+Description=Spawn-fcgi startup service by Otus
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/spawn-fcgi.pid
+EnvironmentFile=/etc/spawn-fcgi/fcgi.conf
+ExecStart=/usr/bin/spawn-fcgi -n $OPTIONS
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+```
+4. Проверяем
+```
+root@lvm:~# systemctl start spawn-fcgi
+root@lvm:~#  systemctl status spawn-fcgi
+● spawn-fcgi.service - Spawn-fcgi startup service by Otus
+     Loaded: loaded (/etc/systemd/system/spawn-fcgi.service; disabled; preset: enabled)
+     Active: active (running) since Mon 2025-03-03 11:33:09 UTC; 6s ago
+   Main PID: 16488 (php-cgi)
+      Tasks: 33 (limit: 2272)
+     Memory: 14.7M (peak: 14.8M)
+        CPU: 95ms
+     CGroup: /system.slice/spawn-fcgi.service
+             ├─16488 /usr/bin/php-cgi
+             ├─16493 /usr/bin/php-cgi
+             ├─16494 /usr/bin/php-cgi
+             ├─16495 /usr/bin/php-cgi
+             ├─16496 /usr/bin/php-cgi
+             ├─16497 /usr/bin/php-cgi
+             ├─16498 /usr/bin/php-cgi
+             ├─16499 /usr/bin/php-cgi
+             ├─16500 /usr/bin/php-cgi
+             ├─16501 /usr/bin/php-cgi
+             ├─16502 /usr/bin/php-cgi
+             ├─16503 /usr/bin/php-cgi
+             ├─16504 /usr/bin/php-cgi
+             ├─16505 /usr/bin/php-cgi
+             ├─16506 /usr/bin/php-cgi
+             ├─16507 /usr/bin/php-cgi
+             ├─16508 /usr/bin/php-cgi
+             ├─16509 /usr/bin/php-cgi
+             ├─16510 /usr/bin/php-cgi
+             ├─16511 /usr/bin/php-cgi
+             ├─16512 /usr/bin/php-cgi
+             ├─16513 /usr/bin/php-cgi
+             ├─16514 /usr/bin/php-cgi
+             ├─16515 /usr/bin/php-cgi
+             ├─16516 /usr/bin/php-cgi
+             ├─16517 /usr/bin/php-cgi
+             ├─16518 /usr/bin/php-cgi
+             ├─16519 /usr/bin/php-cgi
+             ├─16520 /usr/bin/php-cgi
+             ├─16521 /usr/bin/php-cgi
+             ├─16522 /usr/bin/php-cgi
+             ├─16523 /usr/bin/php-cgi
+             └─16524 /usr/bin/php-cgi
+
+Mar 03 11:33:09 lvm systemd[1]: Started spawn-fcgi.service - Spawn-fcgi startup service by Otus.
+```
