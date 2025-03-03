@@ -15,7 +15,7 @@ LOG=/var/log/watchlog.log
 ```
 2. Затем создаем /var/log/watchlog.log и пишем туда строки, в которых будет  ключевое слово "ALERT"
 ```
-touch /var/log/watchlog.lo
+touch /var/log/watchlog.log
 ```
 Закинем несколько строк и добавим ключевое слово
 ```
@@ -25,7 +25,7 @@ Feb 11 11:38:29 lvm multipathd[387]: multipathd v0.9.4: start up ALERT #Ключ
 Feb 11 11:38:29 lvm multipathd[387]: reconfigure: setting up paths and maps
 Feb 11 11:38:29 lvm systemd[1]: Finished systemd-sysusers.service - Create System Users.
 ```
-3. Создаём скрипт, который будет искать ключевое слово в нашем импровизированном журнале
+3. Создаём скрипт, который будет искать ключевое слово в нашем log файле
 ```
 touch /opt/watchlog.sh
 ```
@@ -58,7 +58,7 @@ chmod +x /opt/watchlog.sh
 ```
 4. Создаём юнит для сервиса
 ```
-/etc/systemd/system/watchlog.service
+touch /etc/systemd/system/watchlog.service
 ```
 ```                    
 [Unit]
@@ -69,3 +69,32 @@ Type=oneshot
 EnvironmentFile=/etc/default/watchlog
 ExecStart=/opt/watchlog.sh $WORD $LOG
 ````
+5. Создаем юнит для таймера
+```
+touch /etc/systemd/system/watchlog.timer
+```
+```
+[Unit]
+Description=Run watchlog script every 30 second
+
+[Timer]
+# Run every 30 second
+OnUnitActiveSec=30
+Unit=watchlog.service
+
+[Install]
+WantedBy=timers.target
+```
+6. Проверяем
+```
+systemctl daemon reload
+systemctl start watchlog.timer
+```
+
+
+```
+root@lvm:~# tail -n 1000 /var/log/syslog  | grep word
+2025-03-03T11:05:51.149754+00:00 lvm root: Mon Mar  3 11:05:51 AM UTC 2025: I found the word 'ALERT' in /var/log/watchlog.log!
+2025-03-03T11:06:33.211119+00:00 lvm root: Mon Mar  3 11:06:33 AM UTC 2025: I found the word 'ALERT' in /var/log/watchlog.log!
+2025-03-03T11:07:48.002182+00:00 lvm root: Mon Mar  3 11:07:47 AM UTC 2025: I found the word 'ALERT' in /var/log/watchlog.log!
+```
