@@ -263,7 +263,7 @@ http {
 ```
 4. Проверяем
 ```
-systemctl start nginx@first
+systemctl start nginx@first     
 systemctl start nginx@second
 ```
 ```
