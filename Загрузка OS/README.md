@@ -93,3 +93,12 @@ initrd (initial ramdisk) — это временная файловая сист
 /home (если отдельный раздел).     
 /tmp, /var и т.д.    
 - Также монтируются виртуальные файловые системы, такие как /proc, /sys, /dev, которые нужны для работы ядра и программ.
+4. Запуск системных служб:
+- systemd параллельно запускает службы (services), описанные в юнитах (например, в /lib/systemd/system/ или /etc/systemd/system/):    
+networking.service или NetworkManager.service — настройка сети.    
+sshd.service — запуск SSH-сервера (если установлен).    
+cron.service — запуск планировщика задач.    
+systemd-journald.service — сбор логов.    
+5.Настройка окружения:
+- Устанавливается имя хоста (из /etc/hostname).
+- Применяются настройки времени и локали (из /etc/timezone, /etc/locale.gen).
