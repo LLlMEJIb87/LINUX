@@ -38,3 +38,12 @@ find $1 -type f | wc -l
 ```
 ./myscript /etc (где etc это первый параметр $1)
 ```
+__Использование переменных__ 
+Переделаем немного наш скрипт используя переменную
+```
+#!/bin/bash
+directory=$1    
+num_of_files=$(find $directory -type f | wc -l)
+echo $num_of_files
+```
+$num_of_files это результат работы команды find $directory -type f | wc -l
