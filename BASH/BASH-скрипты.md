@@ -46,4 +46,14 @@ directory=$1
 num_of_files=$(find $directory -type f | wc -l)
 echo $num_of_files
 ```
-$num_of_files это результат работы команды find $directory -type f | wc -l
+$num_of_files это результат работы команды find $directory -type f | wc -l    
+
+__Использование интерактивного ввода от пользователя__ 
+```
+#!/bin/bash
+
+echo "Enter the filename:" #Выводи на экран приглашение
+read filename # говорим, что ожидаем от пользователя
+
+echo $filename #все что ввел пользователь прочитаем в переменную и далее ее будем использовать
+```
