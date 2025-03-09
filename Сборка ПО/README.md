@@ -72,7 +72,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast
 cmake --build . --config Release --target brotlienc
 ```
 и выходим из дириктории
-cd ../../../..       
+    
 11. устанавливаем переменное окружение для сборки brotli
 ```
 cd nginx-1.27.3/
