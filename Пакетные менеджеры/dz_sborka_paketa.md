@@ -70,7 +70,7 @@ root@lvm:~/deb/nginx-1.24.0# nginx -V 2>&1 | grep -o -- "--add-module=/root/ngx_
 mkdir -p /var/www/html/repo
 cp ~/deb/*.deb /var/www/html/repo
 ```
-2. Генерируем списка пакетов для APT
+2. Генерируем список пакетов для APT
 ```
 dpkg-scanpackages . /dev/null | gzip -9 > Packages.gz
 ```
@@ -106,4 +106,48 @@ root@lvm:/var/www/html/repo# curl -a http://localhost/repo/
 <a href="libnginx-mod-http-geoip-dbgsym_1.24.0-2ubuntu7.1_amd64.ddeb">libnginx-mod-http-geoip-dbgsym_1.24.0-2ubuntu7...&gt;</a> 10-Mar-2025 01:45               36272
 <a href="libnginx-mod-http-geoip_1.24.0-2ubuntu7.1_amd64.deb">libnginx-mod-http-geoip_1.24.0-2ubuntu7.1_amd64..&gt;</a> 10-Mar-2025 01:45               21834
 ...
+```
+4. Добавить репозиторий в систему
+- создаим файл
+```
+touch /etc/apt/sources.list.d/custom-repo.list
+```
+- добавим в него
+```
+nano/etc/apt/sources.list.d/custom-repo.list
+
+deb [trusted=yes] http://localhost/repo/ ./
+```
+- обновим репозиторий
+```
+apt update
+```
+
+5. Добавим пакет в наш репозиторий
+```
+cd /var/www/html/repo/
+wget https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb
+```
+6. Обновим список пакетов в репозитории
+```
+apt update
+```
+Проверяем
+```
+root@lvm:/var/www/html/repo# apt-cache policy percona-release
+percona-release:
+  Installed: 1.0-30.generic
+  Candidate: 1.0-30.generic
+  Version table:
+ *** 1.0-30.generic 500
+        500 http://localhost/repo ./ Packages
+        100 /var/lib/dpkg/status
+     1.0-29.generic 500
+        500 http://repo.percona.com/prel/apt noble/main amd64 Packages
+     1.0-28.generic 500
+        500 http://repo.percona.com/prel/apt noble/main amd64 Packages
+```
+Устанавливаем
+```
+apt install percona-release
 ```
