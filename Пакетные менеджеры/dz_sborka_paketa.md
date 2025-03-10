@@ -4,7 +4,7 @@
 ```
 apt update && sudo apt install -y wget dpkg-dev debhelper build-essential cmake gcc git
 ```
-Для примера возьмем пакет Nginx и соберем его с дополнительным модулем ngx_brodli     
+Для примера возьмем пакет Nginx и соберем его с дополнительным модулем ngx_brotli     
 1.  Загрузим SDEB пакет Nginx для дальнейшей работы над ним:
 ```
 mkdir deb && cd deb
