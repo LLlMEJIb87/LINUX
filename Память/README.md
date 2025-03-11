@@ -9,4 +9,8 @@
 За счёт виртуальной памяти мы можем делать переадресацию не только в RAM но и на другие устройтсва - так работает файл подкачки SWAP   
 
 
-Ядро OS ведет memory map - соответсвие виртуальной памяти физической
+Ядро OS ведет memory map - соответсвие виртуальной памяти физической     
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%9F%D0%B0%D0%BC%D1%8F%D1%82%D1%8C/Picture/virt_pamyat.PNG">
+</p>
