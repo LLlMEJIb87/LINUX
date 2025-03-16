@@ -86,6 +86,19 @@ RBAC - управление по ролям:
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/TE.PNG">
 </p>
 
+
+__Наследование типов в SELinux__
+- При создании файла в каталоге он наследует его тип
+- Переход контекста (context transition) происходит при
+наличии условий:
+1. Целевой контекст файла является исполняемым для исходного домена
+2. Целевой контекст файла помечен как точка входа для целевого домена
+3. Исходный домен разрешен для перехода в целевой домен
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/perehod_konteksta.PNG">
+</p>
+
 ## Практика
 - Точка в конце прав доступа явный признак, что у нас используется с SELinux 
 ```
@@ -104,4 +117,19 @@ drwxr-xr-x. 3 root    root    system_u:object_r:home_root_t:s0          21 Oct  
 -rw-------. 1 vagrant vagrant unconfined_u:object_r:user_home_t:s0     678 Mar 16 00:38 .bash_history
 -rw-r--r--. 1 vagrant vagrant unconfined_u:object_r:user_home_t:s0      18 Jan 23  2023 .bash_logout
 ```
+
+__SELinux - инструменты__ - ставятся отдельно
+1. Пакет setools-console
+- sesearch
+- seinfo
+- findcon
+- getsebool
+- setsebool
+2. Пакет policycoreutils-python
+- audit2allow
+- audit2why
+3. Пакет policycoreutils-newrole
+- newrole
+4. Пакет selinux-policy-mls
+- selinux-policy-mls
 
