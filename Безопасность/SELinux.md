@@ -24,6 +24,22 @@ __Термины SELinux__
 - Тип (type) - атрибут объекта, который определяет, кто может получитъ к нему доступ
 - Роль - атрибут, который определяет, в какие домены может входить пользователь, то есть какие домены пользователь имеет право запускать
 
+
+__SELinux - инструменты__ - ставятся отдельно
+1. Пакет setools-console
+- sesearch
+- seinfo
+- findcon
+- getsebool
+- setsebool
+2. Пакет policycoreutils-python
+- audit2allow
+- audit2why
+3. Пакет policycoreutils-newrole
+- newrole
+4. Пакет selinux-policy-mls
+- selinux-policy-mls
+
 ## Доступ
 ### Дискреционный механизм доступа
 Дискреционный механизм доступа (DAC, Discretionary Access Control)
@@ -106,6 +122,8 @@ __Наследование типов в SELinux__
 переход в домен passwd_t
 - Процессы запущенные в домене passwd_t могут читать и записывать только в авторизованные файлы промаркированные типом etc_t или shadow_t. Это предотвращает приложение passwd от записи или чтения в другие файлы
 
+__Контексты лежат вот по этому пути: /etc/selinux/targeted/contexts/files__
+
 ## Практика
 - Точка в конце прав доступа явный признак, что у нас используется с SELinux 
 ```
@@ -125,18 +143,13 @@ drwxr-xr-x. 3 root    root    system_u:object_r:home_root_t:s0          21 Oct  
 -rw-r--r--. 1 vagrant vagrant unconfined_u:object_r:user_home_t:s0      18 Jan 23  2023 .bash_logout
 ```
 
-__SELinux - инструменты__ - ставятся отдельно
-1. Пакет setools-console
-- sesearch
-- seinfo
-- findcon
-- getsebool
-- setsebool
-2. Пакет policycoreutils-python
-- audit2allow
-- audit2why
-3. Пакет policycoreutils-newrole
-- newrole
-4. Пакет selinux-policy-mls
-- selinux-policy-mls
+__Команды SELinux__
+- ls -Z /root - просмотр контекста безопасности каталога
+- semanage login -l Ɓ информация о правах пользователей
+- ls -Z /usr/sbin/nginx - контекст безопасности объекта
+- ps -Z 12345 Ƃ контекст безопасности процесса
+- sesearch -A -s httpd_t | grep 'allow httpd_t' — разрешение правила для типа httpd_t
+- sesearch -s httpd_t -t httpd_exec_t -c file -p execute -Ad — ищем правила преобразования по типам
+
+
 
