@@ -145,11 +145,47 @@ drwxr-xr-x. 3 root    root    system_u:object_r:home_root_t:s0          21 Oct  
 
 __Команды SELinux__
 - ls -Z /root - просмотр контекста безопасности каталога
-- semanage login -l Ɓ информация о правах пользователей
+- semanage login -l -  информация о правах пользователей
 - ls -Z /usr/sbin/nginx - контекст безопасности объекта
-- ps -Z 12345 Ƃ контекст безопасности процесса
+- ps -Z 12345 - контекст безопасности процесса
 - sesearch -A -s httpd_t | grep 'allow httpd_t' — разрешение правила для типа httpd_t
 - sesearch -s httpd_t -t httpd_exec_t -c file -p execute -Ad — ищем правила преобразования по типам
 
 
+### Режимы работы
+- Конфиг: /etc/selinux/config
+- Статус: sestatus или getenforce
+- Отключение: setenforce 0
+- Включние: setenforce 1
+- Просмотр ошибок: journalctl -t setroubleshoot --since=14:20
 
+В конфиге есть возможность перевести режим работы SELinux из enforcing - когда он работает и запрещает, в  permissive - когда он работает, но не запрещает и ошибки пишет в лог, тем самым можно првоерить проблема с которой мы столкнулись в SELinux или нет. Режим работы меняетя на лету. (кроме Disabled) Дополнительно для отладки можно менять режим на permissive только для определенной метки, а не для всей системы:
+```
+semanage permissive -a httpd_t #Включить permissive
+semanage permissive -d httpd_t #Отключить permissive
+```
+
+### Изменение контекстов
+Изменение контекстов:
+- Меняем (временно) тип в контексте каталога: chcon -R -t type /home/user
+- Проверяем контекст каталога: ls -Z /home/user
+- Восстанавливаем контекст каталога: restorecon -v /home/user
+- Постоянное изменение контекста:
+   - semanage fcontext -a options file-name|directory-name
+   - restorecon -v file-name|directory-name
+
+### Создание модуля на основе лога
+1. Очищаем audit.log: echo > /var/log/audit/audit.log (в новых системах используем jpurnald)
+2. Включаем в SELinux режим permissive: setenforce 0
+3. Запускаем приложение и получаем ошибки в audit.log
+4. Смотрим ошибки и рекомендации в audit.log: audit2why < /var/log/audit/audit.log
+5. Формируем модуль с правилами для SELinux из данных лога audit2allow -M httpd_add --debug < /var/log/audit/audit.log
+6. Загружаем модуль (сохраняется после перезагрузки) semodule -i httpd_add.pp
+
+### Параметризованные политики
+- Представляет из себя политики, которые описаны переменными с булевым типом (on/off)
+- Управлятся утилитами: getsebool и setsebool
+- Просмотр политик в отношении сервиса samba:    
+ getsebool -a | grep samba
+- Меняем значение выбранной политики (постоянно):    
+ setsebool -P samba_share_fusefs on
