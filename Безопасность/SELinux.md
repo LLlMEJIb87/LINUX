@@ -85,3 +85,23 @@ RBAC - управление по ролям:
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/TE.PNG">
 </p>
+
+## Практика
+- Точка в конце прав доступа явный признак, что у нас используется с SELinux 
+```
+[vagrant@selinux ~]$ ls -al
+total 24
+drwx------. 3 vagrant vagrant 132 Mar 16 00:47 .
+drwxr-xr-x. 3 root    root     21 Oct  2 21:00 ..
+-rw-------. 1 vagrant vagrant 678 Mar 16 00:38 .bash_history
+```
+- Добавив ключ Z к команде - мы увидим метки
+```
+[vagrant@selinux ~]$ ls -alZ
+total 24
+drwx------. 3 vagrant vagrant unconfined_u:object_r:user_home_dir_t:s0 132 Mar 16 00:47 .
+drwxr-xr-x. 3 root    root    system_u:object_r:home_root_t:s0          21 Oct  2 21:00 ..
+-rw-------. 1 vagrant vagrant unconfined_u:object_r:user_home_t:s0     678 Mar 16 00:38 .bash_history
+-rw-r--r--. 1 vagrant vagrant unconfined_u:object_r:user_home_t:s0      18 Jan 23  2023 .bash_logout
+```
+
