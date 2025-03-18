@@ -185,3 +185,89 @@ Mar 16 04:33:52 selinux systemd[1]: Started The nginx HTTP and reverse proxy ser
 - Для удаления модуля воспользуемся командой: semodule -r nginx
 
 ## Задание №2 Обеспечение работоспособности приложения при включенном SELinux
+Произвел установку серверов с помощью vagrant согласно методическому пособию.
+1. Попробуем внести изменения в зону
+```
+[vagrant@client ~]$  nsupdate -k /etc/named.zonetransfer.key
+> server 192.168.50.10
+> zone ddns.lab
+> update add www.ddns.lab. 60 A 192.168.50.15
+> send
+update failed: SERVFAIL
+> quit
+```
+2. Изменения внести не получилось. Cмотрим логи SELinux, чтобы понять в чём может быть проблема.
+```
+[root@client ~]# cat /var/log/audit/audit.log | audit2why
+```
+Тут мы видим, что на клиенте отсутствуют ошибки
+3. Не закрывая сессию на клиенте, подключимся к серверу ns01 и проверим логи SELinux:
+```
+[root@ns01 ~]# cat /var/log/audit/audit.log | audit2why
+type=AVC msg=audit(1742297523.382:2325): avc:  denied  { write } for  pid=25149 comm="isc-net-0001" name="dynamic" dev="sda4" ino=33575229 scontext=system_u:system_r:named_t:s0 tcontext=unconfined_u:object_r:named_conf_t:s0 tclass=dir permissive=0
+
+        Was caused by:
+                Missing type enforcement (TE) allow rule.
+
+                You can use audit2allow to generate a loadable module to allow this access.
+```
+В логах мы видим, что ошибка в контексте безопасности. Целевой контекст named_conf_t
+4. Для сравнения посмотрим существующую зону (localhost) и её контекст:
+```
+[root@ns01 ~]# ls -alZ /var/named/named.localhost
+-rw-r-----. 1 root named system_u:object_r:named_zone_t:s0 152 Feb 19 16:04 /var/named/named.localhost
+```
+У наших конфигов в /etc/named вместо типа named_zone_t используется тип named_conf_t.
+5. Проверим данную проблему в каталоге /etc/named:
+```
+[root@ns01 ~]# ls -laZ /etc/named
+total 28
+drw-rwx---.  3 root named system_u:object_r:named_conf_t:s0      121 Mar 18 11:23 .
+drwxr-xr-x. 85 root root  system_u:object_r:etc_t:s0            8192 Mar 18 11:23 ..
+drw-rwx---.  2 root named unconfined_u:object_r:named_conf_t:s0   56 Mar 18 11:23 dynamic
+-rw-rw----.  1 root named system_u:object_r:named_conf_t:s0      784 Mar 18 11:23 named.50.168.192.rev
+-rw-rw----.  1 root named system_u:object_r:named_conf_t:s0      610 Mar 18 11:23 named.dns.lab
+-rw-rw----.  1 root named system_u:object_r:named_conf_t:s0      609 Mar 18 11:23 named.dns.lab.view1
+-rw-rw----.  1 root named system_u:object_r:named_conf_t:s0      657 Mar 18 11:23 named.newdns.lab
+```
+Тут мы также видим, что контекст безопасности неправильный. Проблема заключается в том, что конфигурационные файлы лежат в другом каталоге.
+6. Cмотрим в каком каталоги должны лежать, файлы, чтобы на них распространялись правильные политики SELinux можно с помощью команды: 
+```
+/etc/named(/.*)?                                   all files          system_u:object_r:named_conf_t:s0 
+/var/named(/.*)?                                   all files          system_u:object_r:named_zone_t:s0 
+```
+7. Изменим тип контекста безопасности для каталога /etc/named:
+```
+sudo chcon -R -t named_zone_t /etc/named
+```
+Проверяем
+```
+[root@ns01 ~]# ls -laZ /etc/named
+total 28
+drw-rwx---.  3 root named system_u:object_r:named_zone_t:s0      121 Mar 18 11:23 .
+drwxr-xr-x. 85 root root  system_u:object_r:etc_t:s0            8192 Mar 18 11:23 ..
+drw-rwx---.  2 root named unconfined_u:object_r:named_zone_t:s0   56 Mar 18 11:23 dynamic
+-rw-rw----.  1 root named system_u:object_r:named_zone_t:s0      784 Mar 18 11:23 named.50.168.192.rev
+-rw-rw----.  1 root named system_u:object_r:named_zone_t:s0      610 Mar 18 11:23 named.dns.lab
+-rw-rw----.  1 root named system_u:object_r:named_zone_t:s0      609 Mar 18 11:23 named.dns.lab.view1
+-rw-rw----.  1 root named system_u:object_r:named_zone_t:s0      657 Mar 18 11:23 named.newdns.lab
+```
+8. Попробуем снова внести изменения с клиента: 
+```
+[root@client ~]# nsupdate -k /etc/named.zonetransfer.key
+> server 192.168.50.10
+> zone ddns.lab
+> i^H^X^C[root@client ~]# 
+[root@client ~]# nsupdate -k /etc/named.zonetransfer.key
+> server 192.168.50.10
+> zone ddns.lab
+> update add www.ddns.lab. 60 A 192.168.50.15
+> send
+> quit
+```
+Проверяем
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/dig.PNG">
+</p>
+
