@@ -200,7 +200,7 @@ update failed: SERVFAIL
 ```
 [root@client ~]# cat /var/log/audit/audit.log | audit2why
 ```
-Тут мы видим, что на клиенте отсутствуют ошибки
+Тут мы видим, что на клиенте отсутствуют ошибки     
 3. Не закрывая сессию на клиенте, подключимся к серверу ns01 и проверим логи SELinux:
 ```
 [root@ns01 ~]# cat /var/log/audit/audit.log | audit2why
