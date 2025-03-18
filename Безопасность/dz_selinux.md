@@ -257,10 +257,6 @@ drw-rwx---.  2 root named unconfined_u:object_r:named_zone_t:s0   56 Mar 18 11:2
 [root@client ~]# nsupdate -k /etc/named.zonetransfer.key
 > server 192.168.50.10
 > zone ddns.lab
-> i^H^X^C[root@client ~]# 
-[root@client ~]# nsupdate -k /etc/named.zonetransfer.key
-> server 192.168.50.10
-> zone ddns.lab
 > update add www.ddns.lab. 60 A 192.168.50.15
 > send
 > quit
