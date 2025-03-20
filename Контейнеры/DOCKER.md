@@ -29,8 +29,12 @@ _ _ _
 
 
 ## Установка Docker
-1. https://docs.docker.com/engine/install/ubuntu/  - документауия по установки docker на OS
+https://docs.docker.com/engine/install/ubuntu/  - документауия по установки docker на OS
+1. apt update
 2. apt install docker.io
+3. systemctl enable --now docker     
+
+- docker --version - проверка версии
 - systemctl status docker - посмотреть состояние приложения
 - docker run - hello-world - проверка роботоспособности приложения, запускаем тестовй контейнер hello-world
 
