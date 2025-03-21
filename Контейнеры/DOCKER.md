@@ -39,6 +39,12 @@ https://docs.docker.com/engine/install/ubuntu/  - документауия по 
 - docker run - hello-world - проверка роботоспособности приложения, запускаем тестовй контейнер hello-world
 
 
+Чтобы запускать Docker без sudo, добавьте себя в группу docker
+```
+sudo usermod -aG docker $(whoami)
+```
+
+
 ## Работа с Docker
 **Команды:**  
 - docker ps - посмотреть запущенные контейнеры ( с ключом -a можно посомтреть все контейнеры, в том чилсе не ативные) ( docker rm id/имя - удалить контейнер)
