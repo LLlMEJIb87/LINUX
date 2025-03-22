@@ -30,20 +30,40 @@ _ _ _
 
 ## Установка Docker
 https://docs.docker.com/engine/install/ubuntu/  - документауия по установки docker на OS
-1. apt update
-2. apt install docker.io
-3. systemctl enable --now docker     
+1. Настроим репозиторий
+```
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-- docker --version - проверка версии
-- systemctl status docker - посмотреть состояние приложения
-- docker run - hello-world - проверка роботоспособности приложения, запускаем тестовй контейнер hello-world
-
-
-Чтобы запускать Docker без sudo, добавьте себя в группу docker
+# Add the repository to Apt sources
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+```
+2. Установка пакета docker
+```
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+3. Убедимся, что установка прошла успешно, загрузим тестовый контейнер
+```
+sudo docker run hello-world
+```
+4. Сделаем автозагрузку ПО
+```
+systemctl enable --now docke
+```  
+5. Чтобы запускать Docker без sudo, добавьте себя в группу docker
 ```
 sudo usermod -aG docker $(whoami)
 ```
-
+- docker --version - проверка версии
+- systemctl status docker - посмотреть состояние приложения
 
 ## Работа с Docker
 **Команды:**  
@@ -67,10 +87,11 @@ sudo usermod -aG docker $(whoami)
 - docker stop nginx1 - остановить контейнер
 - docker start nginx1 - запустить контейнер
 - docker restart nginx1 - остановить и запустить
--  docker inspect nginx1 - информмация об контейнере
+- docker inspect nginx1 - информмация об контейнере
+- docker logs <container_id> - логи контейнера
 2. Для работы в контейнере в него нужно "провалиться"
 ```
- docker exec -it nginx1 sh
+ docker exec -it nginx1 sh (bash)
 ```
 3. В оболочке контейнера нет многих привычных нам команд, поэтому "выкачиваем" из контейнера нужные файлы в OS и там их редактируем,далее вставляем обратно
 - ls -al - покажет файлы
@@ -86,6 +107,19 @@ sudo docker rm nginx1
 ```
 sudo docker run -d --name nginx1 -p 80:80 -v /home/nginx-etc/nginx/:/etc/nginx -v /var/www/html:/usr/share/nginx/html nginx:1.26.2-alpine-slim
 ```
+### Работа с образами
+- список доступных образов
+```
+docker images
+```
+
+### Работа с томами
+1. Создание и подключение тома
+```
+docker volume create myvolume
+docker run -v myvolume:/data -it ubuntu bash
+```
+Теперь файлы в /data контейнера будут сохраняться даже после его удаления
 ## Docker Network
 **Режим** **сети** контейнеров в докер
 <p align="center">
@@ -119,5 +153,5 @@ COPY ./index.html /usr/share/nginx/html/index.html
 ```
 4. Делаем сборку
 ```
-docker build -t nginx-custom . (точка - в существующую директорию)
+docker build -t nginx-custom . (точка - откуда будет браться инофрмация для сборки)
 ```
