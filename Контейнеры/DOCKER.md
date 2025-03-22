@@ -67,9 +67,9 @@ sudo usermod -aG docker $(whoami)
 
 ## Работа с Docker
 **Команды:**  
-- посмотреть запущенные контейнеры ( с ключом -a можно посомтреть все контейнеры, в том чилсе не ативные) ( docker rm id/имя - удалить контейнер)
+- посмотреть запущенные контейнеры 
 ```
-docker ps
+docker ps # -a покажет все контейнеры
 ``` 
 - удалить контейнер
 ```
@@ -79,7 +79,10 @@ docker rm <container_id>
 ```
 docker images ls
 ```
-- docker pull nginx:1.26.2-alpine-slim - cкачать образ  
+- Загрузка образа из Docker Hub
+```
+docker pull nginx
+``` 
 - docker system df покажет сколько места занимают контейнеры на диске
 - docker info посмотреть информацию о версии и т.п 
 
