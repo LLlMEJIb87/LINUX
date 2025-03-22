@@ -56,7 +56,7 @@ sudo docker run hello-world
 ```
 4. Сделаем автозагрузку ПО
 ```
-systemctl enable --now docke
+systemctl enable --now docker
 ```  
 5. Чтобы запускать Docker без sudo, добавьте себя в группу docker
 ```
@@ -182,14 +182,18 @@ docker volume rm myvolume
 ```
 - создать отдельную сеть для контейнеров (при добавление контейнеров в эту сеть будут выдаваться адреса из этой сети, все контейнеры которые будут входить в эту сеть будут иметь ip связанность)
 ```
-docker network create MYNET
+docker network create test_network
+docker container run -d --name test_nginx --network=test_network nginx # создать контейнер и подключить его в ранее созданную сеть
 ```
 - покажет информацию об созданной сети, ip адреса, какие контейнеры к ней привязаны
 ```
- docker network inspect MYNET
+ docker network inspect test_network
 ```
 - подключить контейнер к сети bridge (таким образом мы можем делать связанность контейнеров из разных сетей)
 ```
 docker network connect bridge name_conatiner
 ```
-
+- Удаление сети
+```
+docker network rm test_network
+```
