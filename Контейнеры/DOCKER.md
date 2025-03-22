@@ -71,30 +71,49 @@ sudo usermod -aG docker $(whoami)
 ```
 docker ps
 ``` 
+- удалить контейнер
+```
+docker rm <container_id>
+```
 - список образов, которые у нас есть ( )
 ```
-docker images 
+docker images ls
 ```
 - docker pull nginx:1.26.2-alpine-slim - cкачать образ  
 - docker system df покажет сколько места занимают контейнеры на диске
 - docker info посмотреть информацию о версии и т.п 
 
 
-### Запуск контейнера
+### Работа с контейнерами
 
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%9A%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D1%8B/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/zapusk_konteinera.PNG">
 </p>
 
-1. Запускаем контейнер
+- Cоздать  контейнер
 ```
- docker run -d --name nginx1 -p 80:80 -v /var/www/html:/usr/share/nginx/html nginx:1.26.2-alpine-slim
+docker run -d -p 80:80 --name nginx_test nginx # d - demon
 ```
-- docker stop nginx1 - остановить контейнер
-- docker start nginx1 - запустить контейнер
-- docker restart nginx1 - остановить и запустить
-- docker inspect nginx1 - информмация об контейнере
-- docker logs <container_id> - логи контейнера
+- остановить контейнер
+```
+docker stop nginx_test
+```
+- Запустить контейнер
+```
+docker start nginx1
+```
+- остановить и запустить контейнер
+```
+docker restart nginx1
+```
+- информация об контейнере
+```
+docker inspect nginx_test 
+```
+- Посмотреть логи контейнера
+```
+docker logs <container_id>  # -r будет показвать логи в реальном времени
+```
 2. Для работы в контейнере в него нужно "провалиться"
 ```
  docker exec -it nginx1 sh (bash)
