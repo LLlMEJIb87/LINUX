@@ -114,24 +114,11 @@ docker inspect nginx_test
 ```
 docker logs <container_id>  # -r будет показвать логи в реальном времени
 ```
-2. Для работы в контейнере в него нужно "провалиться"
+__Для работы в контейнере в него нужно "провалиться"__
 ```
- docker exec -it nginx1 sh (bash)
+docker exec -it nginx_test bash
 ```
-3. В оболочке контейнера нет многих привычных нам команд, поэтому "выкачиваем" из контейнера нужные файлы в OS и там их редактируем,далее вставляем обратно
-- ls -al - покажет файлы
-```
-sudo docker cp nginx1:/etc/nginx /home/nginx-etc/ - команда запускается из OS, не из докера
-```
-4. Останавливаем и удаляем контейнер
-```
-sudo docker stop nginx1
-sudo docker rm nginx1
-```
-5. запускаем контейнер, но монтируем конфиг из ранее созданной папки в OS (куда ранее копировали из докера)
-```
-sudo docker run -d --name nginx1 -p 80:80 -v /home/nginx-etc/nginx/:/etc/nginx -v /var/www/html:/usr/share/nginx/html nginx:1.26.2-alpine-slim
-```
+
 ### Работа с образами
 - список доступных образов
 ```
