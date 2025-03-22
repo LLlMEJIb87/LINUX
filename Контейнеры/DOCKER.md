@@ -188,7 +188,7 @@ docker network create MYNET
 ```
  docker network inspect MYNET
 ```
-- подключить контейнер к сети bridge (таким образом мы можем делать связанность контейнеров из рахных сетей)
+- подключить контейнер к сети bridge (таким образом мы можем делать связанность контейнеров из разных сетей)
 ```
 docker network connect bridge name_conatiner
 ```
