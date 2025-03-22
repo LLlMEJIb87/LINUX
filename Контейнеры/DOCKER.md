@@ -123,7 +123,7 @@ docker pull nginx
 docker rmi nginx
 ```
 
-#### Cборка образа Docker file
+#### Cборка образа c помощью Dockerfile
 1. Создаем директорию mkdir nginx-docker
 2. Cоздаем Dockerfile 
 ```
@@ -144,12 +144,21 @@ docker build -t my_app
 docker run my_app
 ```
 ### Работа с томами
-- Создание и подключение тома
+Прокинуть директорию можно двумя способами:
+1. прокинуть директорию в контейнер
+```
+mkdir nginx_test
+docker run -d -v ./:/data --name nginx_test nginx
+```
+теперь файлы созданные в data контейнера будут сохраняться на хостовой машине
+2. Создание и подключение тома
 ```
 docker volume create myvolume
 docker run -v myvolume:/data -it ubuntu bash
 ```
 Теперь файлы в /data контейнера будут сохраняться даже после его удаления
+
+
 - просмотр списка томов
 ```
 docker volume ls
