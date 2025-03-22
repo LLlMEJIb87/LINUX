@@ -123,7 +123,7 @@ docker pull nginx
 docker rmi nginx
 ```
 
-#### борка образа Docker file
+#### Cборка образа Docker file
 1. Создаем директорию mkdir nginx-docker
 2. Cоздаем Dockerfile 
 ```
@@ -150,6 +150,15 @@ docker volume create myvolume
 docker run -v myvolume:/data -it ubuntu bash
 ```
 Теперь файлы в /data контейнера будут сохраняться даже после его удаления
+- просмотр списка томов
+```
+docker volume ls
+```
+- Удаление тома
+```
+docker volume rm myvolume
+```
+
 ## Docker Network
 **Режим** **сети** контейнеров в докер
 <p align="center">
