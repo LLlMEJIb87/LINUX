@@ -150,7 +150,9 @@ docker run my_app
 mkdir nginx_test
 docker run -d -v ./:/data --name nginx_test nginx
 ```
-теперь файлы созданные в data контейнера будут сохраняться на хостовой машине      
+теперь файлы созданные в data контейнера будут сохраняться на хостовой машине  
+
+    
 2. Создание и подключение тома
 ```
 docker volume create myvolume
