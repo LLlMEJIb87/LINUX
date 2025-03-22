@@ -114,7 +114,7 @@ docker images
 ```
 
 ### Работа с томами
-1. Создание и подключение тома
+- Создание и подключение тома
 ```
 docker volume create myvolume
 docker run -v myvolume:/data -it ubuntu bash
