@@ -227,3 +227,6 @@ docker network connect bridge name_conatiner
 ```
 docker network rm test_network
 ```
+
+## Docker Compose
+инструмент для описания и управления многоконтейнерными приложениями с помощью файла конфигурации (docker-compose.yml).
