@@ -138,28 +138,41 @@ __Dockerfile описывает:__
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%9A%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D1%8B/%D0%9A%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B8/docker_file.PNG">
 </p>
 
+__Пример базового Dockerfile__
+```
+#Используем официальный образ Python
+FROM python:3.9
+#Копируем файлы приложения внутрь контейнера
+COPY app.py /app/app.py
+#Устанавливаем рабочую директорию
+WORKDIR /app
+#Запускаем приложение
+CMD ["python", "app.py"]
+```
+__Пример продвинутого Dockerfile__
+```
+FROM ubuntu:latest
+RUN apt update && apt install -y nginx curl
+COPY nginx.conf /etc/nginx/nginx.conf
+WORKDIR /var/www/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+__Cборка образа__     
+ После создания Dockerfile можно собрать образ с помощью команды
+```
+# -t my-nginx – задает имя образа
+# . – указывает, что Dockerfile находится в текущей директории
+docker build -t my-nginx .
+docker images
+```
+__Cборка образа__    
+После сборки можно запустить контейнер
+```
+docker run -d -p 8080:80 my-nginx
+```
+Теперь Nginx будет доступен на порту 8080    
 
-
-
-1. Создаем директорию mkdir nginx-docker
-2. Cоздаем Dockerfile 
-```
-cat > Dockerfile
-FROM nginx:latest (latest - последняя версия из репозитория докер)
-COPY ./index.html /usr/share/nginx/html/index.html
-```
-3. Получаем индексовый файл
-```
- cp /var/www/html/index.html ./
-```
-4. Делаем сборку
-```
-docker build -t my_app
-```
-5. Запуск контейнера из образа
-```
-docker run my_app
-```
 ### Работа с томами
 Прокинуть директорию можно двумя способами:
 1. прокинуть директорию в контейнер
