@@ -236,3 +236,34 @@ __Преимущества Docker Compose__
 - Упрощает настройку зависимостей между контейнерами
 - Облегчает работу в локальной среде разработки
 - Позволяет хранить конфигурацию в одном месте (docker-compose.yml)
+
+__Dockercompose__ представляет из себя yml файл:
+```
+---
+services:
+ web:
+ image: nginx
+ ports:
+ - "8080:80"
+ depends_on:
+ - db
+ db:
+ image: postgres
+ environment:
+ POSTGRES_USER: user
+ POSTGRES_PASSWORD: password
+ POSTGRES_DB: mydatabase
+```
+__Команды__     
+- запуск всех контейнеров
+```
+docker compose up -d # -d запускает контейнеры в фоновом режиме
+```
+- Просмотр списка запущенных сервисов
+```
+docker compose ps
+```
+- Просмотр логов сервисов
+```
+docker compose logs -f
+```
