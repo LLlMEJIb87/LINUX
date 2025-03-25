@@ -173,22 +173,6 @@ docker run -d -p 8080:80 my-nginx
 ```
 Теперь Nginx будет доступен на порту 8080    
 
-### Работа с томами
-Прокинуть директорию можно двумя способами:
-1. прокинуть директорию в контейнер
-```
-mkdir nginx_test
-docker run -d -v ./:/data --name nginx_test nginx
-```
-теперь файлы созданные в data контейнера будут сохраняться на хостовой машине  
-
-    
-2. Создание и подключение тома
-```
-docker volume create myvolume
-docker run -v myvolume:/data -it ubuntu bash
-```
-Теперь файлы в /data контейнера будут сохраняться даже после его удаления
 
 
 - просмотр списка томов
@@ -219,6 +203,46 @@ Docker Volumes — это механизм хранения данных в Dock
 - overlay2 является предпочтительным драйвером хранилища для всех поддерживаемых в настоящее время дистрибутивов Linux и не требует дополнительной настройки
 - В btrfs и zfs драйверах имеются дополнительные опции, такие как создание «снапшотов», но требуют большего обслуживания и настройки      
 
+**Команды**    
+
+- просмотр списка томов
+```
+docker volume ls
+```
+- Удаление тома
+```
+docker volume rm myvolume
+```
+### Практика
+1. Связанные папки (bind mounts) (используются, когда требуется оперативно вносить правки в конфиги, так как папки связаны, то изменения файлов на хосте приведет к изменению файлов в контейнере)
+```
+docker run -d -it --name devtest -v "$(pwd)"/target:/app node:lts
+#или
+docker run -d -it --name devtest --mount type=bind,source="$(pwd)"/target,target=/app node:lts
+```
+2. Тома (volumes) - данные хранятся на диске хоста
+```
+docker run -d --name devtest -v my-vol:/app node:lts #Запускаем контейнер и привязываем папку app внутри контейнера к volume my-vol
+#или
+docker run -d --name devtest --mount source=my-vol,target=/app node:lts
+# в режиме для чтения 
+docker run --name devtest -v volume-name:/path/in/container:ro node:lts
+```
+3. Tmpfs - хранение в оперативной памяти (используется для ускорения передачи информации)
+```
+# С mount
+docker run -d -it --name tmptest --mount type=tmpfs,destination=/app node:lts
+# Короткая форма
+docker run -d -it --name tmptest --tmpfs /app node:lts
+```
+4.  Из Dockerfile
+```
+FROM ubuntu:latest
+RUN mkdir /data
+WORKDIR /data
+RUN echo "Hello from Volume" > test
+VOLUME /data
+```
 
 ## Docker Network
 **Режим** **сети** контейнеров в докер
