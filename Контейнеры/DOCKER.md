@@ -233,7 +233,22 @@ docker network connect bridge name_conatiner
 ```
 docker network rm test_network
 ```
-
+### Практика
+1. Дефолтная bridge-сеть
+```
+docker run -d --name nginx -p 80:80 nginx #Проброс порта на все интерфейсы, Docker автоматически подключит контейнер к сети bridge 172.17.0.0/16, доступен по порту 80 хоста
+docker run -d --name nginx -p 127.0.0.1:80:80 nginx #Ограниченный проброс на 127.0.0.1, доступность только с хостовой машины
+docker run -d --name nginx -p 192.168.0.1:80:80 nginx #Контейнерный порт 80 мапится только на 192.168.0.1:80 хостовой машины.
+docker network ls
+```
+2. Кастомная сеть
+```
+docker network create --driver bridge net(имя сети) #Cоздаем новую сеть bridge
+docker run -dt --name n1 --network net nginx:alpine #Запускаем контейнеры и указываем, к какой сети они будут относиться
+docker run -dt --name n2 --network net nginx:alpine
+docker run -it -d --network host --name nginx nginx #Так мы запускаем контейнер напрямую в сети хоста
+docker network inspect net
+```
 ## Docker Compose
 Инструмент для описания и управления многоконтейнерными приложениями с помощью файла конфигурации (docker-compose.yml).   
 
