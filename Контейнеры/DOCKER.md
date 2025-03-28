@@ -361,7 +361,7 @@ tar xzvf harbor-offline-installer-v2.12.2.tgz
 ```
 4. Конфигурим файл harbor.yml ( если его нет, то копируем harbor.yml.tmpl)
 ```
-hostname: 192.168.1.210
+hostname: arbor.mycompany.net (или ip хоста)
 
 https:
 # https port for harbor, default is 443
@@ -390,7 +390,7 @@ mkdir /etc/docker/certs.d/harbor.mycompany.net/
 ```
 3. Собираем докер образ и кладём его в харбор:
 ```
-docker login 192.168.1.210
+docker login harbor.mycompany.net
 docker build -t harbor.mycompany.net/<project>/<name>:<tag> .
 docker push harbor.mycompany.net/<project>/<name>:<tag>
 ```
