@@ -339,19 +339,58 @@ docker compose logs -f
 Один из видов локального реестра **Harbor** — реестр для Docker-контейнеров с безопасностью «из коробки»  https://goharbor.io/    
 
 **Установка**     
-1. Скачивайем offline архив  https://github.com/goharbor/harbor/releases  (на хосте должно быть установлено docker.io и docker-compose-v2
-2. Распоковываем
+
+1. Генерируем самоподписанные сертификаты
+```
+openssl genrsa -out ca.key 4096
+openssl req -x509 -new -nodes -sha512 -days 3650 -subj "/C=RU/ST=Moscow/L=Moscow/O=example/OU=MY company/CN=mycompany.net" -key ca.key -out ca.crt
+openssl genrsa -out harbor.mycompany.net.key 4096
+openssl req -sha512 -new -subj "/C=RU/ST=Moscow/L=Moscow/O=example/OU=My company/CN=mycompany.net" -key harbor.mycompany.net.key -out harbor.mycompany.net.csr
+openssl x509 -req -sha512 -days 3650 -extfile v3.ext -CA ca.crt -CAkey ca.key -CAcreateserial -in harbor.mycompany.net.csr -out harbor.mycompany.net.crt
+openssl x509 -inform PEM -in harbor.mycompany.net.crt -out harbor.mycompany.net.cert
+```
+2. Закидываем серверные ключи в каталог
+```
+sudo cp harbor.mycompany.crt /etc/ssl/certs/
+sudo cp harbor.mycompany.key /etc/ssl/certs/
+```
+3. Скачиваем harbor-offline-installer-v1.8.1.tgz https://github.com/goharbor/harbor/releases
+4. Распоковываем
 ```
 tar xzvf harbor-offline-installer-v2.12.2.tgz
 ```
-3. Конфигурим файл harbor.yml.tmpl
+4. Конфигурим файл harbor.yml ( если его нет, то копируем harbor.yml.tmpl)
 ```
-hostname: reg.mydomain.com #Делаем свое
-port: 80  #Делаем свое
-port: 443 #Делаем свое
+hostname: 192.168.1.210
+
+https:
+# https port for harbor, default is 443
+port: 443
+# The path of cert and key files for nginx
+certificate: /etc/ssl/certs/harbor.mycompany.net.crt
+private_key: /etc/ssl/certs/harbor.mycompany.net.key
+
+harbor_admin_password: Harbor12345
 ```
-так же нужно сгенерировать самоподписанные сертификаты и указать к ним путь
+5. Запускаем установочный скрипт
 ```
-certificate: /your/certificate/path
-private_key: /your/private/key/path
+./install.sh
+```
+__Настраиваем docker на клиенте (у разработчика)__
+1. Cоздаем директорию
+```
+mkdir /etc/docker/certs.d/harbor.mycompany.net/
+```
+2. Закидываем в этот каталог файлы
+```
+/etc/docker/certs.d/harbor.mycompany.net/
+├── ca.crt
+├── harbor.mycompany.net.cert
+└── harbor.mycompany.net.key
+```
+3. Собираем докер образ и кладём его в харбор:
+```
+docker login
+docker build -t harbor.mycompany.net/<project>/<name>:<tag> .
+docker push harbor.mycompany.net/<project>/<name>:<tag>
 ```
