@@ -90,6 +90,7 @@ root@vm-dz-upgrade:~/nginx-otus# curl 192.168.1.210
 Собрать (скомпилировать) ядро в контейнере – да, можно. Запустить контейнер с другим ядром – нет, так как он использует ядро хоста.
 
 5. Закидываем наш custom образ на Docker Hub     
+
 5.1 Регестрируемся на https://hub.docker.com/
 5.2 Авторизируемся на хосте
 ```
@@ -103,3 +104,5 @@ docker tag nginx-otus lllmejib87/nginx-otus:latest
 ```
 docker push lllmejib87/nginx-otus:latest
 ```
+
+https://hub.docker.com/repository/docker/lllmejib87/nginx-otus/general
