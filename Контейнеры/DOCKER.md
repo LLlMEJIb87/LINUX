@@ -390,7 +390,7 @@ mkdir /etc/docker/certs.d/harbor.mycompany.net/
 ```
 3. Собираем докер образ и кладём его в харбор:
 ```
-docker login
+docker login 192.168.1.210
 docker build -t harbor.mycompany.net/<project>/<name>:<tag> .
 docker push harbor.mycompany.net/<project>/<name>:<tag>
 ```
