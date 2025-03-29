@@ -91,7 +91,7 @@ root@vm-dz-upgrade:~/nginx-otus# curl 192.168.1.210
 
 5. Закидываем наш custom образ на Docker Hub     
 
-5.1 Регестрируемся на https://hub.docker.com/
+5.1 Регестрируемся на https://hub.docker.com/     
 5.2 Авторизируемся на хосте
 ```
 docker login
