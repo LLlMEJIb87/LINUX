@@ -10,15 +10,17 @@ _ _ _
 Prometheus может быть использован для мониторинга использования ресурсов на серверах, отслеживания времени ответа веб-сервисов, сбора метрик с баз данных и измерения производительности контейнерных приложений.      
     
 https://prometheus.io/docs/introduction/overview/
-
-**Варианты сбора метрик**    
+   
 Prometheus работает по принципу Pull модели      
 
  <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%9C%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3/Picture/Prometheus_pull.PNG">
 </p>      
+     
 
-**Exporter**    
+**Варианты сбора метрик** 
+__1. Instrumentation__  - научить приложение из коробки отдавать метрики    
+__2. Exporter__    
 
  <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%9C%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3/Picture/Prometheus_exporter.PNG">
@@ -28,7 +30,9 @@ Node Exporter — это экспортер Prometheus (один из), спец
 
 Node Exporter обычно применяется для мониторинга состояния и производительности отдельных серверов или узлов в кластере. Это помогает выявить узкие места в ресурсах, обнаружить отказы оборудования и оптимизировать распределение ресурсов.     
 
-https://prometheus.io/docs/instrumenting/exporters/
+https://prometheus.io/docs/instrumenting/exporters/    
+
+__3. Pushgateway__ - на стороне сервиса пишем скрипт, который будет пушить нужные метрики на gateway откуда будет забирать метркии промифиус.
 
 
 ### Установка
