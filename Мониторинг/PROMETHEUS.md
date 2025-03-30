@@ -36,15 +36,11 @@ __3. Pushgateway__ - на стороне сервиса пишем скрипт,
 
 
 ### Установка
+
 ```
-sudo apt install prometheus prometheus-node-exporter
-```
-или
-```
-# Устанавливаем вспомогательные пакеты и скачиваем Prometheus
-$ yum update -y
-$ yum install wget vim -y
+# Cкачиваем Prometheus
 $ wget https://github.com/prometheus/prometheus/releases/download/v2.44.0/prometheus-2.44.0.linux-amd64.tar.gz
+
 # Создаем пользователя и нужные каталоги, настраиваем для них владельцев
 $ useradd --no-create-home --shell /bin/false prometheus
 $ mkdir /etc/prometheus
@@ -68,18 +64,43 @@ $ cp -r prometheuspackage/console_libraries /etc/prometheus
 $ chown -R prometheus:prometheus /etc/prometheus/consoles
 $ chown -R prometheus:prometheus /etc/prometheus/console_libraries
 ```
-### Настройка
-Конфиг находится /etc/prometheus/prometheus.yml  
-
-По умолчанию Промифиус слушает порт 9090, Node-exporter 9100
 ```
- - job_name: node
-    # If prometheus-node-exporter is installed, grab stats about the local
-    # machine by default.
-    static_configs:
-      - targets: ['localhost:9100'] - в эту строку мы добавляем хосты, которые планиурем мониторить
-````
+# Создаем файл конфигурации
+$ touch /etc/prometheus/prometheus.yml
 
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  - job_name: 'prometheus_master'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+
+$ chown prometheus:prometheus /etc/prometheus/prometheus.yml
+```
+```
+# Настраиваем сервис
+$ nano /etc/systemd/system/prometheus.service
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+ExecStart=/usr/local/bin/prometheus \
+--config.file /etc/prometheus/prometheus.yml \
+--storage.tsdb.path /var/lib/prometheus/ \
+--web.console.templates=/etc/prometheus/consoles \
+--web.console.libraries=/etc/prometheus/console_libraries
+[Install]
+WantedBy=multi-user.target
+$ systemctl daemon-reload
+$ systemctl start prometheus
+$ systemctl status prometheus
+```
 ## GRAFANA
 Для визуализации метрик можно использовать Grafana. Существует множество различных источников данных, которые поддерживает Grafana, один из них — Prometheus.   
 
