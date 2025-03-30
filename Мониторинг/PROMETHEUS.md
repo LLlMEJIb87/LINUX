@@ -128,7 +128,7 @@ $ systemctl start node_exporter
 $ 
 ```
 ```
-# Обновляем конфигурацию Prometheus
+# Обновляем конфигурацию Prometheus (делаем на хосте где установлен  Prometheus)
 $ nano /etc/prometheus/prometheus.yml
 global:
  scrape_interval: 10s
@@ -156,8 +156,9 @@ wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.2.2_amd64.d
 sudo dpkg -i grafana-enterprise_11.2.2_amd64.deb  - устанавливаем
 ```
 Grafana не стартует автоматически, после установки делаем следующее:   
-sudo /bin/systemctl daemon-reload   
-sudo /bin/systemctl enable grafana-server   - добавляем в автозагрузку   
+systemctl daemon-reload   
+systemctl enable grafana-server   - добавляем в автозагрузку   
+systemctl start grafana-server
 
 
 
