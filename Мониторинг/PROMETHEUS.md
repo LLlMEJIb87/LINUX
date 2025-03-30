@@ -80,7 +80,7 @@ scrape_configs:
 $ chown prometheus:prometheus /etc/prometheus/prometheus.yml
 ```
 ```
-# Настраиваем сервис
+#Настраиваем сервис
 $ nano /etc/systemd/system/prometheus.service
 [Unit]
 Description=Prometheus
@@ -111,13 +111,13 @@ $ systemctl status prometheus
 $ wget https://github.com/prometheus/alertmanager/releases/download/v0.25.0/alertmanager-0.25.0.linux-amd64.tar.gz
 $ tar zxf alertmanager-0.25.0.linux-amd64.tar.gz
 
-# Создаем пользователя и нужные директории
+#Создаем пользователя и нужные директории
 $ useradd --no-create-home --shell /bin/false alertmanager
 $ usermod --home /var/lib/alertmanager alertmanager
 $ mkdir /etc/alertmanager
 $ mkdir /var/lib/alertmanager
 
-# Копируем бинарники из архива в /usr/local/bin и меняем владельца
+#Копируем бинарники из архива в /usr/local/bin и меняем владельца
 $ cp alertmanager-0.25.0.linux-amd64/amtool /usr/local/bin/
 $ cp alertmanager-0.25.0.linux-amd64/alertmanager /usr/local/bin/
 $ cp alertmanager-0.25.0.linux-amd64/alertmanager.yml /etc/alertmanager/
@@ -129,7 +129,7 @@ $ chown -R alertmanager:alertmanager /var/lib/prometheus/alertmanager
 ```
 
 ```
-# Настраиваем сервис
+#Настраиваем сервис
 $ touch /etc/systemd/system/alertmanager.service
 
 [Unit]
@@ -150,7 +150,7 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 
-# Запускаем сервис
+#Запускаем сервис
 $ systemctl daemon-reload
 $ systemctl start alertmanager
 ```
@@ -201,7 +201,8 @@ $ systemctl restart prometheus
 Для визуализации метрик можно использовать Grafana. Существует множество различных источников данных, которые поддерживает Grafana, один из них — Prometheus.   
 
 ### Установка
-https://grafana.com/grafana/download
+https://grafana.com/grafana/download    
+
 ```
 sudo apt-get install -y adduser libfontconfig1 musl  - устанавливаем зависимости
 wget https://dl.grafana.com/enterprise/release/grafana-enterprise_11.2.2_amd64.deb - скачиваем пакет
