@@ -156,13 +156,13 @@ $ systemctl start alertmanager
 ```
 ### Установка Node Exporter
 ```
-# Скачиваем и распаковываем Node Exporter
+#Скачиваем и распаковываем Node Exporter
 $ wget https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz
 $ tar xzfv node_exporter-1.5.0.linux-amd64.tar.gz
-# Создаем пользователя, перемещаем бинарник в /usr/local/bin
+#Создаем пользователя, перемещаем бинарник в /usr/local/bin
 $ useradd -rs /bin/false nodeusr
 $ mv node_exporter-1.5.0.linux-amd64/node_exporter /usr/local/bin/
-# Создаем сервис
+#Создаем сервис
 $ touch /etc/systemd/system/node_exporter.service
 [Unit]
 Description=Node Exporter
@@ -174,13 +174,13 @@ Type=simple
 ExecStart=/usr/local/bin/node_exporter
 [Install]
 WantedBy=multi-user.target
-# Запускаем сервис
+#Запускаем сервис
 $ systemctl daemon-reload
 $ systemctl start node_exporter
 $ 
 ```
 ```
-# Обновляем конфигурацию Prometheus (делаем на хосте где установлен  Prometheus)
+#Обновляем конфигурацию Prometheus (делаем на хосте где установлен  Prometheus)
 $ nano /etc/prometheus/prometheus.yml
 global:
  scrape_interval: 10s
@@ -193,7 +193,7 @@ scrape_configs:
  scrape_interval: 5s
  static_configs:
  - targets: ['192.168.1.211:9100']
-# Перезапускаем сервис
+#Перезапускаем сервис
 $ systemctl restart prometheus
 ```
 
