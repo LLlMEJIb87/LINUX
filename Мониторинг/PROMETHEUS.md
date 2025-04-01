@@ -173,6 +173,33 @@ groups:
 # Проверяем валидность
 $ /usr/local/bin/promtool check rules /etc/prometheus/rules.yml
 ```
+
+```
+# Обновляем конфиг prometheus
+$ nano /etc/prometheus/prometheus.yml
+global:
+ scrape_interval: 10s
+scrape_configs:
+ - job_name: 'prometheus_master'
+ scrape_interval: 5s
+ static_configs:
+ - targets: ['localhost:9090']
+ - job_name: 'node_exporter_centos'
+ scrape_interval: 5s
+ static_configs:
+ - targets: ['localhost:9100']
+
+rule_files:
+ - "rules.yml"
+alerting:
+ alertmanagers:
+ - static_configs:
+ - targets:
+ - localhost:9093
+# Рестартуем сервисы
+$ systemctl restart prometheus
+$ systemctl restart alertmanager
+```
 ### Установка Node Exporter
 ```
 #Скачиваем и распаковываем Node Exporter
