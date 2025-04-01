@@ -126,7 +126,7 @@ $ chown -R alertmanager:alertmanager /etc/alertmanager /var/lib/alertmanager
 $ chown alertmanager:alertmanager /usr/local/bin/{alertmanager,amtool}
 $ echo "ALERTMANAGER_OPTS=\"\"" > /etc/default/alertmanager
 $ chown alertmanager:alertmanager /etc/default/alertmanager
-$ chown -R alertmanager:alertmanager /var/lib/prometheus/alertmanager
+$ chown -R prometheus:prometheus /var/lib/prometheus/alertmanager
 ```
 
 ```
