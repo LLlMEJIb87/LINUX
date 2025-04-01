@@ -155,6 +155,24 @@ WantedBy=multi-user.target
 $ systemctl daemon-reload
 $ systemctl start alertmanager
 ```
+```
+# Настраиваем правила
+$ vim /etc/prometheus/rules.yml
+groups:
+- name: alert.rules
+ rules:
+ - alert: InstanceDown
+ expr: up == 0
+ for: 1m
+ labels:
+ severity: critical
+ annotations:
+ description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute.'
+ summary: Instance {{ $labels.instance }} down
+
+# Проверяем валидность
+$ /usr/local/bin/promtool check rules /etc/prometheus/rules.yml
+```
 ### Установка Node Exporter
 ```
 #Скачиваем и распаковываем Node Exporter
