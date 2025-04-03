@@ -29,3 +29,13 @@ __Zabbix Agent__ — это программа, устанавливаемая �
   <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%9C%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3/Picture/zabbix_sbor_danih.PNG">
 </p>      
+
+__Методы сбора данных__     
+- Pull
+   - Проверки сервисов
+   - Пассивный агент
+   - SSH/Telnet
+- Push
+   - Активный агент
+   - Zabbix Trapper и SNMP Traps
+   - Мониторинг лог-файлов
