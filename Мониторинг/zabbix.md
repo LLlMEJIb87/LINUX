@@ -62,6 +62,27 @@ Admin/zabbix
 ### Установка zabbix agent
 https://www.zabbix.com/download    
 
+Кофиг лежит по пути /etc/zabbix/zabbix_agent2.conf    
+
+__основные изменения, которые потребуется внести__     
+1. Если zabbix agent находится в passive режим (ждет запросы от сервера)
+```
+##### Passive checks related
+Server=192.168.1.210
+2. Если zabbix agent используется в active режиме (посылает запросы на сервер)
+```
+##### Active checks related
+ServerActive=192.168.1.210
+```
+3. Общие 
+```
+### Option: ListenIP
+ListenIP=0.0.0.0
+### Option: Hostname
+Hostname=zabbix_agent
+```
+
+
 ## Настройка мониторинга 
 Обзор базовых понятий Zabbix:   
 - Host / Узел сети – Источник метрик. Логическое понятие. 1 физический хост может быть представлен несколькими узлами сети.
