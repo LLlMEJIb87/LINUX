@@ -108,3 +108,8 @@ s - UNIX-сокет
 
 https://www.gnu.org/software/coreutils/manual/html_node/Changing-Special-Mode-Bits.html
 
+## Access Control List  
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/ACL.PNG">
+</p>      
