@@ -106,10 +106,36 @@ s - UNIX-сокет
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/spec_bits_dostup.PNG">
 </p>        
 
-https://www.gnu.org/software/coreutils/manual/html_node/Changing-Special-Mode-Bits.html
+https://www.gnu.org/software/coreutils/manual/html_node/Changing-Special-Mode-Bits.html    
+
+__Расширенные атрибуты файлов___   
+
+ Атрибуты
+- a - файл может быть открыт только в режиме добавлениā
+- A - не обновлять время перезаписи
+- c - автоматически сжимать при записи на диск
+- C - отключть копирование при записи
+- i - сделать неизменяемым (даже для root)
+- s - безопасное удаление с последующей перезаписью нулями    
+```
+ Изменение: chattr +i test_file
+ Просмотр: lsattr
+```
 
 ## Access Control List  
 
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/ACL.PNG">
 </p>      
+
+- Повышение гибкости назначения прав доступа
+- Поддержка на уровне файловой системы
+- Может потребовать установки утилит
+```
+apt instal acl
+```
+- tune2fs -l /dev/mapper/ubuntu--vg-ubuntu--lv | grep acl
+- setfacl -m u:zabbix:r test_file - установить ACL
+- setfacl -m d:u:vagrant:rwx -R /usr/local/upload/ - установить дефолтные ACL (только для директорий)
+- getfacl test_file - показать ACL
+- setfacl -x u:zabbix FILE - убрать ACL
