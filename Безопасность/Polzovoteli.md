@@ -83,13 +83,13 @@ __Права доступа к файлам__
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/bits_dostup.PNG">
 </p>    
   
- 1. r    
+ 1. r - read 4  
 - чтение файла   
 - просмотр списка имен    
-2. w    
+2. w- write 2  
 - изменение файла    
 - изменение объектов директории   
-3. x   
+3. x - execute
 - исполнение файла    
 - доступ к inode в директории (вход, поиск)
 
@@ -104,4 +104,7 @@ s - UNIX-сокет
 
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/spec_bits_dostup.PNG">
-</p>    
+</p>        
+
+https://www.gnu.org/software/coreutils/manual/html_node/Changing-Special-Mode-Bits.html
+
