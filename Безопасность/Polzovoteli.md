@@ -100,4 +100,8 @@ d - директория
 b - блочное устройтсво    
 с - символьное устройство    
 p - именнованный канал    
-s - UNIX-сокет
+s - UNIX-сокет   
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/spec_bits_dostup.PNG">
+</p>    
