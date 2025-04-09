@@ -77,8 +77,14 @@ __Механизм sudo__
 - sudo — выполнение команды с правами суперпользователя
 - /etc/sudoers — конфигурация sudo
 
-__Права доступа к файлам__    
--rwxr-xrw-    
+__Права доступа к файлам__   
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C/Pictures/bits_dostup.PNG">
+</p>    
+ 
+__-rwxr-xrw-__  
+пользователь/группа/остальные      
 -обычный файл    
 l - символическая ссылка    
 d - директория   
