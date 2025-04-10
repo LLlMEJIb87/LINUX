@@ -50,6 +50,7 @@ playbook
 ```
 useradd otusadm && passwd otusadm
 useradd otus && passwd otus
+```
 4. Cоздаем группу
 ```
 groupadd -f admin
