@@ -154,9 +154,7 @@ __Что изменилось с появлением capabilities__
 Например:
 
 - CAP_NET_ADMIN — управлять сетевыми интерфейсами
-
 - CAP_SYS_BOOT — перезагружать систему
-
 - CAP_CHOWN — менять владельца файлов
 
 И так далее. Всего ~40 capability.     
@@ -177,10 +175,13 @@ sudo setcap cap_net_raw+p /bin/ping
 - Ambient	Возможности, сохраняющиеся при запуске не-привилегированного бинаря
 
 ### Утилиты для работы
+
 - getcap <файл> — показать capability файла
-
 - setcap cap_net_bind_service=+ep <файл> — дать возможность слушать порты <1024
-
 - capsh --print — показать capability текущего процесса
-
 - pscap <PID> — посмотреть capability процесса (из пакета libcap2-bin)
+
+Установка
+```
+sudo apt install libcap2-bin
+```
