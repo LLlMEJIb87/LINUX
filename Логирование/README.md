@@ -160,11 +160,74 @@ __logrotate: условия__
 - copytruncate – обрезать оригинальный файл до нулевого размера после создания копии вместо переименования оригинального файла и создания нового
 - postrotate/prerotate -> endscript – cтроки, находящиеся между данными служебными словами, каждое из которых должно находиться в отдельной строке, выполняются с использованием /bin/sh после ротации файла журнала. Параметр sharedscripts означает, что скрипт postrotate будет выполнятся только один раз, а не после обработки каждого файла.
 
+
+__logrotate: пример конфигурации__    
+```
+[root@logs ~]# cat /etc/logrotate.d/nginx
+/var/log/nginx/*.log {
+daily
+missingok
+rotate 52
+compress
+delaycompress
+notifempty
+create 0640 www-data adm
+sharedscripts
+prerotate
+if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+run-parts /etc/logrotate.d/httpd-prerotate; \
+fi \
+endscript
+```
+Проверка конкретного конфига logrotate без применения:
+```
+logrotate -d /etc/logrotate.d/chrony
+```
+Применение конкретного конфига logrotate с выводом сообщений в консоль:
+```
+logrotate -v /etc/logrotate.d/auth
+```
+Запуск всех конфигов logrotate:
+```
+logrotate -v /etc/logrotate.conf
+```
+
   ### Journald
-  Современная система логирования   
+journald - система регистрации событий в systemd    
+
+__Особенности:__
+- бинарный формат логов (защита от подделки, возможность конвертации в другие форматы)
+- не требует специальной настройки
+- структурированные данные (multi-field, multi-line)
+- индексированные данные
+- центральное хранилище логов
+
+
+__Какие логи принимает journald?__     
+- простые syslog логи логи ядра (kmsg)
+- структурированные данные через Journal API
+- логи и статусы systemd юнитов записи системы аудита (auditd)
+
 __/etc/systemd/journald.conf__ - конфигурационный файл journald
 
-__journalctl -b__ - покажет сообщения с ммоента загрузки системы     
+__journald: параметры конфигурации__
+- Storage (volatile, persistent, auto, none) - по-умолчанию auto (пишет логи в tmpfs), чтобы писать логи на диск - нужно поставить persistent
+- Compress (yes, no) - сжимает данные перед записью
+- Seal (yes, no) - накладывает криптографическую печать
+- ForwardToSyslog, ForwardToKMsg, ForwardToConsole, ForwardToWall - опции перенаправления сообщений
+- MaxLevelStore, MaxLevelSyslog, MaxLevelKMsg, MaxLevelConsole, MaxLevelWall - задаем уровни важности сообщений для разных логов
+- SystemMaxUse - максимальный объем, который логи могут занимать на диске
+- SystemKeepFree - объем свободного места на диске, после сохранения логов
+- SystemMaxFileSize - объем файла лога, по достижении которого он должен быть удален с диска
+- RuntimeMaxUse - максимальный объем, который логи могут занимать в файловой системе /run
+- RuntimeKeepFree - объем свободного места на /run, после сохранения логов
+- RuntimeMaxFileSize - объем файла лога, по достижении которого он должен быть удален из файловой системы/run
+
+__Работа с журналом__    
+
+__journalctl -b__ - покажет сообщения с ммоента загрузки системы 
+__journalctl -e__  - покажет журнал с конца
+__journalctl -xe__ - покажет журнал с конца с расширенными событиями    
 __journalctl -b | grep__  фильтруем по слову     
 __journalctl --since "2024-10-15 00:00:00"__ - фильтруем по дате    
 __journalctl --since "2024-10-15 00:00:00" --until "2024-10-15 08:00:00"__ - фильтруем от и до    
