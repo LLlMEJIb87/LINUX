@@ -102,3 +102,73 @@ fi
 ```
 chmod +x /usr/local/bin/login.sh
 ```
+В скрипте подписаны все условия. Скрипт работает по принципу: 
+Если сегодня суббота или воскресенье, то нужно проверить, входит ли пользователь в группу admin, если не входит — то подключение запрещено. При любых других вариантах подключение разрешено.     
+
+9. Укажем в файле /etc/pam.d/sshd модуль pam_exec и наш скрипт
+```
+nano /etc/pam.d/sshd 
+
+# PAM configuration for the Secure Shell service
+
+# Вставляем скрипт ДО всех auth-правил
+auth       required     pam_exec.so debug /usr/local/bin/login.sh
+
+# Standard Un*x authentication.
+@include common-auth
+
+# Disallow non-root logins when /etc/nologin exists.
+account    required     pam_nologin.so
+
+# Uncomment and edit /etc/security/access.conf if you need to set complex
+# access limits that are hard to express in sshd_config.
+# account  required     pam_access.so
+
+# Standard Un*x authorization.
+@include common-account
+
+# SELinux needs to be the first session rule.
+session [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so close
+
+# Set the loginuid process attribute.
+session    required     pam_loginuid.so
+
+# Create a new session keyring.
+session    optional     pam_keyinit.so force revoke
+
+# Standard Un*x session setup and teardown.
+@include common-session
+
+# Print MOTD
+session    optional     pam_motd.so  motd=/run/motd.dynamic
+session    optional     pam_motd.so noupdate
+
+# Mail notification
+session    optional     pam_mail.so standard noenv
+
+# Limits
+session    required     pam_limits.so
+
+# Read environment vars
+session    required     pam_env.so
+session    required     pam_env.so user_readenv=1 envfile=/etc/default/locale
+
+# SELinux open
+session [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so open
+
+# Password updates
+@include common-password
+```
+10. Проверяем
+```
+otus
+Apr 12 07:01:21 pam-host sshd[1238]: pam_exec(sshd:auth): Calling /usr/local/bin/login.sh ...
+Apr 12 07:01:21 pam-host sshd[1235]: pam_exec(sshd:auth): /usr/local/bin/login.sh failed: exit code 1
+Apr 12 07:01:23 pam-host sshd[1235]: Failed password for otus from 192.168.1.88 port 51750 ssh2
+otusadm
+Apr 12 07:01:27 pam-host sshd[1235]: Connection reset by authenticating user otus 192.168.1.88 port 51750 [preauth]
+Apr 12 07:01:34 pam-host sshd[1244]: pam_exec(sshd:auth): Calling /usr/local/bin/login.sh ...
+Apr 12 07:01:34 pam-host sshd[1242]: Accepted password for otusadm from 192.168.1.88 port 51787 ssh2
+Apr 12 07:01:34 pam-host sshd[1242]: pam_unix(sshd:session): session opened for user otusadm(uid=1002) by (uid=0)
+```
+
