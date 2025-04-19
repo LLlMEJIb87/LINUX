@@ -112,7 +112,7 @@ BORG_RSH="ssh -i borg_ssh" borg list borg@192.168.1.210:/var/backup/::etc-2025-0
 ```
 root@client:~/.ssh# BORG_RSH="ssh -i borg_ssh" borg extract borg@192.168.1.210:/var/backup/::etc-2025-04-19_10:26:43 etc/hostname
 ```
-3. Автоматизируем создание бэкапов с помощью systemd
+3. Автоматизируем создание бэкапов с помощью systemd      
 3.1 Создаем сервис и таймер в каталоге /etc/systemd/system/
 ```
 nano /etc/systemd/system/borg-backup.service
