@@ -167,3 +167,9 @@ WantedBy=timers.target
 systemctl enable borg-backup.timer 
 systemctl start borg-backup.timer
 ```
+3.3 Проверяем
+```
+root@client:~/.ssh# systemctl list-timers --all
+NEXT                        LEFT           LAST                        PASSED       UNIT                           ACTIVATES                       
+Sat 2025-04-19 11:36:31 UTC 3min 48s left  Sat 2025-04-19 11:31:31 UTC 1min 11s ago borg-backup.timer              borg-backup.service
+```
