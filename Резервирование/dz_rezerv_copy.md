@@ -123,26 +123,31 @@ Description=Borg Backup
 [Service]
 Type=oneshot
 
+# Путь к ключу
+Environment="BORG_RSH=ssh -i /root/.ssh/borg_ssh"
+
 # Парольная фраза
 Environment="BORG_PASSPHRASE=k3115007s"
+
 # Репозиторий
-Environment=REPO=borg@192.168.1.210:/var/backup/
+Environment="REPO=borg@192.168.1.210:/var/backup/"
+
 # Что бэкапим
-Environment=BACKUP_TARGET=/etc
+Environment="BACKUP_TARGET=/etc"
 
 # Создание бэкапа
-ExecStart=/bin/borg create 
-    --stats                
+ExecStart=/bin/borg create \
+    --stats                \
     ${REPO}::etc-{now:%%Y-%%m-%%d_%%H:%%M:%%S} ${BACKUP_TARGET}
 
 # Проверка бэкапа
 ExecStart=/bin/borg check ${REPO}
 
 # Очистка старых бэкапов
-ExecStart=/bin/borg prune 
-    --keep-daily  90      
-    --keep-monthly 12     
-    --keep-yearly  1       
+ExecStart=/bin/borg prune \
+    --keep-daily  90      \
+    --keep-monthly 12     \
+    --keep-yearly  1       \
     ${REPO}
 ```
 ```
