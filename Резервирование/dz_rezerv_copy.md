@@ -57,7 +57,7 @@ end
         exclusive: true
 ```
 
-2. Настроить удаленный бэкап каталога /etc c сервера client при помощи borgbackup.
+2. Настроить удаленный бэкап каталога /etc c сервера client при помощи borgbackup.     
 2.1 Устанавливаем ПО borgbackup (на клиенте и сервере)
 ```
 apt install borgbackup
