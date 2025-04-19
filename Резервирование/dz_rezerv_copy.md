@@ -71,9 +71,9 @@ chown borg:borg /var/backup/
 ```
 2.3  На сервер backup создаем каталог ~/.ssh/authorized_keys в каталоге /home/borg
 ```
-sudo mkdir /home/borg
-sudo chown borg:borg /home/borg
-sudo chmod 700 /home/borg
+mkdir /home/borg
+chown borg:borg /home/borg
+chmod 700 /home/borg
 mkdir /home/borg/.ssh
 touch /home/borg/.ssh/authorized_keys
 chown -R borg:borg /home/borg/.ssh
@@ -111,4 +111,54 @@ BORG_RSH="ssh -i borg_ssh" borg list borg@192.168.1.210:/var/backup/::etc-2025-0
 2.10 Достаем файл из бекапа
 ```
 root@client:~/.ssh# BORG_RSH="ssh -i borg_ssh" borg extract borg@192.168.1.210:/var/backup/::etc-2025-04-19_10:26:43 etc/hostname
+```
+3. Автоматизируем создание бэкапов с помощью systemd
+3.1 Создаем сервис и таймер в каталоге /etc/systemd/system/
+```
+nano /etc/systemd/system/borg-backup.service
+                                                                      
+[Unit]
+Description=Borg Backup
+
+[Service]
+Type=oneshot
+
+# Парольная фраза
+Environment="BORG_PASSPHRASE=k3115007s"
+# Репозиторий
+Environment=REPO=borg@192.168.1.210:/var/backup/
+# Что бэкапим
+Environment=BACKUP_TARGET=/etc
+
+# Создание бэкапа
+ExecStart=/bin/borg create \
+    --stats                \
+    ${REPO}::etc-{now:%%Y-%%m-%%d_%%H:%%M:%%S} ${BACKUP_TARGET}
+
+# Проверка бэкапа
+ExecStart=/bin/borg check ${REPO}
+
+# Очистка старых бэкапов
+ExecStart=/bin/borg prune \
+    --keep-daily  90      \
+    --keep-monthly 12     \
+    --keep-yearly  1       \
+    ${REPO}
+```
+```
+
+nano /etc/systemd/system/borg-backup.timer
+[Unit]
+Description=Borg Backup
+
+[Timer]
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=timers.target
+```
+3.2 Включаем и запускаем службу таймера
+```
+systemctl enable borg-backup.timer 
+systemctl start borg-backup.timer
 ```
