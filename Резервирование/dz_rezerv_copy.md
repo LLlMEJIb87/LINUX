@@ -131,18 +131,18 @@ Environment=REPO=borg@192.168.1.210:/var/backup/
 Environment=BACKUP_TARGET=/etc
 
 # Создание бэкапа
-ExecStart=/bin/borg create \
-    --stats                \
+ExecStart=/bin/borg create 
+    --stats                
     ${REPO}::etc-{now:%%Y-%%m-%%d_%%H:%%M:%%S} ${BACKUP_TARGET}
 
 # Проверка бэкапа
 ExecStart=/bin/borg check ${REPO}
 
 # Очистка старых бэкапов
-ExecStart=/bin/borg prune \
-    --keep-daily  90      \
-    --keep-monthly 12     \
-    --keep-yearly  1       \
+ExecStart=/bin/borg prune 
+    --keep-daily  90      
+    --keep-monthly 12     
+    --keep-yearly  1       
     ${REPO}
 ```
 ```
