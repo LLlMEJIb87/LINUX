@@ -181,3 +181,83 @@ Central Network
 | Inet – central | 192.168.255.0/30    | 255.255.255.252     | 2  | 192.168.255.1  | 192.168.255.2  | 192.168.255.3   |
 
 
+### Настройка NAT на сервере inetRouter
+1. Отключаем firewall ufw
+```
+systemctl stop ufw
+systemctl disable ufw
+```
+2. Создаём файл /etc/iptables_rules.ipv4:
+```
+nano /etc/iptables_rules.ipv4
+
+*filter
+:INPUT ACCEPT [90:8713]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [54:7429]
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+COMMIT
+
+*nat
+:PREROUTING ACCEPT [1:44]
+:INPUT ACCEPT [1:44]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+-A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
+COMMIT
+```
+3.  Создаём файл, в который добавим скрипт автоматического восстановления правил при перезапуске системы:
+```
+nano /etc/network/if-pre-up.d/iptables
+
+#!/bin/sh
+/sbin/iptables-restore < /etc/iptables_rules.ipv4
+```
+4. Добавляем права на выполнение файла /etc/network/if-pre-up.d/iptables
+```
+chmod +x /etc/network/if-pre-up.d/iptables
+```
+5. Перезагружаем сервер
+```
+shutdown -r now
+```
+### Настройка маршрутизации транзитных пакетов
+1. Проверяем статус форвардинга пакетов на сервере
+```
+vagrant@inetRouter:~$ sysctl net.ipv4.ip_forward
+net.ipv4.ip_forward = 0
+```
+0 - не активирован
+2. Активируем
+```
+echo "net.ipv4.conf.all.forwarding = 1" >> /etc/sysctl.conf
+sysctl -p
+```
+Данную операцию проделываем на всех маршрутизаторах в сети
+
+### Отключение маршрута по умолчанию на интерфейсе enp0s3
+При разворачивании нашего стенда Vagrant создает в каждом сервере свой интерфейс, через который у сервера появляется доступ в интернет. Отключить данный порт нельзя, так как через него Vagrant подключается к серверам. Обычно маршрут по умолчанию прописан как раз на этот интерфейс, данный маршрут нужно отключить:
+```
+nano 50-cloud-init.yaml
+
+network:
+    ethernets:
+        enp0s3:
+            dhcp4: true
+            dhcp4-overrides:
+                use-routes: false
+            dhcp6: false
+            match:
+                macaddress: 02:a7:b1:fd:e7:e2
+            set-name: enp0s3
+    version: 2
+```
+```
+netplan try
+```
+Данную операцию проделываем на все маршрутизаторах кроме inetRouter
+
+### Настройка статических маршрутов
+
