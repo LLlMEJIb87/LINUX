@@ -260,12 +260,12 @@ netplan try
 Данную операцию проделываем на всех маршрутизаторах/cерверах кроме inetRouter
 
 ### Настройка статических маршрутов
-Так как у нас нет маршгрута по умолчанию, то нет сетевой связанности с хостами в сети
+1. Так как у нас нет маршгрута по умолчанию, то нет сетевой связанности с хостами в сети
 ```
 root@office1Server:/home/vagrant# ping 192.168.1.2
 ping: connect: Network is unreachable
 ```
-Нам нужно настроить маршруты по умолчанию, делаем на  office1Server
+Нам нужно настроить маршруты по умолчанию, делаем на  office1Server default маршрут в сторону office1Router
 ```
 nano /etc/netplan/50-vagrant.yaml
 
@@ -283,4 +283,14 @@ network:
     enp0s19:
       addresses:
       - 192.168.50.21/24
+```
+2. Делаем на office1Router
+```
+ip route add default via 192.168.255.10 dev enp0s8
+```
+3. Делаем на centralRouter
+```
+ip route add default via 192.168.255.1 dev enp0s8
+ip route add 192.168.2.0/24 via 192.168.255.10 dev enp0s17
+ip route add 192.168.1.0/24 via 192.168.255.6 dev enp0s18
 ```
