@@ -115,6 +115,8 @@ end
 
 3. Список серверов     
 
+<div align="center">
+
 | Server         | IP and Bitmask                          |
 |----------------|------------------------------------------|
 | inetRouter     | Default-NAT address VirtualBox          |
@@ -137,6 +139,8 @@ end
 |                | 192.168.1.129/26                        |
 |                | 192.168.1.193/26                        |
 | office2Server  | 192.168.1.2/26                          |
+
+</div>
 
 4. Список сетей     
 Central Network
