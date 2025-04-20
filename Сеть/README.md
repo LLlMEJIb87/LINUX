@@ -2,7 +2,13 @@
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%A1%D0%B5%D1%82%D1%8C/picture/interface.PNG">
 </p>
 
+- Старая нотация eth0, eth1... iftypeN. Группировка интерфейсов по типу и сквозная нумерация. Из глобальных минусов — в качестве eth0 может оказаться не тот интерфейс, что до перезагрузки, например, если вставить новую карточку в “младший” слот.
+- Новая нотация (от systemd) — Predictable Network Interface Names. В своем виде по умолчанию использует форматы (упрощенно)
+   - (en|wl)[P<domain>]p<bus>s<slot>[f<function>][n<phys_port_name>|d<dev_port>] — PCI location
+   - (en|wl)[P<domain>]o<bus>[f<function>][n<phys_port_name>|d<dev_port>] — Onboard device
 
+  
+ Таким образом enp0s3 говорит нам о том, что мы имеем дело с Ethernet-адаптером, подключенным к шине pci No0 в слот No3, а eno1 говорит об onboard ethernet-адаптере с индексом 1
 ## Команды диагностики
 
 **L3**   
