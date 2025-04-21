@@ -113,7 +113,7 @@ end
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%A1%D0%B5%D1%82%D1%8C/picture/Shema_seti.PNG">
 </p>
 
-3. Список серверов     
+    
 
 <div align="center">
 
@@ -142,7 +142,7 @@ end
 
 </div>
 
-4. Список сетей     
+ 
 Central Network
 
 | Name            | Network         | Netmask            | N  | Hostmin       | Hostmax       | Broadcast      |
