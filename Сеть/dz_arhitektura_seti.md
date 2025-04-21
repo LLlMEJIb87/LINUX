@@ -205,7 +205,7 @@ COMMIT
 :INPUT ACCEPT [1:44]
 :OUTPUT ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
--A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
+-A POSTROUTING ! -d 192.168.0.0/16 -o enp0s3 -j MASQUERADE
 COMMIT
 ```
 3.  Создаём файл, в который добавим скрипт автоматического восстановления правил при перезапуске системы:
@@ -286,11 +286,43 @@ network:
 ```
 2. Делаем на office1Router
 ```
-ip route add default via 192.168.255.10 dev enp0s8
+ip route add default via 192.168.255.9 dev enp0s8
 ```
 3. Делаем на centralRouter
 ```
 ip route add default via 192.168.255.1 dev enp0s8
 ip route add 192.168.2.0/24 via 192.168.255.10 dev enp0s17
 ip route add 192.168.1.0/24 via 192.168.255.6 dev enp0s18
+ip route add 192.168.0.0/24 via 192.168.0.2 dev enp0s9
+```
+4. Делаем на office2Router
+```
+ip route add default via 192.168.255.5 dev enp0s8
+ip route add 192.168.1.0/24 via 192.168.1.2 dev enp0s9
+```
+5. Делаем на office2Server
+```
+ip route add default via 192.168.1.1 dev enp0s8
+```
+6. Делаем на inetRouter
+```
+ip route add 192.168.1.0/24 via 192.168.1.2 dev enp0s9
+```
+
+__ПРОВЕРЯЕМ__
+```
+root@office1Server:/home/vagrant# traceroute 192.168.1.2
+traceroute to 192.168.1.2 (192.168.1.2), 64 hops max
+  1   192.168.2.129  0.307ms  0.281ms  0.185ms
+  2   192.168.255.9  0.547ms  0.539ms  0.467ms
+  3   192.168.255.6  0.738ms  0.512ms  0.588ms
+  4   192.168.1.2  1.074ms  0.900ms  0.816ms
+```
+```
+PING ya.ru (5.255.255.242) 56(84) bytes of data.
+64 bytes from ya.ru (5.255.255.242): icmp_seq=1 ttl=60 time=1.66 ms
+64 bytes from ya.ru (5.255.255.242): icmp_seq=2 ttl=60 time=2.11 ms
+^C
+--- ya.ru ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
 ```
