@@ -75,7 +75,7 @@ $Template RemoteLogs,"/var/log/rsyslog/%HOSTNAME%/%PROGRAMNAME%.log"
 ```
 systemctl restart rsyslog
 ```
-4. Проверяем, что видны открытые нами ранее порты
+4. Проверяем, что требуемые порты открыты
 ```
 root@log:/home/vagrant# ss -tulpan | grep rsyslog
 udp   UNCONN 0      0               0.0.0.0:514       0.0.0.0:*     users:(("rsyslogd",pid=2262,fd=5))
