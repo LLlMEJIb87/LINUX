@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
 end
 
 ```
- Проверяем, что оба сервера синхранизируют время с ntp сервером
+ Проверяем, что оба сервера синхронизируют время с ntp сервером
 ```
 root@web:/home/vagrant# timedatectl status
                Local time: Tue 2025-04-22 22:00:14 UTC
