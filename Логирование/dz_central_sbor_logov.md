@@ -131,7 +131,7 @@ Apr 22 23:31:06 web nginx_error: 2025/04/22 23:31:06 [error] 3318#3318: *15 dire
 nano /etc/rsyslog.conf
 
 #remove host
-*.err @192.168.1.100:514
+*.err @192.168.56.15:514
 ```
 2. Перезапускаем службу rsyslog
 ```
