@@ -56,11 +56,9 @@ N: There is 1 additional version. Please use the '-a' switch to see it
 ```
 2. Все настройки Rsyslog хранятся в файле /etc/rsyslog.conf . Для того, чтобы наш сервер мог принимать логи, нам необходимо внести следующие изменения в файл: 
 ```
-provides UDP syslog reception
 module(load="imudp")
 input(type="imudp" port="514")
 
-provides TCP syslog reception
 module(load="imtcp")
 input(type="imtcp" port="514")
 ```
@@ -128,3 +126,23 @@ Apr 22 23:31:05 web nginx_error: 2025/04/22 23:31:05 [error] 3318#3318: *14 dire
 Apr 22 23:31:06 web nginx_error: 2025/04/22 23:31:06 [error] 3318#3318: *15 directory index of "/var/www/html/" is forbidden, client: 192.168.56.10, server: _, request: "GET / HTTP/1.1", host: "192.168.56.10"
 ```
 ### Настройка отправки логов с доп.хоста
+1. На хосте внесем в конфигурацию информацию куда и что мы хотим слать на удаленный сервер rsyslog
+```
+nano /etc/rsyslog.conf
+
+#remove host
+*.err @192.168.1.100:514
+```
+2. Перезапускаем службу rsyslog
+```
+systemctl restart rsyslog
+```
+3. Сделаем тестовое сообщение об ошибке
+```
+logger -p err "Test error message"
+```
+4. Проверяем на сервере rsyslog
+```
+root@log:/var/log/rsyslog/dop# cat root.log
+Apr 23 00:59:36 dop root: Test error message
+```
