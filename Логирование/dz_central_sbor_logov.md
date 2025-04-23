@@ -69,7 +69,7 @@ input(type="imtcp" port="514")
 #Add remote logs
 $Template RemoteLogs,"/var/log/rsyslog/%HOSTNAME%/%PROGRAMNAME%.log"
 *.* ?RemoteLogs
-&
+stop
 ```
 3. Перезапускаем службу rsyslog
 ```
@@ -116,3 +116,15 @@ root@web:/home/vagrant# systemctl restart nginx
 ```
 6. Проверяем. заходим на log-сервер и смотрим информацию об nginx:
 ```
+root@log:/var/log# cat /var/log/rsyslog/web/nginx_access.log
+Apr 22 23:30:59 web nginx_access: 192.168.56.15 - - [22/Apr/2025:23:30:59 +0000] "GET / HTTP/1.1" 403 162 "-" "curl/7.81.0"
+Apr 22 23:31:00 web nginx_access: 192.168.56.15 - - [22/Apr/2025:23:31:00 +0000] "GET / HTTP/1.1" 403 162 "-" "curl/7.81.0"
+Apr 22 23:31:05 web nginx_access: 192.168.56.10 - - [22/Apr/2025:23:31:05 +0000] "GET / HTTP/1.1" 403 162 "-" "curl/7.81.0"
+Apr 22 23:31:06 web nginx_access: 192.168.56.10 - - [22/Apr/2025:23:31:06 +0000] "GET / HTTP/1.1" 403 162 "-" "curl/7.81.0"
+root@log:/var/log# cat /var/log/rsyslog/web/nginx_error.log
+Apr 22 23:30:59 web nginx_error: 2025/04/22 23:30:59 [error] 3318#3318: *12 directory index of "/var/www/html/" is forbidden, client: 192.168.56.15, server: _, request: "GET / HTTP/1.1", host: "192.168.56.10"
+Apr 22 23:31:00 web nginx_error: 2025/04/22 23:31:00 [error] 3318#3318: *13 directory index of "/var/www/html/" is forbidden, client: 192.168.56.15, server: _, request: "GET / HTTP/1.1", host: "192.168.56.10"
+Apr 22 23:31:05 web nginx_error: 2025/04/22 23:31:05 [error] 3318#3318: *14 directory index of "/var/www/html/" is forbidden, client: 192.168.56.10, server: _, request: "GET / HTTP/1.1", host: "192.168.56.10"
+Apr 22 23:31:06 web nginx_error: 2025/04/22 23:31:06 [error] 3318#3318: *15 directory index of "/var/www/html/" is forbidden, client: 192.168.56.10, server: _, request: "GET / HTTP/1.1", host: "192.168.56.10"
+```
+### Настройка отправки логов с доп.хоста
