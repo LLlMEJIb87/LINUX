@@ -1,4 +1,5 @@
 # Выполнение домашней работы на тему PXE
+1. Vagranfile
 ```
 agrant.configure("2") do |config|
   config.vm.define "pxeserver" do |server|
@@ -44,6 +45,7 @@ agrant.configure("2") do |config|
   end
 end
 ```
+2. Playbook
 
 ```
 ---
