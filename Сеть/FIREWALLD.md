@@ -141,13 +141,10 @@ mark set="mark[/mask]" [limit value="rate/duration"]
 
 __rich rules примеры__     
 ```
-firewall-cmd --add-rich-rule rule service name="http" log limit
-value="1/m" audit accept
+firewall-cmd --add-rich-rule rule service name="http" log limit value="1/m" audit accept
 
-firewall-cmd --zone=otus --permanent --add-rich-rule 'rule
-family="ipv4" source address="10.51.21.42" service name="mysql"
-accept'
+firewall-cmd --zone=otus --permanent --add-rich-rule 'rule family="ipv4" source address="10.51.21.42" service name="mysql" accept'
 
-firewall-cmd --add-rich-rule rule family="ipv4" source
-address="192.168.2.3" reject type="icmp-admin-prohibited"
+firewall-cmd --add-rich-rule rule family="ipv4" source address="192.168.2.3" reject type="icmp-admin-prohibited"
 ```
+
