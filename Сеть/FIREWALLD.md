@@ -34,7 +34,17 @@ __Зоны в firewalld__
 - home: домашняя среда, доверие большей части других компьютеров
 - trusted: все соединения разрешены
 
-__Настройки зоны__     
+__Настройки зоны__  
+- База
+```
+firewall-cmd --get-default-zone - выводит зону по умолчанию
+firewall-cmd --get-active-zones - список активных зон
+firewall-cmd --get-zones - список всех доступных зон
+firewall-cmd --list-all - список всех служб текущей зоны
+firewall-cmd --set-default-zone=work - изменить зону по умолчанию
+firewall-cmd --get-services - список всех доступных служб в системе
+firewall-cmd --zone=home --change-interface=eth0 - изменение зоны интерфейса
+```   
 - Сервисы (service)
 - Порты (port)
 - Блоки ICMP (icmp-block)
