@@ -110,7 +110,7 @@ apt install iptables-persistent netfilter-persistent
 ```
 netfilter-persistent save
 ```
-## IPSET
+### IPSET
 В случае если однородных правил становится слишком много (более 1000) то нужно использовать IPSET    
 
 ipset — это сопутствующее приложение для межсетевого экрана Linux iptables. Он позволяет, помимо прочего, задавать правила для быстрой и простой блокировки набора IP-адресов.   
@@ -125,4 +125,31 @@ ipset — это сопутствующее приложение для межс
 - Восстановление: sudo ipset restore -! < ipset-blacklist.backup
 - Очистка: sudo ipset flush blacklist
 - Правило:   
- iptables -I PREROUTING -t raw -m set --match-set ddos src -j DROP
+ iptables -I PREROUTING -t raw -m set --match-set ddos src -j DROP    
+
+## Настройка шлюза
+В случае если нам нужно форвардить трафик на другие машины, то мы можем использовать сервер в качестве шлюза.   
+
+- Включаем forwarding пакетов: идем в /etс/sysctl.conf и раскоментируем:
+```
+net.ipv4.ip_forward=1
+```
+далее применяем конфиг
+```
+sysctl -p
+```
+- Включаем маскарадинг
+```
+iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
+```
+- Разрешаем трафик в цепочке FORWARD
+```
+iptables -A FORWARD -i enp0s8 -o enp0s3 -j ACCEPT
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
+- Вариант с SNAT
+```
+iptables -t nat -A POSTROUTING -o enp0s3 -j SNAT --to-source 172.16.16.94
+iptables -t nat -A POSTROUTING -s 192.168.99.0/24 -j SNAT --to-source 172.16.16.94
+```
+
