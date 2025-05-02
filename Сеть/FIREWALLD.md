@@ -46,8 +46,66 @@ firewall-cmd --get-services - список всех доступных служ�
 firewall-cmd --zone=home --change-interface=eth0 - изменение зоны интерфейса
 ```   
 - Сервисы (service)
+```
+- firewall-cmd --zone=public --add-service=http - разрешить временно
+- firewall-cmd --zone=public --add-service=ftp
+- firewall-cmd --permanent --zone=public --add-service=http - разрешить постоянно
+- firewall-cmd --permanent --zone=public --add-service=ftp
+- firewall-cmd --reload - подгрузка правил из permanent
+- firewall-cmd --permanent --zone=public --list-services
+```
 - Порты (port)
 - Блоки ICMP (icmp-block)
 - Маскарадинг (masquerade)
 - Проброс портов (forward-port)
+```
+firewall-cmd --permanent --new-zone=otus
+ firewall-cmd --zone=otus --add-forward-port=port=2222:proto=tcp:toport=22:toaddr=1.1.1.1
+ firewall-cmd --zone=otus --add-masquerade
+```
+- IPSET
+```
+- firewall-cmd --get-ipset-types
+- firewall-cmd --permanent --new-ipset=test --type=hash:net
+- firewall-cmd --permanent --info-ipset=test
+- firewall-cmd --permanent --ipset=test --add-entry=192.168.0.1
+- firewall-cmd --permanent --ipset=test --get-entries
+- firewall-cmd --permanent --ipset=test --add-entries-from-file=ipl
+- firewall-cmd --permanent --zone=drop --add-source=ipset:test
+```
 - Rich rules (rule)
+```
+rule
+[source]
+[destination]
+service|port|protocol|icmp-block|icmp-type|
+masquerade|forward-port|source-port
+[log]
+[audit]
+[accept|reject|drop|mark]
+```
+rule
+```
+rule [family="ipv4|ipv6"] [priority="priority"]
+```
+source
+```
+source [not]
+address="address[/mask]"|mac="mac-address"|ipset="ipset"
+```
+destination
+```
+destination [not] address="address[/mask]"
+```
+service
+```
+service name="service name"
+```
+port
+```
+port port="port value" protocol="tcp|udp"
+```
+protocol
+```
+protocol value="protocol value"
+```
