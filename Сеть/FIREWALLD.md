@@ -109,3 +109,45 @@ protocol
 ```
 protocol value="protocol value"
 ```
+icmp-block
+```
+icmp-block name="icmptype name"
+```
+forward-port
+```
+forward-port port="port value" protocol="tcp|udp"
+to-port="port value" to-addr="address"
+```
+source-port
+```
+○ source-port port="port value" protocol="tcp|udp"
+```
+log
+```
+log [prefix="prefix text"] [level="log level"] [limit
+value="rate/duration"]
+```
+audit
+```
+audit [limit value="rate/duration"]
+```
+action
+```
+accept [limit value="rate/duration"]
+reject [type="reject type"] [limit value="rate/duration"]
+drop [limit value="rate/duration"]
+mark set="mark[/mask]" [limit value="rate/duration"]
+```
+
+__rich rules примеры__     
+```
+firewall-cmd --add-rich-rule rule service name="http" log limit
+value="1/m" audit accept
+
+firewall-cmd --zone=otus --permanent --add-rich-rule 'rule
+family="ipv4" source address="10.51.21.42" service name="mysql"
+accept'
+
+firewall-cmd --add-rich-rule rule family="ipv4" source
+address="192.168.2.3" reject type="icmp-admin-prohibited"
+```
