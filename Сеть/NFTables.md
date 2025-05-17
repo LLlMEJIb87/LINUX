@@ -74,3 +74,17 @@ nft (add | create) chain [<family>] <table> <name> [ { type <type> hook <hook> [
 nft (delete | list | flush) chain [<family>] <table> <name>     
 nft rename chain [<family>] <table> <name> <newname>     
 ```
+https://wiki.nftables.org/wiki-nftables/index.php/Quick_reference-nftables_in_10_minutes    
+
+__Базовая конфигурация nftables__     
+```
+nft add table ip filter
+nft 'add chain ip filter input { type filter hook input priority 0; policy accept; }'
+nft add rule filter input tcp dport 22 counter accept
+nft add rule filter input tcp dport {80, 443} ct state new accept
+nft add rule filter input ct state related,established accept
+nft add rule filter input ct state invalid drop
+nft add rule filter input iifname "lo" accept
+nft add rule filter input ip protocol icmp accept
+nft 'chain filter input { policy drop; }
+```
