@@ -64,7 +64,7 @@ https://wiki.nftables.org/wiki-nftables/index.php/Configuring_chains#Base_chain_
 
 
 __Работа с цепочками и таблицами__
-
+```
 #Таблицы    
 nft list tables [<family>]     
 nft list table [<family>] <name> [-n] [-a]    
@@ -73,4 +73,4 @@ nft (add | delete | flush) table [<family>] <name>
 nft (add | create) chain [<family>] <table> <name> [ { type <type> hook <hook> [device <device>] priority <priority> \; [policy <policy> \;] } ]     
 nft (delete | list | flush) chain [<family>] <table> <name>     
 nft rename chain [<family>] <table> <name> <newname>     
-
+```
