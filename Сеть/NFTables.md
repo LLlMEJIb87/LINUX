@@ -50,4 +50,15 @@ __Типы цепочек__
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%A1%D0%B5%D1%82%D1%8C/picture/NFT_hook.PNG">
 </p>   
 
+https://wiki.nftables.org/wiki-nftables/index.php/Netfilter_hooks    
+
+__Хуки для цепочек (hooks)__
+- ingress (только в netdev (4.2) и inet (5.10): видит пакеты сразу после драйвера сетевого интерфейса, даже до prerouting. Альтернатива для tc
+- prerouting: все входящие пакеты до решения о роутинге
+- input: входящие пакеты в сторону локальной системы
+- forward: входящие пакеты не в локальную систему
+- output: исходящие пакеты, сформированы в локальной системе
+- postrouting: все пакеты после роутинга, как раз до выхода из локальной системы
+
+
 
