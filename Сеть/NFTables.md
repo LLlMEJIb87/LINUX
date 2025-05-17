@@ -53,12 +53,24 @@ __Типы цепочек__
 https://wiki.nftables.org/wiki-nftables/index.php/Netfilter_hooks    
 
 __Хуки для цепочек (hooks)__
-- ingress (только в netdev (4.2) и inet (5.10): видит пакеты сразу после драйвера сетевого интерфейса, даже до prerouting. Альтернатива для tc
+- ingress (только в netdev (4.2) и inet (5.10): видит пакеты сразу после драйвера сетевого интерфейса, даже до prerouting. Альтернатива для traffic control
 - prerouting: все входящие пакеты до решения о роутинге
 - input: входящие пакеты в сторону локальной системы
 - forward: входящие пакеты не в локальную систему
 - output: исходящие пакеты, сформированы в локальной системе
 - postrouting: все пакеты после роутинга, как раз до выхода из локальной системы
 
+https://wiki.nftables.org/wiki-nftables/index.php/Configuring_chains#Base_chain_types   
 
+
+__Работа с цепочками и таблицами__
+
+#Таблицы    
+nft list tables [<family>]     
+nft list table [<family>] <name> [-n] [-a]    
+nft (add | delete | flush) table [<family>] <name>    
+#Цепочки    
+nft (add | create) chain [<family>] <table> <name> [ { type <type> hook <hook> [device <device>] priority <priority> \; [policy <policy> \;] } ]     
+nft (delete | list | flush) chain [<family>] <table> <name>     
+nft rename chain [<family>] <table> <name> <newname>     
 
