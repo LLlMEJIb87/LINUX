@@ -41,7 +41,13 @@ __Просмотр правил__
 - netdev — привязка к одному интерфейсу, весь трафик (ingress хук)
  
 ## Цепочки
-__Типы цепочек_
+__Типы цепочек__
 - filter — для фильтрации пакетов. Семейства таблиц arp, bridge, ip, ip6 и inet
 - route — перенаправление пакетов. Семейства таблиц ip, ip6 inet
 - nat — Networking Address Translation (NAT). Только первый пакет в соединении попадает в цепочку. Семейства таблиц ip, ip6 inet
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/%D0%A1%D0%B5%D1%82%D1%8C/picture/NFT_hook.PNG">
+</p>   
+
+
