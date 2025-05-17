@@ -19,5 +19,29 @@ __Синтаксис nftables__
 nft add table ip filter
 nft 'add chain ip filter input { type filter hook input priority 0 ; policy accept; }'
 ```
+https://wiki.nftables.org/wiki-nftables/index.php/Counters     
 
 
+__Просмотр правил__
+- iptables -V - проверка режима iptables (legacy, nf_tables)
+- nft list ruleset - просмотр всей конфигурации. Тут нужно быть осторожным, если есть большие списки ipset это будет тормозить систему при выводе. Можно добавить ключ -t чтобы исключить вывод ipset
+- nft list table ip filter - просмотр правил таблицы filter
+- nft flush ruleset - очистка правил
+- nft list tables - список всех таблиц
+- nft list tables ip - список таблиц семейства ip (IPv4)
+- nft list chains - список цепочек
+
+
+Семейства цепочек и таблиц
+- ip (default) — IPv4 протокол: по умолчанию, если не указано
+- ip6 — IPv6 протокол
+- inet — IPv4 и IPv6 протоколы. Dual Stack
+- arp — ARP протокол
+- bridge — мосты (свичи)
+- netdev — привязка к одному интерфейсу, весь трафик (ingress хук)
+ 
+## Цепочки
+__Типы цепочек_
+- filter — для фильтрации пакетов. Семейства таблиц arp, bridge, ip, ip6 и inet
+- route — перенаправление пакетов. Семейства таблиц ip, ip6 inet
+- nat — Networking Address Translation (NAT). Только первый пакет в соединении попадает в цепочку. Семейства таблиц ip, ip6 inet
