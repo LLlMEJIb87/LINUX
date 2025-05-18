@@ -134,6 +134,25 @@ nft add rule nat prerouting tcp dport 22 redirect to 2222
 #Redirect (local DNAT) исходящий
 nft add rule nat output tcp dport 853 redirect to 10053
 ```
+https://wiki.nftables.org/wiki-nftables/index.php/Performing_Network_Address_Translation_(NAT)    
+
+__Именованные лимиты__
+```
+table inet limit_demo {
+ limit lim_400ppm { rate 400/minute ; comment "use to limit in icmp" ; }
+ limit lim_1kbps { rate over 1024 bytes/second burst 512 bytes ; comment "in smtp" ; }
+ chain IN {
+ type filter hook input priority filter; policy drop;
+ meta l4proto icmp limit name "lim_400ppm" accept
+ tcp dport 25 limit name "lim_1kbps" accept
+ }
+}
+nft list limit [family] [table_name] [limit_name]
+nft list limits table [family] [table_name]
+nft list limits
+```
+https://wiki.nftables.org/wiki-nftables/index.php/Limits    
+
 
 __Действия с пакетами__
 - accept - принимает пакет и завершает обработку (только в текущей цепочке)
