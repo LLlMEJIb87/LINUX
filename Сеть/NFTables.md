@@ -88,6 +88,21 @@ nft add rule filter input iifname "lo" accept
 nft add rule filter input ip protocol icmp accept
 nft 'chain filter input { policy drop; }
 ```
+__Примеры правил__
+```
+#Отрицание
+nft add rule ip filter input tcp dport != 80
+#Диапазоны
+add rule ip filter input tcp dport 10-1024
+add rule ip filter input meta skuid 1000-1100
+#Префиксы
+add rule ip filter input ip daddr 192.168.10.0/24
+add rule ip filter input meta mark 0xffffffff/24
+#Состояния
+add rule ip filter input ct new,established
+#Маркировка пакетов
+add rule ip filter input ct mark set 10   
+```
 
 __Удаление и замена правил__
 ```
