@@ -100,7 +100,26 @@ nft insert rule [<family>] <table> <chain> [position <position>] <matches> <stat
 nft replace rule [<family>] <table> <chain> [handle <handle>] <matches> <statements>
 nft delete rule [<family>] <table> <chain> [handle <handle>]
 ```
-https://wiki.nftables.org/wiki-nftables/index.php/Quick_reference-nftables_in_10_minutes     
+https://wiki.nftables.org/wiki-nftables/index.php/Quick_reference-nftables_in_10_minutes      
+
+__Действия с пакетами__
+- accept - принимает пакет и завершает обработку (только в текущей цепочке)
+- reject - отклоняет пакет с сообщением ICMP (reject with icmp type host-unreachable)
+- drop - дропает пакет и завершает обработку (сразу же, без захода в другие цепочки)
+- queue - поставка пакет в очередь для обработки приложением, завершает обработку
+- continue - переход к следующему правилу
+- return - выход из текущей цепочки
+- jump chain - переход с точкой возврата
+- goto chain - переход без точки возврата
+
+__Отладка правил__
+```
+nft add rule ip filter input tcp dport 22 meta nftrace set 1 accept
+nft add chain filter trace_chain { type filter hook prerouting priority -301\; }
+nft add rule filter trace_chain meta nftrace set 1
+nft delete chain filter trace_chain
+nft monitor trace
+```
 
 __Сохранение и восстановление правил__
 ```
@@ -124,3 +143,30 @@ https://wiki.nftables.org/wiki-nftables/index.php/Moving_from_iptables_to_nftabl
 https://wiki.nftables.org/wiki-nftables/index.php/Moving_from_ipset_to_nftables
 
 ### IP SETS
+```
+nft add rule ip filter output tcp dport { 22, 23 } counter
+nft add set ip filter blackhole { type ipv4_addr\; comment \"drop all packets from these hosts\" \; }
+nft add element ip filter blackhole { 192.168.3.4 }
+nft add element ip filter blackhole { 192.168.1.4,192.168.1.5 }
+nft add rule ip filter input ip saddr @blackhole drop
+nft add rule ip filter output ip daddr != @blackhole accept
+nft get element ip filter blackhole { 1.1.1.1 }
+```
+https://wiki.nftables.org/wiki-nftables/index.php/Sets    
+
+
+__пример с vmap__
+```
+table inet filter {
+map myset {
+   type ipv4_addr . inet_service . ipv4_addr : verdict
+   elements = { 172.16.0.1 . 80 . 10.0.0.1 : accept }
+  }
+chain input {
+   type filter hook input priority filter; policy accept;
+   meta nfproto ipv4 ip saddr . tcp dport . ip daddr vmap @myset
+  }
+}
+```
+https://wiki.nftables.org/wiki-nftables/index.php/Moving_from_ipset_to_nftables     
+
