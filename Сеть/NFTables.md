@@ -111,7 +111,7 @@ systemctl enable nftables.service Ƃ вклĀùаем сервис
 nft reset counters Ƃ сброс сùетùиков
 (echo "flush ruleset"; nft --stateless list ruleset) | nft -f -
 ```
-
+https://wiki.nftables.org/wiki-nftables/index.php/Atomic_rule_replacement
 ### Переход с iptables на nftables
 ```
 iptables-translate -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW -j ACCEPT
@@ -120,5 +120,7 @@ ipset-translate restore < sets.ipset
 iptables-save > save.txt
 iptables-restore-translate -f save.txt > ruleset.nft
 ```
+https://wiki.nftables.org/wiki-nftables/index.php/Moving_from_iptables_to_nftables
+https://wiki.nftables.org/wiki-nftables/index.php/Moving_from_ipset_to_nftables
 
 ### IP SETS
