@@ -88,3 +88,37 @@ nft add rule filter input iifname "lo" accept
 nft add rule filter input ip protocol icmp accept
 nft 'chain filter input { policy drop; }
 ```
+
+__Удаление и замена правил__
+```
+nft --handle list chain filter input
+nft --handle --numeric list chain filter input
+nft delete rule filter input handle 3
+nft replace rule filter input handle 11 tcp dport 80 ct state new counter accept
+nft add rule [<family>] <table> <chain> <matches> <statements>
+nft insert rule [<family>] <table> <chain> [position <position>] <matches> <statements>
+nft replace rule [<family>] <table> <chain> [handle <handle>] <matches> <statements>
+nft delete rule [<family>] <table> <chain> [handle <handle>]
+```
+https://wiki.nftables.org/wiki-nftables/index.php/Quick_reference-nftables_in_10_minutes     
+
+__Сохранение и восстановление правил__
+```
+echo "flush ruleset" > /etc/nftables.conf
+nft -s list ruleset >> /etc/nftables.conf
+nft -f nft.rules — атомарнаā загрузка правил
+systemctl enable nftables.service Ƃ вклĀùаем сервис
+nft reset counters Ƃ сброс сùетùиков
+(echo "flush ruleset"; nft --stateless list ruleset) | nft -f -
+```
+
+### Переход с iptables на nftables
+```
+iptables-translate -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW -j ACCEPT
+ip6tables-translate -A FORWARD -i eth0 -o eth3 -p udp -m multiport --dports 111,222 -j ACCEPT
+ipset-translate restore < sets.ipset
+iptables-save > save.txt
+iptables-restore-translate -f save.txt > ruleset.nft
+```
+
+### IP SETS
