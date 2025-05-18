@@ -117,6 +117,24 @@ nft delete rule [<family>] <table> <chain> [handle <handle>]
 ```
 https://wiki.nftables.org/wiki-nftables/index.php/Quick_reference-nftables_in_10_minutes      
 
+__Трансляция адресов (NAT)__    
+```
+#SNAT
+nft add table nat
+nft 'add chain nat postrouting { type nat hook postrouting priority 100 ; }'
+nft add rule nat postrouting ip saddr 192.168.1.0/24 oif eth0 snat to 1.2.3.4
+#Masquerading
+nft add rule nat postrouting masquerade
+#DNAT
+nft add table nat
+nft 'add chain nat prerouting { type nat hook prerouting priority -100; }'
+nft 'add rule nat prerouting iif eth0 tcp dport { 80, 443 } dnat to 192.168.1.120'
+#Redirect (local DNAT) входящий
+nft add rule nat prerouting tcp dport 22 redirect to 2222
+#Redirect (local DNAT) исходящий
+nft add rule nat output tcp dport 853 redirect to 10053
+```
+
 __Действия с пакетами__
 - accept - принимает пакет и завершает обработку (только в текущей цепочке)
 - reject - отклоняет пакет с сообщением ICMP (reject with icmp type host-unreachable)
