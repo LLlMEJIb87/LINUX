@@ -309,10 +309,28 @@ ip route add default via 192.168.255.9 dev enp0s8
 ```
 3. Делаем на centralRouter
 ```
-ip route add default via 192.168.255.1 dev enp0s8
-ip route add 192.168.2.0/24 via 192.168.255.10 dev enp0s17
-ip route add 192.168.1.0/24 via 192.168.255.6 dev enp0s18
-ip route add 192.168.0.0/24 via 192.168.0.2 dev enp0s9
+---
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp0s8:
+      addresses:
+      - 192.168.255.2/30
+      routes:
+      - to: 0.0.0.0/0
+        via: 192.168.255.1
+      addresses:
+      - 192.168.255.9/30
+      routes:
+      - to: 192.168.2.0/24
+        via: 192.168.255.10
+    enp0s18:
+      addresses:
+      - 192.168.255.5/30
+      routes:
+      - to: 192.168.1.0/24
+        via: 192.168.255.6
 ```
 4. Делаем на office2Router
 ```
