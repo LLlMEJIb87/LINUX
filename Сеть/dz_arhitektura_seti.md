@@ -298,7 +298,7 @@ ip route add 192.168.0.0/24 via 192.168.0.2 dev enp0s9
 4. Делаем на office2Router
 ```
 ip route add default via 192.168.255.5 dev enp0s8
-ip route add 192.168.1.0/24 via 192.168.1.2 dev enp0s9
+ip route add 192.168.1.0/25 via 192.168.1.2 dev enp0s9
 ```
 5. Делаем на office2Server
 ```
