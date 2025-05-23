@@ -93,3 +93,48 @@ end
 ```
 sudo apt install nginx
 ```
+3. Теперь, если я правильно понял задание, нам нужно реализовать проброс порта 8080 inetRouter2 на порт 80 centralServer . Т.е чтобы запросы к inetRouter2 http://192.168.50.50:8080 перенаправлялись на centralServer http://192.168.50.12:80. Делаем на inetRouter2:
+```
+sysctl net.ipv4.ip_forward
+echo "net.ipv4.conf.all.forwarding = 1" >> /etc/sysctl.conf
+sysctl -p
+systemctl stop ufw
+systemctl disable ufw
+```
+iptables -t nat -A PREROUTING -p tcp -d 192.168.50.50 --dport 8080 -j DNAT --to-destination 192.168.50.12:80
+iptables -A FORWARD -p tcp -d 192.168.50.12 --dport 80 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+iptables -t nat -A POSTROUTING -p tcp -d 192.168.50.12 --dport 80 -j SNAT --to-source 192.168.50.50
+
+```
+
+Проверяем
+```
+root@centralRouter:/home/vagrant# curl http://192.168.50.12
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+```
+```
+root@centralRouter:/home/vagrant# curl http://192.168.50.12:8080
+curl: (7) Failed to connect to 192.168.50.12 port 8080 after 0 ms: Connection refused
+root@centralRouter:/home/vagrant# curl http://192.168.50.50:8080
+curl: (28) Failed to connect to 192.168.50.50 port 8080 after 129884 ms: Connection timed out
+root@centralRouter:/home/vagrant# curl http://192.168.50.50:8080
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+```
