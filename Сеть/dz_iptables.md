@@ -44,3 +44,4 @@ root@centralRouter:/home/vagrant# knock 192.168.255.1 1234 2345 3456
 #Подключаемся по ssh
 root@centralRouter:/home/vagrant# ssh vagrant@192.168.255.1
 ```
+## Задание 2. добавить inetRouter2, который виден(маршрутизируется (host-only тип сети для виртуалки)) с хоста или форвардится порт через локалхост
