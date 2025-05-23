@@ -105,6 +105,7 @@ systemctl disable ufw
 iptables -t nat -A PREROUTING -p tcp -d 192.168.50.50 --dport 8080 -j DNAT --to-destination 192.168.50.12:80
 iptables -A FORWARD -p tcp -d 192.168.50.12 --dport 80 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
 iptables -t nat -A POSTROUTING -p tcp -d 192.168.50.12 --dport 80 -j SNAT --to-source 192.168.50.50
+netfilter-persistent save
 
 ```
 
