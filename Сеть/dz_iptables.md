@@ -50,7 +50,7 @@ root@centralRouter:/home/vagrant# ssh vagrant@192.168.255.1
 MACHINES = {
   :inetRouter2 => {
     :box_name => "ubuntu/jammy64",
-    :vm_name => "inetRouter",
+    :vm_name => "inetRouter2",
     :net => [
       # ip, adapter, netmask
       ["192.168.50.50", 8, "255.255.255.0"]
