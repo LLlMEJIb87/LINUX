@@ -44,4 +44,52 @@ root@centralRouter:/home/vagrant# knock 192.168.255.1 1234 2345 3456
 #Подключаемся по ssh
 root@centralRouter:/home/vagrant# ssh vagrant@192.168.255.1
 ```
-## Задание 2. добавить inetRouter2, который виден(маршрутизируется (host-only тип сети для виртуалки)) с хоста или форвардится порт через локалхост
+## Задание 2. добавить inetRouter2, который виден(маршрутизируется (host-only тип сети для виртуалки)) с хоста или форвардится порт через локалхост. Запустить nginx на centralServer и пробросить 80й порт на inetRouter2 8080.
+1. Создаем inetRouter2
+```
+MACHINES = {
+  :inetRouter2 => {
+    :box_name => "ubuntu/jammy64",
+    :vm_name => "inetRouter",
+    :net => [
+      # ip, adapter, netmask
+      ["192.168.50.50", 8, "255.255.255.0"]
+    ]
+  }
+}
+
+Vagrant.configure("2") do |config|
+  MACHINES.each do |boxname, boxconfig|
+    config.vm.define boxname do |box|
+      box.vm.box = boxconfig[:box_name]
+      box.vm.host_name = boxconfig[:vm_name]
+
+      box.vm.provider "virtualbox" do |v|
+        v.memory = 1024
+        v.cpus = 1
+      end
+
+      boxconfig[:net].each do |ipconf|
+        box.vm.network("private_network",
+          ip: ipconf[0],
+          adapter: ipconf[1],
+          netmask: ipconf[2]
+        )
+      end
+
+      if boxconfig.key?(:public)
+        box.vm.network "public_network", boxconfig[:public]
+      end
+
+      box.vm.provision "shell", inline: <<-SHELL
+        mkdir -p ~root/.ssh
+        cp ~vagrant/.ssh/auth* ~root/.ssh
+      SHELL
+    end
+  end
+end
+```
+2. Устанавливаем Nginx на centralServer
+```
+sudo apt install nginx
+```
