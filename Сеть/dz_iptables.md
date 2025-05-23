@@ -95,7 +95,6 @@ sudo apt install nginx
 ```
 3. Теперь, если я правильно понял задание, нам нужно реализовать проброс порта 8080 inetRouter2 на порт 80 centralServer . Т.е чтобы запросы к inetRouter2 http://192.168.50.50:8080 перенаправлялись на centralServer http://192.168.50.12:80. Делаем на inetRouter2:
 ```
-sysctl net.ipv4.ip_forward
 echo "net.ipv4.conf.all.forwarding = 1" >> /etc/sysctl.conf
 sysctl -p
 systemctl stop ufw
