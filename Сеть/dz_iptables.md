@@ -123,10 +123,6 @@ root@centralRouter:/home/vagrant# curl http://192.168.50.12
     }
 ```
 ```
-root@centralRouter:/home/vagrant# curl http://192.168.50.12:8080
-curl: (7) Failed to connect to 192.168.50.12 port 8080 after 0 ms: Connection refused
-root@centralRouter:/home/vagrant# curl http://192.168.50.50:8080
-curl: (28) Failed to connect to 192.168.50.50 port 8080 after 129884 ms: Connection timed out
 root@centralRouter:/home/vagrant# curl http://192.168.50.50:8080
 <!DOCTYPE html>
 <html>
