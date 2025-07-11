@@ -52,3 +52,12 @@ ip a add 192.168.20.20/24 dev eth0.20
 ip link set eth0.10 up
 ip link set eth0.20 up
 ```
+
+## Ling agregation 
+Агрегирование каналов (англ. link aggregation) — технологии объединения нескольких параллелыных каналов передачи данных в один логический.
+
+**Bonding**
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Сеть/picture/bonding.PNG">
+</p>   
