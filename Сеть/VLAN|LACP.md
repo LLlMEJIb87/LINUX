@@ -115,3 +115,30 @@ SLAVE=yes
 NM_CONTROLLED=no
 USERCTL=no
 ```
+2. Динамическое агрегирование LACP
+```
+# Задаем интерфейс bond0, задаем режим и ip-адрес
+$ nmcli con add type bond con-name bond0 ifname bond0 mode 802.3ad ip4 10.16.10.7/24
+# Добавляем сетевые интерфейсы в логический интерфейс
+$ nmcli con add type bond-slave ifname eth0 master bond0
+$ nmcli con add type bond-slave ifname eth1 master bond0
+# Последовательно поднимаем интерфейсы
+$ nmcli con up bond-slave-eth0
+$ nmcli con up bond-slave-eth1
+$ nmcli connection up bond0
+```
+
+**Teaming**    
+```
+# Просмотр сетевых интерфейсов
+$ nmcli con
+# Задаем интерфейс team0, задаем режим и ip-адрес
+$ nmcli con add type team con-name team0 ifname team0 mode active-backup ip4 10.16.10.7/24
+# Добавляем сетевые интерфейсы в логический интерфейс
+$ nmcli con add type team-slave ifname eth0 master team0
+$ nmcli con add type team-slave ifname eth1 master team0
+# Последовательно поднимаем интерфейсы
+$ nmcli con up team-slave-eth0
+$ nmcli con up team-slave-eth1
+$ nmcli connection up team0
+```
