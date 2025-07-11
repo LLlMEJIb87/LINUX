@@ -61,3 +61,57 @@ ip link set eth0.20 up
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/Сеть/picture/bonding.PNG">
 </p>   
+
+**Практика**    
+
+1. Статическое агрегирование
+- Настройка Bonding (nmcli)
+
+```
+# Просмотр сетевых интерфейсов
+$ nmcli con
+# Задаем интерфейс bond0, задаем режим и ip-адрес
+$ nmcli con add type bond con-name bond0 ifname bond0 mode active-backup ip4 10.16.10.7/24
+$ nmcli con mod id bond0 bond.options mode=active-backup,fail_over_mac=1,miimon=100
+# Добавляем сетевые интерфейсы в логический интерфейс
+$ nmcli con add type bond-slave ifname eth0 master bond0
+$ nmcli con add type bond-slave ifname eth1 master bond0
+# Последовательно поднимаем интерфейсы
+$ nmcli con up bond-slave-eth0
+$ nmcli con up bond-slave-eth1
+$ nmcli connection up bond0
+```
+- Настройка Bonding (через конфиги 1)
+```
+$ vim /etc/sysconfig/network-scripts/ifcfg-bond0
+DEVICE=bond0
+NAME=bond0
+TYPE=Bond
+BONDING_MASTER=yes
+IPADDR=10.0.0.1
+NETMASK=255.255.255.0
+ONBOOT=yes
+BOOTPROTO=static
+BONDING_OPTS="mode=1 miimon=100 fail_over_mac=1"
+NM_CONTROLLED=no
+USERCTL=no
+```
+- Настройка Bonding (через конфиги 2)
+```
+$ vim /etc/sysconfig/network-scripts/ifcfg-eth1
+DEVICE=eth1
+ONBOOT=yes
+BOOTPROTO=none
+MASTER=bond0
+SLAVE=yes
+NM_CONTROLLED=no
+USERCTL=no
+$ vim /etc/sysconfig/network-scripts/ifcfg-eth2
+DEVICE=eth2
+ONBOOT=yes
+BOOTPROTO=none
+MASTER=bond0
+SLAVE=yes
+NM_CONTROLLED=no
+USERCTL=no
+```
