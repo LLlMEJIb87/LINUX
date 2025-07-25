@@ -42,3 +42,88 @@ $ dig TXT www.otus.ru
 Обратная зона: 10.168.192.in-addr.arpa     
 Запись: 1 IN PTR www.otus.ru     
 Результат: 1.10.168.192.in-addr.arpa IN PTR www.otus.ru     
+
+## DNS Сервер
+
+**Типы серверов**    
+Типы серверов (по свойствам и функциям):       
+- главные (primary или master) — авторитетные, хранят главную копию информации о зоне;
+- вторичные (secondary или slave) — получают копию информации о зоне с главного или вторичного сервера и работают с ней;
+- кеширующие — кешируют ответы на запросы пользователя;
+- рекурсивные — выполняют полный поиск по иерархии DNS;
+- нерекурсивные — не выполняют полный поиск (не умеют или им запрещено)
+
+
+**Установка и настройка**    
+```
+# Ставим сервер bind9
+$ yum install bind
+# Конфигурационный файл
+$ vim /etc/named.conf
+# В конфигурационном файле задаем роль сервера, расположение файлов зоны
+# Делаем рестарт сервиса
+$ systemctl restart named
+# Добавляем адрес созданного сервера имен в /etc/resolv.conf
+$ vim /etc/resolv.conf
+nameserver 1.1.1.1
+```
+
+**Пример файла зоны полные имена**
+```
+$ cat /etc/named/zones/db.dns.lab
+dns.lab. IN SOA ns01 .dns.lab. root.dns.lab. (
+ 2711201407 ; serial
+ 3600 ; refresh (1 hour)
+ 600 ; retry (10 minutes)
+ 86400 ; expire (1 day)
+ 600 ; minimum (10 minutes)
+ )
+ IN NS ns01 .dns.lab.
+; DNS Servers
+ns01.dns.lab. IN A 10.0.0.23
+; Web
+web1.dns.lab. IN A 10.0.0.23
+web2.dns.lab. IN A 10.0.0.23
+```
+
+
+**Пример файла зоны - сокращения**    
+```
+$ cat /etc/named/zones/db.dns.lab
+$TTL 3600
+; описание зоны dns.lab.
+$ORIGIN dns.lab.
+@ IN SOA ns01.dns.lab. root.dns.lab. (
+ 2711201407 ; serial
+ 3600 ; refresh (1 hour)
+ 600 ; retry (10 minutes)
+ 86400 ; expire (1 day)
+ 600 ; minimum (10 minutes)
+ )
+ IN NS ns01.dns.lab.
+; DNS Servers
+ns01 IN A 10.0.0.23
+; Web
+web1 IN A 10.0.0.23
+web2 IN A 10.0.0.23
+```
+
+
+**Пример файла обратной зоны**
+```
+# Описание обратной зоны 0.0.10.in-addr.arpa.
+$ cat /etc/named/zones/db.0.0.10
+$TTL 604800
+@ IN SOA ns01.dns.lab. root.dns.lab. (
+ 20210806 ; Serial
+ 604800 ; Refresh
+ 86400 ; Retry
+ 2419200 ; Expire
+ 604800 ) ; Negative Cache TTL
+;
+; name servers
+@ IN NS ns01.dns.lab.
+; PTR Records
+23 IN PTR ns01.dns.lab. ;10.0.0.23
+24 IN PTR testptr.dns.lab. ;10.0.0.24
+```
