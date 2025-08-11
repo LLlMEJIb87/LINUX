@@ -33,3 +33,7 @@ FastCGI — принципы работы
 - Один и тот же процесс обрабатывает множество запросов
 - Высокая производительность
 - Большее потребление оперативной памяти
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/WEB/Картинки/din_web_fcgi.PNG">
+</p>
