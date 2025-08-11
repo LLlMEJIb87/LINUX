@@ -37,3 +37,7 @@ FastCGI — принципы работы
 <p align="center">
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/WEB/Картинки/din_web_fcgi.PNG">
 </p>
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/WEB/Картинки/din_web_php.PNG">
+</p>
