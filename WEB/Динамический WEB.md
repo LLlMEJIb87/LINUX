@@ -75,3 +75,5 @@ FastCGI — принципы работы
 - Схема URL:
   - HTTP: ws://ws.my.site
   - HTTPS: wss://wss.my.site
+
+https://github.com/LLlMEJIb87/LINUX/blob/main/WEB/Картинки/OTUS_Linux_Professional_Динамический_веб-224190-5d5e57.pdf
