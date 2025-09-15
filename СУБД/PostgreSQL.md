@@ -59,6 +59,13 @@ host    all             all             127.0.0.1/32            scram-sha-256 - 
 <image src="https://github.com/LLlMEJIb87/LINUX/blob/main/СУБД/Pictures/postgres_pool.PNG">
 </p>
 
+## Хранение данных
+
+<p align="center">
+<image src="https://github.com/LLlMEJIb87/LINUX/blob/main/СУБД/Pictures/postgres_hranenie.PNG">
+</p>
+
+ПО записывает данные не сразу на диск, какое-то время они находятся в общей оперативной памяти. Чтобы с лучае выходя системы из строя не потерялись данные существует журнал WAL ( сохраняет минимальную иформацию о транзакции)
 
 ## Подключение и работа
 ```
